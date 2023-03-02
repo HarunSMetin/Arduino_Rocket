@@ -3,7 +3,12 @@
 #include "LoRa_E32.h"  
 
 LoRa_E32 e32ttl(&Serial3);  //mega 14 15
- 
+//for arduino nano 10 , 11 
+/*
+#include "SoftwareSerial.h"
+SoftwareSerial mySerial(10,11);
+LoRa_E32 e32ttl(&mySerial); 
+*/
 void setup()
 {
 	Serial.begin(9600);
@@ -31,14 +36,16 @@ struct Message {
 	ResponseStructContainer rsc ; 
 void loop()
 {
+  delay(10);
 	if (e32ttl.available()  > 1){ 
     rsc = e32ttl.receiveMessage(sizeof(Message)); 
     message = *(Message*) rsc.data; 
-    Serial.print("packageNum: ");
+    
+    Serial.print("PAKET NUMARASI: ");
     Serial.println(  (byte)message.packageNum); 
     Serial.print("Patladı mı : ");
     Serial.println(  (byte)message.explode);
-    Serial.print("Pressure: "); 
+    Serial.print("Basınç: "); 
     Serial.println(*(float*)(message.pressure));
     Serial.print("X: "); 
     Serial.print (*(float*)(message.X));  
@@ -49,6 +56,7 @@ void loop()
     Serial.print(" GPS Enlem: "); 
     Serial.println (*(float*)(message.GPSe)); 
     Serial.print(" GPS Boylam: "); 
-    Serial.println (*(float*)(message.GPSb));
+    Serial.println (*(float*)(message.GPSb));  
+     
 	}
 }
