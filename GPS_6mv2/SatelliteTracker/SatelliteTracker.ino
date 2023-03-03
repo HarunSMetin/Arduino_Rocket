@@ -13,7 +13,7 @@
    It requires the use of SoftwareSerial, and assumes that you have a
    4800-baud serial GPS device hooked up on pins 4(RX) and 3(TX).
 */
-static const int RXPin = 14, TXPin = 15;
+static const int RXPin = 16, TXPin = 17;
 static const uint32_t GPSBaud = 9600;
 
 // The TinyGPSPlus object
@@ -63,7 +63,7 @@ struct
 void setup()
 {
   Serial.begin(115200);
-  Serial3.begin(GPSBaud);
+  Serial2.begin(GPSBaud);
 
   Serial.println(F("SatelliteTracker.ino"));
   Serial.println(F("Monitoring satellite location and signal strength using TinyGPSCustom"));
@@ -84,9 +84,9 @@ void setup()
 void loop()
 {
   // Dispatch incoming characters
-  if (Serial3.available() > 0)
+  if (Serial2.available() > 0)
   {
-    gps.encode(Serial3.read());
+    gps.encode(Serial2.read());
     if (totalGPGSVMessages.isUpdated())
     {
       for (int i=0; i<4; ++i)

@@ -42,21 +42,21 @@ void loop()
     message = *(Message*) rsc.data; 
     
     Serial.print("PAKET NUMARASI: ");
-    Serial.println(  (byte)message.packageNum); 
-    Serial.print("Patladı mı : ");
-    Serial.println(  (byte)message.explode);
-    Serial.print("Basınç: "); 
-    Serial.println(*(float*)(message.pressure));
-    Serial.print("X: "); 
+    Serial.println((byte)message.packageNum);  
+    Serial.print("\t Basınç: "); 
+    Serial.print(*(float*)(message.pressure));
+    Serial.print("\t X: "); 
     Serial.print (*(float*)(message.X));  
     Serial.print(" Y: "); 
     Serial.print (*(float*)(message.Y));  
     Serial.print(" Z: "); 
-    Serial.println (*(float*)(message.Z));  
-    Serial.print(" GPS Enlem: "); 
-    Serial.println (*(double*)(message.GPSe)); 
-    Serial.print(" GPS Boylam: "); 
-    Serial.println (*(double*)(message.GPSb));  
+    Serial.print (*(float*)(message.Z));  
+    Serial.print("\t GPS Enlem: "); 
+    Serial.print (*(double*)(message.GPSe),6); 
+    Serial.print("\t GPS Boylam: "); 
+    Serial.print (*(double*)(message.GPSb),6);  
+    Serial.println ("\n----------------------------------------------------------------------------------------------");
+ 
      
 	}
 }

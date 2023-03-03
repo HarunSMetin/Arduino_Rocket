@@ -26,17 +26,17 @@ float  curPressure =0;  //KPA
 
 byte packageNumber = 0; 
 
-#define VERI_SAYISI 5 
-#define BASINC_OFFSET 10
+#define VERI_SAYISI 10
+#define BASINC_OFFSET 0.3
 
-float totalY = -1; 
-float avarageY = -1 ;  
-float patlamaYDegeri  = -1;
+float totalY = 0 ; 
+float avarageY = 0 ;  
+float patlamaYDegeri  = 0;
 
 
-float totalBasinc = -1; 
-float avarageBasinc = -1 ;   
-float ilkBasincDegeri = -1 ;   
+float totalBasinc = 0; 
+float avarageBasinc = 91 ;   
+float ilkBasincDegeri = 91;   
 
 bool patla = true;
 
@@ -77,9 +77,8 @@ struct Message {
       byte Z [4]; 
       byte GPSe[4]; 
       byte GPSb[4]; 
-} message;  
-
-
+} message;   
+bool kalkti = false;
 void loop()
 {  
   packageNumber++;  
@@ -105,35 +104,38 @@ void loop()
 
   packageNumber = (packageNumber==255) ? 0 : packageNumber; //short if     
 
-  if(curPressure < (ilkBasincDegeri - BASINC_OFFSET) ){ 
+  if(!kalkti & curPressure < (ilkBasincDegeri - BASINC_OFFSET) ){ kalkti = true;}
+  if(kalkti){
     totalY += ( event.orientation.y- avarageY); 
     avarageY = totalY / VERI_SAYISI ; 
-    if ( (curPressure > avarageBasinc) & patla & (avarageY < patlamaYDegeri )) {
-      Serial.println("PATLADI");
-      patla = false;
-      delay(100);
-    } 
     totalBasinc += (curPressure - avarageBasinc); 
     avarageBasinc = totalBasinc / VERI_SAYISI ; 
+
+    if ( (curPressure  > avarageBasinc - BASINC_OFFSET) & patla & (avarageY < patlamaYDegeri )) {
+      Serial.println("PATLADI");
+      patla = false;
+      //delay(100);
+    } 
   }
 
     Serial.print("PAKET NUMARASI: ");
     Serial.println((byte)message.packageNum); 
+    
+    Serial.print("ilk basınç: "); 
+    Serial.println(ilkBasincDegeri);
+    
+    Serial.print("avarage basınç: "); 
+    Serial.println(avarageBasinc);
+
     Serial.print("Patladı mı : ");
     Serial.println((byte)message.explode);
+
+    
+    Serial.print("Kalktı mı : ");
+    Serial.println(kalkti);
+    
     Serial.print("Basınç: "); 
     Serial.println(*(float*)(message.pressure));
-    Serial.print("X: "); 
-    Serial.print (*(float*)(message.X));  
-    Serial.print(" Y: "); 
-    Serial.print (*(float*)(message.Y));  
-    Serial.print(" Z: "); 
-    Serial.println (*(float*)(message.Z));  
-    Serial.print(" GPS Enlem: "); 
-    Serial.println (*(float*)(message.GPSe)); 
-    Serial.print(" GPS Boylam: "); 
-    Serial.println (*(float*)(message.GPSb));  
-    Serial.print("**** Y Avarage : ");Serial.println(avarageY);  
     Serial.println ("----------------------------------------------------------------------------------------------");
 
   delay(100);

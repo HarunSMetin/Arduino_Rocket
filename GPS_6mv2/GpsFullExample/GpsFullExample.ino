@@ -5,7 +5,7 @@
    It requires the use of SoftwareSerial, and assumes that you have a
    4800-baud serial GPS device hooked up on pins 4(rx) and 3(tx).
 */
-static const int RXPin = 14, TXPin = 15;
+static const int RXPin = 16, TXPin = 17;
 static const uint32_t GPSBaud = 9600;
 
 // The TinyGPSPlus object
@@ -16,7 +16,7 @@ TinyGPSPlus gps;
 void setup()
 {
   Serial.begin(115200);
-  Serial3.begin(GPSBaud);
+  Serial2.begin(GPSBaud);
 
   Serial.println(F("FullExample.ino"));
   Serial.println(F("An extensive example of many interesting TinyGPSPlus features"));
@@ -82,8 +82,8 @@ static void smartDelay(unsigned long ms)
   unsigned long start = millis();
   do 
   {
-    while (Serial3.available())
-      gps.encode(Serial3.read());
+    while (Serial2.available())
+      gps.encode(Serial2.read());
   } while (millis() - start < ms);
 }
 
