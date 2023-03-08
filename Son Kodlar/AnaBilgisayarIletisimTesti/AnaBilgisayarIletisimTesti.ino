@@ -47,15 +47,18 @@ void setup()
 
 struct Message {  
       byte packageNum ;
-      byte explode ;
+      byte explode1 ; 
+      byte explode2 ;
       byte pressure[4] ;
       byte X [4];
       byte Y [4];
       byte Z [4]; 
       byte GPSe[4]; 
-      byte GPSb[4];   
-} message;    
+      byte GPSb[4]; 
+      char time[32];
+} message;
 
+char currentTime[32];
 void loop()
 {    
   packageNumber++;  
@@ -65,13 +68,17 @@ void loop()
   delay(100);  
   curPressure = mpl115a2.getPressure();  //KPA   
 
-  message.packageNum =  packageNumber; 
-  *(float*)(message.pressure) =   curPressure;
+  message.packageNum =  packageNumber;
+  message.explode1  = 0; 
+  message.explode2  = 0;
+  *(float*)(message.pressure) =   curPressure;  //kilo pascal cinsinden
   *(float*)(message.X) =  event.orientation.x; 
   *(float*)(message.Y) =  event.orientation.y;
   *(float*)(message.Z) =  event.orientation.z; 
   *(float*)(message.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
-  *(float*)(message.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;   
+  *(float*)(message.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;  
+  sprintf(currentTime, "%02d:%02d:%02d ",  gps.time.hour()+3,  gps.time.minute(),  gps.time.second());
+  *(char*)(message.time)=currentTime;
  
   delay(20);
   
@@ -79,8 +86,10 @@ void loop()
 
   packageNumber = (packageNumber==255) ? 0 : packageNumber; //short if     
 
-    Serial.print("PAKET NUMARASI: ");
-    Serial.println((byte)message.packageNum);  
+    Serial.print("PAKET NUMARASI: "); Serial.println((byte)message.packageNum);   
+    Serial.print("1. PATLAMA DURUMU: "); Serial.println(message.explode1); 
+    Serial.print("2. PATLAMA DURUMU: "); Serial.println( message.explode2);
+
     Serial.print("\t Basınç: "); 
     Serial.print(*(float*)(message.pressure));
     Serial.print("\t X: "); 
@@ -92,15 +101,15 @@ void loop()
     Serial.print("\t GPS Enlem: "); 
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
-    Serial.print (*(float*)(message.GPSb),6);   
+    Serial.print (*(float*)(message.GPSb),6);     
+    Serial.print("\t GPS Saat: ");   
+    Serial.println(*(char*)message.time);   
+
     Serial.print("\t GPS Tarih: ");
     char sz[32];
     sprintf(sz, "%02d/%02d/%02d ", gps.date.month(), gps.date.day(), gps.date.year());
-    Serial.print(sz);   
+    Serial.print(sz);    
 
-    Serial.print("\t GPS Saat: ");   
-    sprintf(sz, "%02d:%02d:%02d ",  gps.time.hour()+3,  gps.time.minute(),  gps.time.second());
-    Serial.print(sz); 
     Serial.println ("\n----------------------------------------------------------------------------------------------");
  
    smartDelay(100);
