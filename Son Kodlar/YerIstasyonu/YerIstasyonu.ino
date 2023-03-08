@@ -22,17 +22,19 @@ void setup()
 	delay(100);
 
 }  
+
 struct Message {  
       byte packageNum ;
-      byte explode ;
+      byte explode1 ; 
+      byte explode2 ;
       byte pressure[4] ;
       byte X [4];
       byte Y [4];
       byte Z [4]; 
       byte GPSe[4]; 
-      byte GPSb[4];  
+      byte GPSb[4]; 
       char time[32];
-} message;
+} message; 
 
 	ResponseStructContainer rsc ; 
 void loop()
@@ -44,7 +46,8 @@ void loop()
     
 
     Serial.print("PAKET NUMARASI: "); Serial.println((byte)message.packageNum);  
-    Serial.print("PATLAMA DURUMU: "); Serial.println((byte)message.explode);  
+    Serial.print("1. PATLAMA DURUMU: "); Serial.println((byte)message.explode1);      
+    Serial.print("2. PATLAMA DURUMU: ");  Serial.println((byte)message.explode2);
  
     Serial.print("\t Basınç: "); 
     Serial.print(*(float*)(message.pressure));
