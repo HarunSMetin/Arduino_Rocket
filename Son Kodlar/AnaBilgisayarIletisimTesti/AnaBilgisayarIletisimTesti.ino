@@ -31,6 +31,7 @@ static const uint32_t GPSBaud = 9600;
 TinyGPSPlus gps;
 void setup()
 { 
+  
   Serial.begin(9600);   
   Serial2.begin(GPSBaud);
   delay(100);
@@ -51,26 +52,26 @@ struct Message {
       byte X [4];
       byte Y [4];
       byte Z [4]; 
-      byte GPSe[8]; 
-      byte GPSb[8];   
+      byte GPSe[4]; 
+      byte GPSb[4];   
 } message;    
 
 void loop()
 {    
   packageNumber++;  
 
-  curPressure = mpl115a2.getPressure();  //KPA   
 
   bno.getEvent(&event);
   delay(100);  
+  curPressure = mpl115a2.getPressure();  //KPA   
 
   message.packageNum =  packageNumber; 
   *(float*)(message.pressure) =   curPressure;
   *(float*)(message.X) =  event.orientation.x; 
   *(float*)(message.Y) =  event.orientation.y;
   *(float*)(message.Z) =  event.orientation.z; 
-  *(double*)(message.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
-  *(double*)(message.GPSb) =  gps.location.isValid() ? gps.location.lng() : 0;   
+  *(float*)(message.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
+  *(float*)(message.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;   
  
   delay(20);
   
@@ -89,9 +90,9 @@ void loop()
     Serial.print(" Z: "); 
     Serial.print (*(float*)(message.Z));  
     Serial.print("\t GPS Enlem: "); 
-    Serial.print (*(double*)(message.GPSe),6); 
+    Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
-    Serial.print (*(double*)(message.GPSb),6);   
+    Serial.print (*(float*)(message.GPSb),6);   
     Serial.print("\t GPS Tarih: ");
     char sz[32];
     sprintf(sz, "%02d/%02d/%02d ", gps.date.month(), gps.date.day(), gps.date.year());

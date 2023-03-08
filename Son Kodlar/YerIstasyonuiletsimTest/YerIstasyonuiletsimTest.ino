@@ -29,8 +29,9 @@ struct Message {
       byte X [4];
       byte Y [4];
       byte Z [4]; 
-      byte GPSe[8]; 
-      byte GPSb[8]; 
+      byte GPSe[4]; 
+      byte GPSb[4]; 
+      char time[32];
 } message;
 
 	ResponseStructContainer rsc ; 
@@ -40,9 +41,10 @@ void loop()
 	if (e32ttl.available()  > 1){ 
     rsc = e32ttl.receiveMessage(sizeof(Message)); 
     message = *(Message*) rsc.data; 
-    
-    Serial.print("PAKET NUMARASI: ");
-    Serial.println((byte)message.packageNum);  
+
+    Serial.print("PAKET NUMARASI: "); Serial.println((byte)message.packageNum);  
+    Serial.print("PATLAMA DURUMU: "); Serial.println((byte)message.explode);  
+ 
     Serial.print("\t Basınç: "); 
     Serial.print(*(float*)(message.pressure));
     Serial.print("\t X: "); 
@@ -52,11 +54,12 @@ void loop()
     Serial.print(" Z: "); 
     Serial.print (*(float*)(message.Z));  
     Serial.print("\t GPS Enlem: "); 
-    Serial.print (*(double*)(message.GPSe),6); 
+    Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
-    Serial.print (*(double*)(message.GPSb),6);  
-    Serial.println ("\n----------------------------------------------------------------------------------------------");
+    Serial.print (*(float*)(message.GPSb),6);     
+    Serial.print("\t GPS Saat: ");   
+    Serial.println(*(char*)message.time);  
+    Serial.println ("----------------------------------------------------------------------------------------------");
  
-     
 	}
 }
