@@ -47,7 +47,6 @@ float ilkBasincDegeri = 91;
 float BASINC_OFFSET = 0.2;
 bool patla1 = true;
 bool patla2 = true;
-char currentTime[32];
 
 
 void setup()
@@ -90,8 +89,7 @@ struct Message {
       byte Y [4];
       byte Z [4]; 
       byte GPSe[4]; 
-      byte GPSb[4]; 
-      char time[32];
+      byte GPSb[4];  
 } message;   
 
 bool kalkti = false;
@@ -113,8 +111,6 @@ void loop()
   *(float*)(message.Z) =  event.orientation.z; 
   *(float*)(message.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
   *(float*)(message.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;  
-  sprintf(currentTime, "%02d:%02d:%02d ",  gps.time.hour()+3,  gps.time.minute(),  gps.time.second());
-  *(char*)(message.time)=currentTime;
 
 
   ResponseStatus rs = e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message));
@@ -160,9 +156,7 @@ void loop()
     Serial.print("\t GPS Enlem: "); 
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
-    Serial.print (*(float*)(message.GPSb),6);     
-    Serial.print("\t GPS Saat: ");   
-    Serial.println(*(char*)message.time);  
+    Serial.print (*(float*)(message.GPSb),6);    
     Serial.println ("----------------------------------------------------------------------------------------------");
  
 }

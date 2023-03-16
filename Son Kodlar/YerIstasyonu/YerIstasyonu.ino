@@ -32,8 +32,7 @@ struct Message {
       byte Y [4];
       byte Z [4]; 
       byte GPSe[4]; 
-      byte GPSb[4]; 
-      char time[32];
+      byte GPSb[4];  
 } message; 
 
 	ResponseStructContainer rsc ; 
@@ -60,9 +59,7 @@ void loop()
     Serial.print("\t GPS Enlem: "); 
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
-    Serial.print (*(float*)(message.GPSb),6);     
-    Serial.print("\t GPS Saat: ");   
-    Serial.println(*(char*)message.time);  
+    Serial.print (*(float*)(message.GPSb),6);      
     Serial.println ("----------------------------------------------------------------------------------------------");
  
      
