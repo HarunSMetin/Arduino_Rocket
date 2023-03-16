@@ -1,8 +1,7 @@
  
 #include "Arduino.h"
-#include "LoRa_E32.h"  
-
-#define VERISAYISI=10; 
+#include "LoRa_E32.h"   
+static byte VERISAYISI = 9; 
 
 LoRa_E32 e32ttl(&Serial3);  //mega 14 15 
 void setup()
@@ -28,7 +27,8 @@ struct Message {
 /*
   SERIAL'A BASILAN =====>  "packageNum;explode1;explode2;pressure;X;Y;Z;GPSe;GPSb"
   BYTE BOYUTU      =====>     1BYTE   ;  1BYTE ;  1BYTE ; 4BYTE  ;4;4;4; 4  ;  4   
-*/
+*/ 
+
 ResponseStructContainer rsc ; 
 void loop()
 {
@@ -58,10 +58,10 @@ void loop()
   }
   else 
   { 
-    for(int i = 0 ; i<VERISAYISI;i++)
+    for(int i = 0 ; i < VERISAYISI ; i++)
     {
       Serial.print("0");
-      if(i<VERISAYISI-1) 
+      if(i < VERISAYISI-1) 
         Serial.print(","); 
     }
   }
