@@ -13,7 +13,7 @@ LoRa_E32 e32ttl(&Serial3); //mega 14 15
 //Arduino Mega	51	  50	  52	53
 #include <SPI.h>
 #include <SD.h>
-File dosya;
+File myFile;
 
 //Adafruit_BNO055  I2C
 //	            SDA	SCL	
@@ -25,12 +25,14 @@ File dosya;
 Adafruit_BNO055 bno = Adafruit_BNO055(55); 
 sensors_event_t event; 
 
-//Basınç          I2C   //MPL yada BME farketmez
-//SPI A ÇEVİRİLEBİLİR BAKILACAK !!!!!!!!!!!!!!!!!!!
+//Basınç  BME680_I2C 
 //	            SDA	SCL	
 //Arduino Mega	20  21
-#include <Adafruit_MPL115A2.h> 
-Adafruit_MPL115A2 mpl115a2; 
+#include "DFRobot_BME680_I2C.h"
+#define CALIBRATE_PRESSURE //101.325 //Deniz seviyesindeki basınç değeri
+/*use an accurate altitude to calibrate sea level air pressure*/
+DFRobot_BME680_I2C bme(0x77);  //0x77 I2C address
+
 
 //GPS İÇİN
 //             Serial2
@@ -44,12 +46,22 @@ TinyGPSPlus gps;
 //ROLE 1 
 //              Trigger
 //Arduino Mega	22
-#define ROLE1 22
+#define ROLE1 22 
+
+//ROLE1_KONTROL 
+//              Trigger
+//Arduino Mega	23
+#define ROLE1_KONTROL 23
 
 //ROLE 2
 //              Trigger
-//Arduino Mega	23
-#define ROLE1 23
+//Arduino Mega	24
+#define ROLE2 24
+
+//ROLE2_KONTROL
+//              Trigger
+//Arduino Mega	25
+#define ROLE2_KONTROL 25
 
 float totalY = 0; 
 float avarageY = 0;   
@@ -66,6 +78,8 @@ float BASINC_OFFSET = 0.2;
 bool patla1 = true;
 bool patla2 = true;
 
+float seaLevel;//BME 680 BASINC
+
 void setup()
 { 
   Serial.begin(9600);   
@@ -74,20 +88,29 @@ void setup()
 
   if(!bno.begin())
     Serial.println("Sensor BNO055 NOT detected!"); 
-  if (! mpl115a2.begin()) 
-    Serial.println("Sensor MPL115A2 NOT detected!"); 
+  if (!bme.begin())
+    Serial.println("Sensor BME680 NOT detected!"); 
   if(!SD.begin(4))
-    Serial.println("SD Kart başlatilamadi!");
+    Serial.println("SD Card Module NOT detected!");
 
-  bno.setExtCrystalUse(true);
-  e32ttl.begin();  
+  myFile = SD.open("veriler.txt", FILE_WRITE);
+  delay(200);
+  bno.setExtCrystalUse(true); 
+  delay(200);
+  e32ttl.begin();     
+  delay(200);
+  //Deniz seviyesi Basınç Kalibrasyon 
+  #ifdef CALIBRATE_PRESSURE
+    bme.startConvert();
+    delay(1000);
+    bme.update(); 
+    seaLevel = bme.readSeaLevel(905.0); //Tuz Gölü Rakım 905 metre
+  #endif
 
-  delay(100); 
-  
   for (int i =0; i < VERI_SAYISI; i++) {  
     bno.getEvent(&event);   
     delay(100); 
-    totalBasinc += mpl115a2.getPressure();   
+    totalBasinc += bme.readPressure();   
     totalY += (float)event.orientation.y;
   }  
   avarageY = totalY / VERI_SAYISI ; 
@@ -96,6 +119,9 @@ void setup()
   ilkBasincDegeri = avarageBasinc;
   
   BASINC_OFFSET = ilkBasincDegeri/300;
+  if (myFile) { 
+     myFile.println("PakatNumarasi,1Patlama,2Patlama,Basinc,X,Y,Z,GPSEnlem,GPSBoylam;");
+  }
 }  
 struct Message {  
       byte packageNum ;
@@ -117,7 +143,7 @@ void loop()
  
   bno.getEvent(&event);
   smartDelay(100);  
-  curPressure =mpl115a2.getPressure();
+  curPressure =bme.readPressure();
   
   message.packageNum =  packageNumber;
   message.explode1  = (!patla1)?(byte)1:(byte)0; 
@@ -133,9 +159,9 @@ void loop()
   ResponseStatus rs = e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message));
   Serial.println(rs.getResponseDescription());
 
-  packageNumber = (packageNumber==255) ? 0 : packageNumber; //short if     
+  packageNumber = (packageNumber==255) ? 0 : packageNumber;
 
-  if(!kalkti & curPressure < (ilkBasincDegeri - BASINC_OFFSET) ){ kalkti = true;}
+  if(!kalkti & (curPressure < (ilkBasincDegeri - BASINC_OFFSET)) ){ kalkti = true;}
   if(kalkti){
     totalY += ( event.orientation.y- avarageY); 
     avarageY = totalY / VERI_SAYISI ; 
@@ -157,7 +183,7 @@ void loop()
     }
   } 
   
-    Serial.print("PAKET NUMARASI: "); Serial.println((byte)message.packageNum);   
+    Serial.print("PAKET NUMARASI: "); Serial.println((byte)(message.packageNum));   
     Serial.print("KALKIŞ DURUMU: "); Serial.println(kalkti ? "Kalkiş Yapildi!":"Rampada duruyor!");  
     Serial.print("1. PATLAMA DURUMU: "); Serial.println(!patla1); 
     Serial.print("2. PATLAMA DURUMU: "); Serial.println(!patla2);
@@ -174,8 +200,33 @@ void loop()
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
     Serial.print (*(float*)(message.GPSb),6);    
+
+    #ifdef CALIBRATE_PRESSURE
+        Serial.println ("***************************************************************");
+        Serial.print("calibrated altitude(m) :");
+        Serial.println(bme.readCalibratedAltitude(seaLevel));
+    #endif
     Serial.println ("----------------------------------------------------------------------------------------------");
- 
+   if (myFile) {
+      myFile.print((byte)message.packageNum);  
+      myFile.print(","); 
+      myFile.print((byte)message.explode1);      
+      myFile.print(",");  
+      myFile.print((byte)message.explode2); 
+      myFile.print(","); 
+      myFile.print(*(float*)(message.pressure));
+      myFile.print(","); 
+      myFile.print (*(float*)(message.X),6);  
+      myFile.print(","); 
+      myFile.print (*(float*)(message.Y),6);  
+      myFile.print(","); 
+      myFile.print (*(float*)(message.Z),6);
+      myFile.print(","); 
+      myFile.print (*(float*)(message.GPSe),6); 
+      myFile.print(","); 
+      myFile.print (*(float*)(message.GPSb),6);      
+      myFile.println(";");    
+    }
 }
 
 static void smartDelay(unsigned long ms)
