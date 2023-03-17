@@ -1,53 +1,70 @@
 
 #include "Arduino.h"
-#include "LoRa_E32.h" 
+#define VERI_SAYISI 5 
 
+//Lora e32 Modülü
+//	            RX	TX
+//Arduino Mega  14  15
+#include "LoRa_E32.h" 
 LoRa_E32 e32ttl(&Serial3); //mega 14 15
 
-/*
-//for arduino nano 10 , 11 s
-#include "SoftwareSerial.h"
-SoftwareSerial mySerial(10,11);
-LoRa_E32 e32ttl(&mySerial); 
-*/
+//SD KART Modülü
+//	            MOSI	MİSO	SCK	CS
+//Arduino Mega	51	  50	  52	53
+#include <SPI.h>
+#include <SD.h>
+File dosya;
 
-#include<Wire.h> 
- 
-//Adafruit_BNO055
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h> 
+//Adafruit_BNO055  I2C
+//	            SDA	SCL	
+//Arduino Mega	20  21
+#include  <Adafruit_Sensor.h>
+#include  <Adafruit_BNO055.h>
+#include  <utility/imumaths.h> 
+#include  <Wire.h> 
 Adafruit_BNO055 bno = Adafruit_BNO055(55); 
 sensors_event_t event; 
 
-//Basınç
-
+//Basınç          I2C   //MPL yada BME farketmez
+//SPI A ÇEVİRİLEBİLİR BAKILACAK !!!!!!!!!!!!!!!!!!!
+//	            SDA	SCL	
+//Arduino Mega	20  21
 #include <Adafruit_MPL115A2.h> 
 Adafruit_MPL115A2 mpl115a2; 
-float  curPressure =0;  //KPA  
 
- //GPS İÇİN
+//GPS İÇİN
+//             Serial2
+//	            RX	TX
+//Arduino Mega	20  21
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
 static const uint32_t GPSBaud = 9600;
 TinyGPSPlus gps;
 
+//ROLE 1 
+//              Trigger
+//Arduino Mega	22
+#define ROLE1 22
+
+//ROLE 2
+//              Trigger
+//Arduino Mega	23
+#define ROLE1 23
+
+float totalY = 0; 
+float avarageY = 0;   
+
 byte packageNumber = 0; 
-
-#define VERI_SAYISI 5 
-
-float totalY = 0 ; 
-float avarageY = 0 ;   
-
 
 float totalBasinc = 0; 
 float avarageBasinc = 91 ;   
 float ilkBasincDegeri = 91;   
 
+float  curPressure =0;  //KPA  
+
 float BASINC_OFFSET = 0.2;
 bool patla1 = true;
 bool patla2 = true;
-
 
 void setup()
 { 
@@ -56,10 +73,12 @@ void setup()
   delay(100);
 
   if(!bno.begin())
-    Serial.println("Sensor BNO055 NOT detected!");   
+    Serial.println("Sensor BNO055 NOT detected!"); 
   if (! mpl115a2.begin()) 
-    Serial.println("Sensor mpl115a2 not detected!"); 
-  
+    Serial.println("Sensor MPL115A2 NOT detected!"); 
+  if(!SD.begin(4))
+    Serial.println("SD Kart başlatilamadi!");
+
   bno.setExtCrystalUse(true);
   e32ttl.begin();  
 
@@ -77,9 +96,7 @@ void setup()
   ilkBasincDegeri = avarageBasinc;
   
   BASINC_OFFSET = ilkBasincDegeri/300;
-
 }  
-
 struct Message {  
       byte packageNum ;
       byte explode1 ; 
@@ -141,11 +158,11 @@ void loop()
   } 
   
     Serial.print("PAKET NUMARASI: "); Serial.println((byte)message.packageNum);   
-    Serial.print("KALKIŞ DURUMU: "); Serial.println(kalkti ? "Kalış Yapıldı!":"Rampada duruyor!");  
+    Serial.print("KALKIŞ DURUMU: "); Serial.println(kalkti ? "Kalkiş Yapildi!":"Rampada duruyor!");  
     Serial.print("1. PATLAMA DURUMU: "); Serial.println(!patla1); 
     Serial.print("2. PATLAMA DURUMU: "); Serial.println(!patla2);
 
-    Serial.print("\t Basınç: "); 
+    Serial.print("\t Basinç: "); 
     Serial.print(*(float*)(message.pressure));
     Serial.print("\t X: "); 
     Serial.print (*(float*)(message.X));  
