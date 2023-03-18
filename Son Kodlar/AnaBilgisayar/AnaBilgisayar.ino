@@ -37,7 +37,7 @@ DFRobot_BME680_I2C bme(0x77);  //0x77 I2C address
 //GPS İÇİN
 //             Serial2
 //	            RX	TX
-//Arduino Mega	20  21
+//Arduino Mega	16  17
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
 static const uint32_t GPSBaud = 9600;
