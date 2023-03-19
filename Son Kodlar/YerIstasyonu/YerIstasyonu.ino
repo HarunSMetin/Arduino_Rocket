@@ -2,25 +2,18 @@
 #include "Arduino.h"
 #include "LoRa_E32.h"  
 
-LoRa_E32 e32ttl(&Serial3);  //mega 14 15
-//for arduino nano 10 , 11 
-/*
-#include "SoftwareSerial.h"
-SoftwareSerial mySerial(10,11);
-LoRa_E32 e32ttl(&mySerial); 
-*/
+LoRa_E32 e32ttl(&Serial3);  //mega 14 15 
+
 void setup()
 {
 	Serial.begin(9600);
-	while (!Serial) {Serial.println("Serial is not open") ;   }
+	while (!Serial) {; }
 	delay(100);
 
 	e32ttl.begin();
   
-	Serial.println("Start listening!");
-   
-	delay(100);
-
+	Serial.println("Start listening!"); 
+	delay(1000);,
 }  
 
 struct Message {  

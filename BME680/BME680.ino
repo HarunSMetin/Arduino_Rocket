@@ -1,52 +1,76 @@
-#include "DFRobot_BME680_I2C.h"
-#include "Wire.h"
-#include "SPI.h"
+/**
+ * This example demonstrates how to collect basic measurements from the Adafruit BME680
+ * board, including temperature, pressure, humidity, gas resistance, and altitude.
+ * In this example, sensor measurements are printed out to the Arduino serial console,
+ * which can be accessed within the Arduino IDE via (Tools -> Serial Monitor).
+ * 
+ * - If you are using the Arduino IDE to compile this code, make sure to first install the
+ * Adafruit BME680 Library through the Arduino library manager.
+ * - When you open the serial monitor to view measurements from the BME680 board, make sure
+ * that you select 9600 baud so that the serial monitor can receive data from the Arduino.
+ *
+ * Originally written by Limor Fried & Kevin Townsend from Adafruit Industries.
+ */
 
-/*use an accurate altitude to calibrate sea level air pressure*/
-#define CALIBRATE_PRESSURE
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_BME680.h"
 
-DFRobot_BME680_I2C bme(0x77);  //0x77 I2C address
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
 
-float seaLevel;
-void setup()
-{
-  Serial.begin(115200);
-  while(!Serial);
-  delay(1000);
-  Serial.println();
-  Serial.print(bme.begin());
-  #ifdef CALIBRATE_PRESSURE
-  bme.startConvert();
-  delay(1000);
-  bme.update();
-  /*You can use an accurate altitude to calibrate sea level air pressure.
-   *And then use this calibrated sea level pressure as a reference to obtain the calibrated altitude.
-   *In this case,525.0m is chendu accurate altitude.
-   */
-  seaLevel = bme.readSeaLevel(525.0);
-  Serial.print("seaLevel :");
-  Serial.println(seaLevel);
-  #endif
+#define SEALEVELPRESSURE_HPA (1013.25)
+
+Adafruit_BME680 bme; // I2C
+//Adafruit_BME680 bme(BME_CS); // hardware SPI
+//Adafruit_BME680 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+  Serial.println(F("BME680 test"));
+
+  if (!bme.begin()) {
+    Serial.println("Could not find a valid BME680 sensor, check wiring!");
+    while (1);
+  }
+
+  // Set up oversampling and filter initialization
+  bme.setTemperatureOversampling(BME680_OS_8X);
+  bme.setHumidityOversampling(BME680_OS_2X);
+  bme.setPressureOversampling(BME680_OS_4X);
+  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+  bme.setGasHeater(320, 150); // 320*C for 150 ms
 }
 
-void loop()
-{
-  bme.startConvert();
-  delay(1000);
-  bme.update();
+void loop() {
+  if (! bme.performReading()) {
+    Serial.println("Failed to perform reading :(");
+    return;
+  }
+  Serial.print("Temperature = ");
+  Serial.print(bme.temperature);
+  Serial.println(" *C");
+
+  Serial.print("Pressure = ");
+  Serial.print(bme.pressure / 100.0);
+  Serial.println(" hPa");
+
+  Serial.print("Humidity = ");
+  Serial.print(bme.humidity);
+  Serial.println(" %");
+
+  Serial.print("Gas = ");
+  Serial.print(bme.gas_resistance / 1000.0);
+  Serial.println(" KOhms");
+
+  Serial.print("Approx. Altitude = ");
+  Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+  Serial.println(" m");
+
   Serial.println();
-  Serial.print("temperature(C) :");
-  Serial.println(bme.readTemperature(), 2);
-  Serial.print("pressure(Pa) :");
-  Serial.println(bme.readPressure());
-  Serial.print("humidity(%rh) :");
-  Serial.println(bme.readHumidity(), 2);
-  Serial.print("gas resistance(ohm) :");
-  Serial.println(bme.readGasResistance());
-  Serial.print("altitude(m) :");
-  Serial.println(bme.readAltitude());
-  #ifdef CALIBRATE_PRESSURE
-  Serial.print("calibrated altitude(m) :");
-  Serial.println(bme.readCalibratedAltitude(seaLevel));
-  #endif
+  delay(2000);
 }
