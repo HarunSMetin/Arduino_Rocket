@@ -1,7 +1,7 @@
 ﻿
 namespace TOBBETUROCKETRY
 {
-    partial class Form1
+    partial class TOBBETUROCKETRY
     {
         /// <summary>
         ///Gerekli tasarımcı değişkeni.
@@ -29,7 +29,7 @@ namespace TOBBETUROCKETRY
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TOBBETUROCKETRY));
             this.btnBaglan = new System.Windows.Forms.Button();
             this.btnBaglantiyiBitir = new System.Windows.Forms.Button();
             this.comboBoxComPort = new System.Windows.Forms.ComboBox();
@@ -40,6 +40,7 @@ namespace TOBBETUROCKETRY
             this.lblDurum = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gMapAnaBilgisayar = new GMap.NET.WindowsForms.GMapControl();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
@@ -72,6 +73,7 @@ namespace TOBBETUROCKETRY
             this.textBoxIvmeZ_AnaBil = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.gMapGorevYuku = new GMap.NET.WindowsForms.GMapControl();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
@@ -90,19 +92,42 @@ namespace TOBBETUROCKETRY
             this.label17 = new System.Windows.Forms.Label();
             this.textBoxGPSBoylam_GorevYuku = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.patlama1_yes = new System.Windows.Forms.PictureBox();
+            this.patlama2_yes = new System.Windows.Forms.PictureBox();
+            this.patlama2_no = new System.Windows.Forms.PictureBox();
+            this.patlama1_no = new System.Windows.Forms.PictureBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.glControl1 = new OpenTK.GLControl();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaudRate)).BeginInit();
             this.panelBaglanti.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel8.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
             this.flowLayoutPanel12.SuspendLayout();
             this.flowLayoutPanel13.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama1_yes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama1_no)).BeginInit();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBaglan
@@ -238,6 +263,7 @@ namespace TOBBETUROCKETRY
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.gMapAnaBilgisayar);
             this.panel1.Controls.Add(this.flowLayoutPanel8);
             this.panel1.Controls.Add(this.label3);
@@ -246,6 +272,16 @@ namespace TOBBETUROCKETRY
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(490, 934);
             this.panel1.TabIndex = 7;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.rocket;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(338, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox1.TabIndex = 28;
+            this.pictureBox1.TabStop = false;
             // 
             // gMapAnaBilgisayar
             // 
@@ -276,7 +312,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel8
             // 
-            this.flowLayoutPanel8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel11);
             this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel12);
@@ -291,7 +327,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel11
             // 
-            this.flowLayoutPanel11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel11.Controls.Add(this.label7);
             this.flowLayoutPanel11.Controls.Add(this.label20);
@@ -357,7 +393,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel12
             // 
-            this.flowLayoutPanel12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel12.Controls.Add(this.textBoxPaketNum_AnaBil);
             this.flowLayoutPanel12.Controls.Add(this.textBoxBasinc_AnaBil);
@@ -407,7 +443,7 @@ namespace TOBBETUROCKETRY
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label4.Font = new System.Drawing.Font("Agency FB", 27.75F);
@@ -422,7 +458,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel13
             // 
-            this.flowLayoutPanel13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel13.Controls.Add(this.label18);
             this.flowLayoutPanel13.Controls.Add(this.label19);
@@ -460,7 +496,7 @@ namespace TOBBETUROCKETRY
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(29, 38);
             this.label19.TabIndex = 20;
-            this.label19.Text = "X:";
+            this.label19.Text = "X_jiro:";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxJiroX_AnaBil
@@ -483,7 +519,7 @@ namespace TOBBETUROCKETRY
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(29, 38);
             this.label25.TabIndex = 22;
-            this.label25.Text = "Y:";
+            this.label25.Text = "Y_jiro:";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxJiroY_AnaBil
@@ -506,7 +542,7 @@ namespace TOBBETUROCKETRY
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(29, 38);
             this.label26.TabIndex = 24;
-            this.label26.Text = "Z:";
+            this.label26.Text = "Z_jiro:";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxJiroZ_AnaBil
@@ -521,7 +557,7 @@ namespace TOBBETUROCKETRY
             // 
             // label5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label5.Font = new System.Drawing.Font("Agency FB", 27.75F);
@@ -536,7 +572,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.Controls.Add(this.label6);
             this.flowLayoutPanel1.Controls.Add(this.label8);
@@ -574,7 +610,7 @@ namespace TOBBETUROCKETRY
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 38);
             this.label8.TabIndex = 20;
-            this.label8.Text = "X:";
+            this.label8.Text = "X_jiro:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxIvmeX_AnaBil
@@ -597,7 +633,7 @@ namespace TOBBETUROCKETRY
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 38);
             this.label9.TabIndex = 22;
-            this.label9.Text = "Y:";
+            this.label9.Text = "Y_jiro:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxIvmeY_AnaBil
@@ -620,7 +656,7 @@ namespace TOBBETUROCKETRY
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(29, 38);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Z:";
+            this.label10.Text = "Z_jiro:";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBoxIvmeZ_AnaBil
@@ -652,6 +688,7 @@ namespace TOBBETUROCKETRY
             this.panel2.AutoSize = true;
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(65)))), ((int)(((byte)(65)))));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.pictureBox2);
             this.panel2.Controls.Add(this.gMapGorevYuku);
             this.panel2.Controls.Add(this.flowLayoutPanel3);
             this.panel2.Controls.Add(this.label22);
@@ -660,6 +697,16 @@ namespace TOBBETUROCKETRY
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(490, 934);
             this.panel2.TabIndex = 8;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.gorev_yuku;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox2.Location = new System.Drawing.Point(106, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
             // 
             // gMapGorevYuku
             // 
@@ -690,7 +737,7 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel3
             // 
-            this.flowLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel2);
@@ -883,17 +930,155 @@ namespace TOBBETUROCKETRY
             this.label22.Text = "Görev Yükü";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.ilk;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox3.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox3.TabIndex = 9;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.ikinci;
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox4.Location = new System.Drawing.Point(5, 6);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox4.TabIndex = 10;
+            this.pictureBox4.TabStop = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label11.Font = new System.Drawing.Font("Agency FB", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.NavajoWhite;
+            this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label11.Location = new System.Drawing.Point(159, 3);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(138, 44);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "1. Patlama";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label12.Font = new System.Drawing.Font("Agency FB", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.NavajoWhite;
+            this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label12.Location = new System.Drawing.Point(161, 6);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(146, 44);
+            this.label12.TabIndex = 19;
+            this.label12.Text = "2. Patlama";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // patlama1_yes
+            // 
+            this.patlama1_yes.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.yes;
+            this.patlama1_yes.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.patlama1_yes.Location = new System.Drawing.Point(202, 64);
+            this.patlama1_yes.Name = "patlama1_yes";
+            this.patlama1_yes.Size = new System.Drawing.Size(50, 50);
+            this.patlama1_yes.TabIndex = 20;
+            this.patlama1_yes.TabStop = false;
+            // 
+            // patlama2_yes
+            // 
+            this.patlama2_yes.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.yes;
+            this.patlama2_yes.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.patlama2_yes.Location = new System.Drawing.Point(202, 75);
+            this.patlama2_yes.Name = "patlama2_yes";
+            this.patlama2_yes.Size = new System.Drawing.Size(50, 50);
+            this.patlama2_yes.TabIndex = 21;
+            this.patlama2_yes.TabStop = false;
+            // 
+            // patlama2_no
+            // 
+            this.patlama2_no.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("patlama2_no.BackgroundImage")));
+            this.patlama2_no.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.patlama2_no.Location = new System.Drawing.Point(202, 75);
+            this.patlama2_no.Name = "patlama2_no";
+            this.patlama2_no.Size = new System.Drawing.Size(50, 50);
+            this.patlama2_no.TabIndex = 23;
+            this.patlama2_no.TabStop = false;
+            // 
+            // patlama1_no
+            // 
+            this.patlama1_no.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("patlama1_no.BackgroundImage")));
+            this.patlama1_no.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.patlama1_no.Location = new System.Drawing.Point(202, 64);
+            this.patlama1_no.Name = "patlama1_no";
+            this.patlama1_no.Size = new System.Drawing.Size(50, 50);
+            this.patlama1_no.TabIndex = 22;
+            this.patlama1_no.TabStop = false;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.patlama1_no);
+            this.panel3.Controls.Add(this.patlama1_yes);
+            this.panel3.Controls.Add(this.pictureBox3);
+            this.panel3.Controls.Add(this.label11);
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(318, 156);
+            this.panel3.TabIndex = 24;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.pictureBox4);
+            this.panel4.Controls.Add(this.label12);
+            this.panel4.Controls.Add(this.patlama2_no);
+            this.panel4.Controls.Add(this.patlama2_yes);
+            this.panel4.Location = new System.Drawing.Point(3, 165);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(318, 156);
+            this.panel4.TabIndex = 25;
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.AutoSize = true;
+            this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel5.Controls.Add(this.panel3);
+            this.flowLayoutPanel5.Controls.Add(this.panel4);
+            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(490, 670);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(506, 324);
+            this.flowLayoutPanel5.TabIndex = 26;
+            // 
+            // glControl1
+            // 
+            this.glControl1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.glControl1.AutoSize = true;
+            this.glControl1.BackColor = System.Drawing.Color.Black;
+            this.glControl1.Location = new System.Drawing.Point(498, 62);
+            this.glControl1.Name = "glControl1";
+            this.glControl1.Size = new System.Drawing.Size(492, 456);
+            this.glControl1.TabIndex = 27;
+            this.glControl1.VSync = false;
+            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
+            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
+            // 
+            // TOBBETUROCKETRY
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1486, 994);
+            this.Controls.Add(this.glControl1);
+            this.Controls.Add(this.flowLayoutPanel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelBaglanti);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "TOBBETUROCKETRY";
             this.Text = "TOBB ETU Rocketry Yer İstasyonu Yazılımı";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -901,6 +1086,7 @@ namespace TOBBETUROCKETRY
             this.panelBaglanti.ResumeLayout(false);
             this.panelBaglanti.PerformLayout();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel8.ResumeLayout(false);
             this.flowLayoutPanel11.ResumeLayout(false);
             this.flowLayoutPanel12.ResumeLayout(false);
@@ -910,12 +1096,24 @@ namespace TOBBETUROCKETRY
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama1_yes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.patlama1_no)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -983,6 +1181,20 @@ namespace TOBBETUROCKETRY
         private System.Windows.Forms.TextBox textBoxBasinc_GorevYuku;
         private GMap.NET.WindowsForms.GMapControl gMapAnaBilgisayar;
         private GMap.NET.WindowsForms.GMapControl gMapGorevYuku;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox patlama1_yes;
+        private System.Windows.Forms.PictureBox patlama2_yes;
+        private System.Windows.Forms.PictureBox patlama2_no;
+        private System.Windows.Forms.PictureBox patlama1_no;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private OpenTK.GLControl glControl1;
     }
 }
 
