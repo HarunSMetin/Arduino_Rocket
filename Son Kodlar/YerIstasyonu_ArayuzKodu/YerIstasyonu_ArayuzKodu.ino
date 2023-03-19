@@ -1,7 +1,6 @@
  
 #include "Arduino.h"
 #include "LoRa_E32.h"   
-static byte VERISAYISI = 9; 
 
 LoRa_E32 e32ttl(&Serial3);  //mega 14 15 
 void setup()
@@ -12,22 +11,26 @@ void setup()
   delay(100);
 
 }  
+static byte VERISAYISI = 12; 
 struct Message {  
       byte packageNum ;
       byte explode1 ; 
       byte explode2 ;
       byte pressure[4] ;
-      byte X [4];
-      byte Y [4];
-      byte Z [4]; 
+      byte X_Jiro [4];
+      byte Y_Jiro [4];
+      byte Z_Jiro [4]; 
+      byte X_Ivme [4];
+      byte Y_Ivme [4];
+      byte Z_Ivme [4]; 
       byte GPSe[4]; 
       byte GPSb[4];  
-} message;
+} message;   
 
 /*
-  SERIAL'A BASILAN =====>  "packageNum;explode1;explode2;pressure;X;Y;Z;GPSe;GPSb"
-  BYTE BOYUTU      =====>     1BYTE   ;  1BYTE ;  1BYTE ; 4BYTE  ;4;4;4; 4  ;  4   
-*/ 
+  SERIAL'A BASILAN      =====>  "packageNum,explode1,explode2,pressure,X_Jiro,Y_Jiro,Z_Jiro,X_Ivme,Y_Ivme ,Z_Ivme,GPSe ,GPSb"
+  BYTE BOYUTU (39Byte)  =====>     1BYTE   ,  1BYTE ,  1BYTE , 4BYTE  ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE,4BYTE  
+*/
 
 ResponseStructContainer rsc ; 
 void loop()
@@ -45,17 +48,23 @@ void loop()
     Serial.print(","); 
     Serial.print(*(float*)(message.pressure));
     Serial.print(","); 
-    Serial.print (*(float*)(message.X),6);  
+    Serial.print (*(float*)(message.X_Jiro),6);  
     Serial.print(","); 
-    Serial.print (*(float*)(message.Y),6);  
+    Serial.print (*(float*)(message.Y_Jiro),6);  
     Serial.print(","); 
-    Serial.print (*(float*)(message.Z),6);
+    Serial.print (*(float*)(message.Z_Jiro),6);   
+    Serial.print(","); 
+    Serial.print (*(float*)(message.X_Ivme),6);  
+    Serial.print(","); 
+    Serial.print (*(float*)(message.Y_Ivme),6);  
+    Serial.print(","); 
+    Serial.print (*(float*)(message.Z_Ivme),6);  
     Serial.print(","); 
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print(","); 
     Serial.print (*(float*)(message.GPSb),6);      
-
-  }
+    Serial.println("");
+  }/*
   else 
   { 
     for(int i = 0 ; i < VERISAYISI ; i++)
@@ -64,6 +73,5 @@ void loop()
       if(i < VERISAYISI-1) 
         Serial.print(","); 
     }
-  }
-  Serial.println("");
+  }*/
 }

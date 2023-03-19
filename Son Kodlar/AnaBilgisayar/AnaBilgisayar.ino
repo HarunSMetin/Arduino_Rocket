@@ -87,7 +87,8 @@ float  curPressure =0;  //HPA
 float BASINC_OFFSET = 0.2;
 bool patla1 = true;
 bool patla2 = true;
- 
+
+imu::Vector<3> acc;
 
 void setup()
 { 
@@ -119,7 +120,7 @@ void setup()
   delay(200);
  
   bme.setPressureOversampling(BME680_OS_4X);
-
+  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
   for (int i =0; i < VERI_SAYISI; i++) {  
     bno.getEvent(&event);   
     delay(100); 
@@ -133,7 +134,7 @@ void setup()
   
   BASINC_OFFSET = ilkBasincDegeri/300;
   if (myFile) { 
-     myFile.println("PakatNumarasi,1Patlama,2Patlama,Basinc,X,Y,Z,GPSEnlem,GPSBoylam;"); 
+     myFile.println("PakatNumarasi,1Patlama,2Patlama,Basinc,X_Jiro,Y_Jiro,Z_Jiro,GPSEnlem,GPSBoylam;"); 
       myFile.close();
   }
 }  
@@ -142,9 +143,12 @@ struct Message {
       byte explode1 ; 
       byte explode2 ;
       byte pressure[4] ;
-      byte X [4];
-      byte Y [4];
-      byte Z [4]; 
+      byte X_Jiro [4];
+      byte Y_Jiro [4];
+      byte Z_Jiro [4]; 
+      byte X_Ivme [4];
+      byte Y_Ivme [4];
+      byte Z_Ivme [4]; 
       byte GPSe[4]; 
       byte GPSb[4];  
 } message;   
@@ -158,15 +162,19 @@ void loop()
   myFile = SD.open("veriler.txt", FILE_WRITE);
   bno.getEvent(&event);
   smartDelay(100);  
-  curPressure =bme.readPressure();
+  curPressure =bme.readPressure(); 
+  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
   
   message.packageNum =  packageNumber;
   message.explode1  = (!patla1)?(byte)1:(byte)0; 
   message.explode2  = (!patla2)?(byte)1:(byte)0;
   *(float*)(message.pressure) =   curPressure;  //Hekto pascal cinsinden
-  *(float*)(message.X) =  event.orientation.x; 
-  *(float*)(message.Y) =  event.orientation.y;
-  *(float*)(message.Z) =  event.orientation.z; 
+  *(float*)(message.X_Jiro) =  event.orientation.x; 
+  *(float*)(message.Y_Jiro) =  event.orientation.y;
+  *(float*)(message.Z_Jiro) =  event.orientation.z; 
+  *(float*)(message.X_Ivme) =  acc.x(); 
+  *(float*)(message.Y_Ivme) =  acc.y();
+  *(float*)(message.Z_Ivme) =  acc.z(); 
   *(float*)(message.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
   *(float*)(message.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;  
 
@@ -196,7 +204,7 @@ void loop()
       if(!patla2){
         //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
       }
-      if(patla2 & (curPressure >= ilkBasincDegeri - 5.52) ){
+      if(patla2 & (curPressure >= ilkBasincDegeri - 5.52) ){//TODO : değişcek
         patla2 = false; 
         digitalWrite(ROLE2, LOW); 
         digitalWrite(ROLE2_KONTROL, LOW); 
@@ -212,15 +220,21 @@ void loop()
     Serial.print("1. PATLAMA DURUMU: "); Serial.println(!patla1); 
     Serial.print("2. PATLAMA DURUMU: "); Serial.println(!patla2);
 
-    Serial.print("\t Basinç: "); 
-    Serial.print(*(float*)(message.pressure));
-    Serial.print("\t X: "); 
-    Serial.print (*(float*)(message.X));  
-    Serial.print(" Y: "); 
-    Serial.print (*(float*)(message.Y));  
-    Serial.print(" Z: "); 
-    Serial.print (*(float*)(message.Z));  
-    Serial.print("\t GPS Enlem: "); 
+    Serial.print("Basinç: "); 
+    Serial.println(*(float*)(message.pressure));
+    Serial.print("X_Jiro: "); 
+    Serial.print (*(float*)(message.X_Jiro),6);  
+    Serial.print("\t Y_Jiro: "); 
+    Serial.print (*(float*)(message.Y_Jiro),6);  
+    Serial.print("\t Z_Jiro: "); 
+    Serial.println (*(float*)(message.Z_Jiro),6);   
+    Serial.print("X_İvme: "); 
+    Serial.print (*(float*)(message.X_Ivme),6);  
+    Serial.print("\t Y_İvme: "); 
+    Serial.print (*(float*)(message.Y_Ivme),6);  
+    Serial.print("\t Z_İvme: "); 
+    Serial.println (*(float*)(message.Z_Ivme),6);  
+    Serial.print("GPS Enlem: "); 
     Serial.print (*(float*)(message.GPSe),6); 
     Serial.print("\t GPS Boylam: "); 
     Serial.print (*(float*)(message.GPSb),6);    
@@ -230,7 +244,7 @@ void loop()
         Serial.print("calibrated altitude(m) :");
         Serial.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); //çok yavaş //kapat
    
-    Serial.println ("----------------------------------------------------------------------------------------------");
+    Serial.println ("------------------------------------------------------------------");
    if (myFile) {
       myFile.print((byte)message.packageNum);  
       myFile.print(","); 
@@ -240,11 +254,17 @@ void loop()
       myFile.print(","); 
       myFile.print(*(float*)(message.pressure));
       myFile.print(","); 
-      myFile.print (*(float*)(message.X),6);  
+      myFile.print (*(float*)(message.X_Jiro),6);  
       myFile.print(","); 
-      myFile.print (*(float*)(message.Y),6);  
+      myFile.print (*(float*)(message.Y_Jiro),6);  
       myFile.print(","); 
-      myFile.print (*(float*)(message.Z),6);
+      myFile.print (*(float*)(message.Z_Jiro),6); 
+      myFile.print(","); 
+      myFile.print (*(float*)(message.X_Ivme),6);  
+      myFile.print(","); 
+      myFile.print (*(float*)(message.Y_Ivme),6);  
+      myFile.print(","); 
+      myFile.print (*(float*)(message.Z_Ivme),6);
       myFile.print(","); 
       myFile.print (*(float*)(message.GPSe),6); 
       myFile.print(","); 
