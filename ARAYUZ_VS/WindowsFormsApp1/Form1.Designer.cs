@@ -959,7 +959,7 @@ namespace TOBBETUROCKETRY
             this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label11.Location = new System.Drawing.Point(159, 3);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(138, 44);
+            this.label11.Size = new System.Drawing.Size(139, 44);
             this.label11.TabIndex = 18;
             this.label11.Text = "1. Patlama";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -973,7 +973,7 @@ namespace TOBBETUROCKETRY
             this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label12.Location = new System.Drawing.Point(161, 6);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(146, 44);
+            this.label12.Size = new System.Drawing.Size(147, 44);
             this.label12.TabIndex = 19;
             this.label12.Text = "2. Patlama";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1054,16 +1054,20 @@ namespace TOBBETUROCKETRY
             // 
             // glControl1
             // 
-            this.glControl1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.glControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.glControl1.AutoScroll = true;
             this.glControl1.AutoSize = true;
             this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.Location = new System.Drawing.Point(498, 62);
+            this.glControl1.Location = new System.Drawing.Point(495, 60);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(492, 456);
+            this.glControl1.Size = new System.Drawing.Size(495, 458);
             this.glControl1.TabIndex = 27;
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
+            this.glControl1.Resize += new System.EventHandler(this.glControl1_AutoSizeChanged);
             // 
             // TOBBETUROCKETRY
             // 

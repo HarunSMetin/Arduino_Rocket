@@ -50,15 +50,24 @@ namespace TOBBETUROCKETRY
                                 string[] subTokens = tokens[j].Split('/');
 
                                 int index;
-                                Int32.TryParse(subTokens[0], out index);
-
-                                triangles.Add(index - 1);
+                                for(int a =0; a < subTokens.Length;a++)
+                                {
+                                    if(Int32.TryParse(subTokens[0], out index))
+                                    {
+                                        triangles.Add(index - 1);
+                                    }
+                                    
+                                }
+                                
                             }
                             else
                             {
                                 int index;
-                                Int32.TryParse(tokens[j], out index);
-                                triangles.Add(index - 1);
+                                if (Int32.TryParse(tokens[j], out index))
+                                {
+                                    triangles.Add(index - 1);
+                                }
+
                             }
 
                         }

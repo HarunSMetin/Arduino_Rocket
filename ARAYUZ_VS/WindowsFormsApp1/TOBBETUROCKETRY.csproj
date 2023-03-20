@@ -57,6 +57,9 @@
     <Reference Include="OpenTK.GLControl, Version=3.3.3.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>packages\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
+    <Reference Include="StbImageSharp, Version=2.27.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\StbImageSharp.2.27.13\lib\net471\StbImageSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />

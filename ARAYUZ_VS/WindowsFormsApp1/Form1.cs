@@ -18,9 +18,12 @@ using GMap.NET.WindowsForms.Markers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Data.Entity.Core.Objects;
+using System.IO;
+  
+using StbImageSharp;
 /*
-  SERIAL'A BASILAN      =====>  "packageNum,explode1,explode2,pressure,X_Jiro,Y_Jiro,Z_Jiro,X_Ivme,Y_Ivme ,Z_Ivme,GPSe ,GPSb"
-  BYTE BOYUTU (39Byte)  =====>     1BYTE   ,  1BYTE ,  1BYTE , 4BYTE  ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE,4BYTE  
+SERIAL'A BASILAN      =====>  "packageNum,explode1,explode2,pressure,X_Jiro,Y_Jiro,Z_Jiro,X_Ivme,Y_Ivme ,Z_Ivme,GPSe ,GPSb"
+BYTE BOYUTU (39Byte)  =====>     1BYTE   ,  1BYTE ,  1BYTE , 4BYTE  ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE,4BYTE  
 */
 
 namespace TOBBETUROCKETRY
@@ -42,7 +45,7 @@ namespace TOBBETUROCKETRY
     }
     public partial class TOBBETUROCKETRY : Form
     {
-        static int DATA_COUNT = 12;
+        static readonly int DATA_COUNT = 12;
 
         SerialPort serialPort = new SerialPort();
 
@@ -57,11 +60,11 @@ namespace TOBBETUROCKETRY
         public TOBBETUROCKETRY()
         {
             InitializeComponent();
-            fetchAvailablePorts();
+            FetchAvailablePorts();
             values = recivedData.Split(',');
             btnBaglantiyiBitir.Enabled = false;
         }
-        void fetchAvailablePorts()
+        void FetchAvailablePorts()
         {
             numericUpDownBaudRate.Value = 9600;
             comboBoxComPort.Items.Clear();
@@ -86,7 +89,7 @@ namespace TOBBETUROCKETRY
             }
             else
             {
-                fetchAvailablePorts();
+                FetchAvailablePorts();
                 MessageBox.Show("COM PORT'u Yeniden Seçiniz ");
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
@@ -108,7 +111,7 @@ namespace TOBBETUROCKETRY
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error occured while opening port");
-                fetchAvailablePorts();
+                FetchAvailablePorts();
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
             }
@@ -121,7 +124,7 @@ namespace TOBBETUROCKETRY
                 {
                     recivedData = serialPort.ReadLine();
                     this.Invoke(new Action(ProcessingData));
-                    this.Invoke(new Action(valueUpdate));
+                    this.Invoke(new Action(ValueUpdate));
                 }
             }
             catch (Exception) { }
@@ -132,7 +135,7 @@ namespace TOBBETUROCKETRY
             try { values = recivedData.Split(','); }
             catch (Exception) { for (int i = 0; i < DATA_COUNT; i++) values[i] = "0"; }
         }
-        private void valueUpdate()
+        private void ValueUpdate()
         {
             //burası her data geldiğinde çalışır
             Thread.Sleep(100); //will sleep for 100ms
@@ -193,7 +196,6 @@ namespace TOBBETUROCKETRY
             }
             catch (Exception ex) { MessageBox.Show("" + ex); }
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             gMapAnaBilgisayar.DragButton = MouseButtons.Left;
@@ -226,7 +228,11 @@ namespace TOBBETUROCKETRY
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            fetchAvailablePorts();
+            FetchAvailablePorts();
+            x_angle_3d_model += .5f;
+            y_angle_3d_model += .5f;
+            z_angle_3d_model += .5f;
+            glControl1.Invalidate();
         }
         private string GetPinValue(PackageElements pe)
         {
@@ -243,230 +249,11 @@ namespace TOBBETUROCKETRY
         List<int> triangles = new List<int>();
         List<Vector3> normals = new List<Vector3>();
         List<Vector2> texCoords = new List<Vector2>();
-        int VertexBufferObject;
-        int VertexArrayObject;
+        int VertexBufferObject, VertexArrayObject, ShaderObject, TextureObject;
+        float x_angle_3d_model =0, y_angle_3d_model = 0, z_angle_3d_model = 0;
 
-        private void silindir(float step, float topla, float radius, float dikey1, float dikey2)
+        private void glControl1_AutoSizeChanged(object sender, EventArgs e)
         {
-            float eski_step = 0.1f;
-            GL.Begin(BeginMode.Quads);//Y_jiro EKSEN CIZIM DAİRENİN
-            while (step <= 360)
-            {
-                if (step < 45)
-                    GL.Color3(Color.FromArgb(255, 0, 0));
-                else if (step < 90)
-                    GL.Color3(Color.FromArgb(255, 255, 255));
-                else if (step < 135)
-                    GL.Color3(Color.FromArgb(255, 0, 0));
-                else if (step < 180)
-                    GL.Color3(Color.FromArgb(255, 255, 255));
-                else if (step < 225)
-                    GL.Color3(Color.FromArgb(255, 0, 0));
-                else if (step < 270)
-                    GL.Color3(Color.FromArgb(255, 255, 255));
-                else if (step < 315)
-                    GL.Color3(Color.FromArgb(255, 0, 0));
-                else if (step < 360)
-                    GL.Color3(Color.FromArgb(255, 255, 255));
-
-
-                float ciz1_x = (float)(radius * Math.Cos(step * Math.PI / 180F));
-                float ciz1_y = (float)(radius * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz1_x, dikey1, ciz1_y);
-
-                float ciz2_x = (float)(radius * Math.Cos((step + 2) * Math.PI / 180F));
-                float ciz2_y = (float)(radius * Math.Sin((step + 2) * Math.PI / 180F));
-                GL.Vertex3(ciz2_x, dikey1, ciz2_y);
-
-                GL.Vertex3(ciz1_x, dikey2, ciz1_y);
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-                step += topla;
-            }
-            GL.End();
-            GL.Begin(BeginMode.Lines);
-            step = eski_step;
-            topla = step;
-            while (step <= 180)// UST KAPAK
-            {
-                if (step < 45)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 90)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 135)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 180)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 225)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 270)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 315)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 360)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-
-
-                float ciz1_x = (float)(radius * Math.Cos(step * Math.PI / 180F));
-                float ciz1_y = (float)(radius * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz1_x, dikey1, ciz1_y);
-
-                float ciz2_x = (float)(radius * Math.Cos((step + 180) * Math.PI / 180F));
-                float ciz2_y = (float)(radius * Math.Sin((step + 180) * Math.PI / 180F));
-                GL.Vertex3(ciz2_x, dikey1, ciz2_y);
-
-                GL.Vertex3(ciz1_x, dikey1, ciz1_y);
-                GL.Vertex3(ciz2_x, dikey1, ciz2_y);
-                step += topla;
-            }
-            step = eski_step;
-            topla = step;
-            while (step <= 180)//ALT KAPAK
-            {
-                if (step < 45)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 90)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 135)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 180)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 225)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 270)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 315)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 360)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-
-                float ciz1_x = (float)(radius * Math.Cos(step * Math.PI / 180F));
-                float ciz1_y = (float)(radius * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz1_x, dikey2, ciz1_y);
-
-                float ciz2_x = (float)(radius * Math.Cos((step + 180) * Math.PI / 180F));
-                float ciz2_y = (float)(radius * Math.Sin((step + 180) * Math.PI / 180F));
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-
-                GL.Vertex3(ciz1_x, dikey2, ciz1_y);
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-                step += topla;
-            }
-            GL.End();
-        }
-        private void koni(float step, float topla, float radius1, float radius2, float dikey1, float dikey2)
-        {
-            float eski_step = 0.1f;
-            GL.Begin(BeginMode.Lines);//Y_jiro EKSEN CIZIM DAİRENİN
-            while (step <= 360)
-            {
-                if (step < 45)
-                    GL.Color3(1.0, 1.0, 1.0);
-                else if (step < 90)
-                    GL.Color3(1.0, 0.0, 0.0);
-                else if (step < 135)
-                    GL.Color3(1.0, 1.0, 1.0);
-                else if (step < 180)
-                    GL.Color3(1.0, 0.0, 0.0);
-                else if (step < 225)
-                    GL.Color3(1.0, 1.0, 1.0);
-                else if (step < 270)
-                    GL.Color3(1.0, 0.0, 0.0);
-                else if (step < 315)
-                    GL.Color3(1.0, 1.0, 1.0);
-                else if (step < 360)
-                    GL.Color3(1.0, 0.0, 0.0);
-
-
-                float ciz1_x = (float)(radius1 * Math.Cos(step * Math.PI / 180F));
-                float ciz1_y = (float)(radius1 * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz1_x, dikey1, ciz1_y);
-
-                float ciz2_x = (float)(radius2 * Math.Cos(step * Math.PI / 180F));
-                float ciz2_y = (float)(radius2 * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-                step += topla;
-            }
-            GL.End();
-
-            GL.Begin(BeginMode.Lines);
-            step = eski_step;
-            topla = step;
-            while (step <= 180)// UST KAPAK
-            {
-                if (step < 45)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 90)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 135)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 180)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 225)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 270)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-                else if (step < 315)
-                    GL.Color3(Color.FromArgb(255, 1, 1));
-                else if (step < 360)
-                    GL.Color3(Color.FromArgb(250, 250, 200));
-
-
-                float ciz1_x = (float)(radius2 * Math.Cos(step * Math.PI / 180F));
-                float ciz1_y = (float)(radius2 * Math.Sin(step * Math.PI / 180F));
-                GL.Vertex3(ciz1_x, dikey2, ciz1_y);
-
-                float ciz2_x = (float)(radius2 * Math.Cos((step + 180) * Math.PI / 180F));
-                float ciz2_y = (float)(radius2 * Math.Sin((step + 180) * Math.PI / 180F));
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-
-                GL.Vertex3(ciz1_x, dikey2, ciz1_y);
-                GL.Vertex3(ciz2_x, dikey2, ciz2_y);
-                step += topla;
-            }
-            step = eski_step;
-            topla = step;
-            GL.End();
-        }
-        private void Pervane(float yukseklik, float uzunluk, float kalinlik, float egiklik)
-        {
-            float radius = 10, angle = 45.0f;
-            GL.Begin(BeginMode.Quads);
-
-            GL.Color3(Color.Red);
-            GL.Vertex3(uzunluk, yukseklik, kalinlik);
-            GL.Vertex3(uzunluk, yukseklik + egiklik, -kalinlik);
-            GL.Vertex3(0.0, yukseklik + egiklik, -kalinlik);
-            GL.Vertex3(0.0, yukseklik, kalinlik);
-
-            GL.Color3(Color.Red);
-            GL.Vertex3(-uzunluk, yukseklik + egiklik, kalinlik);
-            GL.Vertex3(-uzunluk, yukseklik, -kalinlik);
-            GL.Vertex3(0.0, yukseklik, -kalinlik);
-            GL.Vertex3(0.0, yukseklik + egiklik, kalinlik);
-
-            GL.Color3(Color.White);
-            GL.Vertex3(kalinlik, yukseklik, -uzunluk);
-            GL.Vertex3(-kalinlik, yukseklik + egiklik, -uzunluk);
-            GL.Vertex3(-kalinlik, yukseklik + egiklik, 0.0);//+
-            GL.Vertex3(kalinlik, yukseklik, 0.0);//-
-
-            GL.Color3(Color.White);
-            GL.Vertex3(kalinlik, yukseklik + egiklik, +uzunluk);
-            GL.Vertex3(-kalinlik, yukseklik, +uzunluk);
-            GL.Vertex3(-kalinlik, yukseklik, 0.0);
-            GL.Vertex3(kalinlik, yukseklik + egiklik, 0.0);
-            GL.End();
-
-        }
-
-        float x_angle_3d_model = 180, y_angle_3d_model = 0, z_angle_3d_model = -180;
-        private void glControl1_Paint(object sender, PaintEventArgs e)
-        {
-
-            float step = 1.0f;
-            float topla = step;
-            float radius = 5.0f;
-            float dikey1 = radius, dikey2 = -radius;
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
 
@@ -479,71 +266,99 @@ namespace TOBBETUROCKETRY
             GL.LoadIdentity();
             GL.LoadMatrix(ref lookat);
             GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
-            GL.Enable(EnableCap.DepthTest);
-            GL.DepthFunc(DepthFunction.Less);
+        }
 
-            GL.Rotate(x_angle_3d_model, 1.0, 0.0, 0.0);//ÖNEMLİ
-            GL.Rotate(z_angle_3d_model, 0.0, 1.0, 0.0);
-            GL.Rotate(y_angle_3d_model, 0.0, 0.0, 1.0);
-
-            silindir(step, topla, radius, 3, -10);
-            // silindir(0.01f, topla, 0.5f, 9, 9.7f);
-            //silindir(0.01f, topla, 0.1f, 5, dikey1 + 5);
-            //koni(0.01f, 0.01f, radius, 3.0f, 3, 5);
-            koni(0.01f, 0.01f, radius, 0.5f, -10.0f, -15.0f);
-            //Pervane(9.0f, 11.0f, 0.2f, 0.5f);
+        private void glControl1_Paint(object sender, PaintEventArgs e)
+        {
+           
+           GL.Clear(ClearBufferMask.ColorBufferBit);
+           GL.Clear(ClearBufferMask.DepthBufferBit);
 
             GL.Begin(BeginMode.Lines);
+                GL.Color3(Color.Blue);
+                GL.Vertex3(-20.0, 0.0, 0.0);
+                GL.Vertex3( 20.0, 0.0, 0.0);
 
-            GL.Color3(Color.FromArgb(250, 0, 0));
-            GL.Vertex3(-30.0, 0.0, 0.0);
-            GL.Vertex3(30.0, 0.0, 0.0);
 
+                GL.Color3(Color.Green);
+                GL.Vertex3(0.0,  20.0, 0.0);
+                GL.Vertex3(0.0, -20.0, 0.0);
 
-            GL.Color3(Color.FromArgb(0, 0, 0));
-            GL.Vertex3(0.0, 30.0, 0.0);
-            GL.Vertex3(0.0, -30.0, 0.0);
-
-            GL.Color3(Color.FromArgb(0, 0, 250));
-            GL.Vertex3(0.0, 0.0, 30.0);
-            GL.Vertex3(0.0, 0.0, -30.0);
-
+                GL.Color3(Color.Red);
+                GL.Vertex3(0.0, 0.0,  20.0);
+                GL.Vertex3(0.0, 0.0, -20.0);
             GL.End();
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexArrayObject);
+            GL.BindVertexArray(VertexArrayObject);
+            GL.UseProgram(ShaderObject);
+            
+
+            int modelAddress = GL.GetUniformLocation(ShaderObject, "model");
+            int viewAddress = GL.GetUniformLocation(ShaderObject, "view");
+            int projectionAddress = GL.GetUniformLocation(ShaderObject, "projection");
+
+            Matrix4 rotX, rotY, rotZ;
+            rotX = Matrix4.CreateRotationX(x_angle_3d_model);
+            rotY = Matrix4.CreateRotationY(y_angle_3d_model);
+            rotZ = Matrix4.CreateRotationZ(z_angle_3d_model);
+
+            Matrix4 model = Matrix4.Identity * rotX * rotY * rotZ;
+
+            Matrix4 view = Matrix4.LookAt(0, 0, 8, 0, 0, 0, 0, 1, 0);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, 4 / 3, 1, 10000);
+
+            GL.UniformMatrix4(modelAddress, true,ref model);
+            GL.UniformMatrix4(viewAddress, true, ref view);
+            GL.UniformMatrix4(projectionAddress, true, ref perspective);
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, TextureObject);
+
+            int texLocation = GL.GetUniformLocation(TextureObject, "texture_diffuse1");
+
+            GL.Uniform1(texLocation, 0);
+
+            GL.DrawArrays(BeginMode.Triangles,0, triangles.Count / 3);
+
             //GraphicsContext.CurrentContext.VSync = true;
+
             glControl1.SwapBuffers();
+
         }
         private void glControl1_Load(object sender, EventArgs e)
         {
             GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             GL.Enable(EnableCap.DepthTest);//sonradan yazdık
-            //ModelLoadToBuffer("Patriot___MIM-104.obj");
+
+            ModelLoadToBuffer("Patriot___MIM-104"); 
         }
 
 
         private void ModelLoadToBuffer(string filePath)
         {
 
-            ObjImporter.LoadModel(filePath, out vertices, out triangles, out normals, out texCoords);
-            //System.Console.WriteLine("vertices : " + vertices.Count); 
-            //System.Console.WriteLine("triangles : " + triangles.Count); 
-            //System.Console.WriteLine("normals : " + normals.Count); 
-            //System.Console.WriteLine("texCoords : " + texCoords.Count);
+            ObjImporter.LoadModel(filePath+".obj", out vertices, out triangles, out normals, out texCoords);
+            System.Console.WriteLine("vertices : " + vertices.Count);
+            System.Console.WriteLine("triangles : " + triangles.Count);
+            System.Console.WriteLine("normals : " + normals.Count);
+            System.Console.WriteLine("texCoords : " + texCoords.Count);
 
 
             List<float> vertexBuffer = new List<float>();
 
             for (int i = 0; i < triangles.Count; i += 3)
             {
-                vertexBuffer.Add(vertices[i].X);
-                vertexBuffer.Add(vertices[i].Y);
-                vertexBuffer.Add(vertices[i].Z);
+                vertexBuffer.Add(vertices[triangles[i]].X);
+                vertexBuffer.Add(vertices[triangles[i]].Y);
+                vertexBuffer.Add(vertices[triangles[i]].Z);
 
-                vertexBuffer.Add(texCoords[i + 1].X);
-                vertexBuffer.Add(texCoords[i + 1].Y);
+                vertexBuffer.Add(texCoords[triangles[i + 1]].X);
+                vertexBuffer.Add(texCoords[triangles[i + 1]].Y);
 
-                vertexBuffer.Add(normals[i + 2].X);
-                vertexBuffer.Add(normals[i + 2].Y);
-                vertexBuffer.Add(normals[i + 2].Z);
+                vertexBuffer.Add(normals[triangles[i + 2]].X);
+                vertexBuffer.Add(normals[triangles[i + 2]].Y);
+                vertexBuffer.Add(normals[triangles[i + 2]].Z);
             }
 
             VertexBufferObject = GL.GenBuffer();
@@ -560,6 +375,64 @@ namespace TOBBETUROCKETRY
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
             GL.EnableVertexAttribArray(2);
+
+            string vertexPath = "model_vert.shader";
+            string fragmentPath = "model_frag.shader";
+
+            string VertexShaderSource = File.ReadAllText(vertexPath);
+            string FragmentShaderSource = File.ReadAllText(fragmentPath);
+
+            int VertexShader = GL.CreateShader(ShaderType.VertexShader);
+            GL.ShaderSource(VertexShader, VertexShaderSource);
+
+            int FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+            GL.ShaderSource(FragmentShader, FragmentShaderSource);
+
+            GL.CompileShader(VertexShader);
+
+            GL.GetShader(VertexShader, ShaderParameter.CompileStatus, out int success);
+            if (success == 0)
+            {
+                string infoLog = GL.GetShaderInfoLog(VertexShader);
+                Console.WriteLine(infoLog);
+            }
+
+            GL.CompileShader(FragmentShader);
+
+            GL.GetShader(FragmentShader, ShaderParameter.CompileStatus, out success);
+            if (success == 0)
+            {
+                string infoLog = GL.GetShaderInfoLog(FragmentShader);
+                Console.WriteLine(infoLog);
+            }
+
+            ShaderObject = GL.CreateProgram();
+
+            GL.AttachShader(ShaderObject, VertexShader);
+            GL.AttachShader(ShaderObject, FragmentShader);
+
+            GL.LinkProgram(ShaderObject);
+
+            GL.GetProgram(ShaderObject, GetProgramParameterName.LinkStatus, out success);
+            if (success == 0)
+            {
+                string infoLog = GL.GetProgramInfoLog(ShaderObject);
+                Console.WriteLine(infoLog);
+            }
+            TextureObject = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, TextureObject);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            StbImage.stbi_set_flip_vertically_on_load(1);
+
+            // Load the image.
+            ImageResult image = ImageResult.FromStream(File.OpenRead(filePath+ "_diffuse.png"), ColorComponents.RedGreenBlueAlpha);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
+
         }
         #endregion
     }

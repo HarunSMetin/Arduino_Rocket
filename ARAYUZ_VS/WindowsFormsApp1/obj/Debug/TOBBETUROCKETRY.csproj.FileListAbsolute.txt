@@ -73,3 +73,4 @@ C:\Users\serkan.metin\Desktop\TOBB_ETU_Rocketry\Arduino_Rocket\ARAYUZ_VS\Windows
 C:\Users\serkan.metin\Desktop\TOBB_ETU_Rocketry\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.csproj.CopyComplete
 C:\Users\serkan.metin\Desktop\TOBB_ETU_Rocketry\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.exe
 C:\Users\serkan.metin\Desktop\TOBB_ETU_Rocketry\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.pdb
+C:\Users\serkan.metin\Desktop\TOBB_ETU_Rocketry\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\bin\Debug\StbImageSharp.dll
