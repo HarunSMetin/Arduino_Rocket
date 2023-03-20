@@ -27,36 +27,38 @@ namespace TOBBETUROCKETRY
 {
     enum PackageElements
     {
-        packageNum  ,
-        explode1    ,
-        explode2    ,
-        pressure    ,
-        X_jiro      ,
-        Y_jiro      ,
-        Z_jiro      ,
-        X_ivme      ,
-        Y_ivme      ,
-        Z_ivme      ,
-        GPSe        ,
-        GPSb        
+        packageNum,
+        explode1,
+        explode2,
+        pressure,
+        X_jiro,
+        Y_jiro,
+        Z_jiro,
+        X_ivme,
+        Y_ivme,
+        Z_ivme,
+        GPSe,
+        GPSb
     }
     public partial class TOBBETUROCKETRY : Form
-    { 
+    {
         static int DATA_COUNT = 12;
 
         SerialPort serialPort = new SerialPort();
 
-        public string filenameRoket = "RoketValues.csv"; 
+        public string filenameRoket = "RoketValues.csv";
         public string filenameFaydaliYuk = "FaydaliYukValues.csv";
         //https://www.google.com/maps?q=39.9272,32.8644
         private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681";
-        private string[] values = new string[DATA_COUNT]; 
+        private string[] values = new string[DATA_COUNT];
+
+
 
         public TOBBETUROCKETRY()
         {
             InitializeComponent();
-            fetchAvailablePorts();  
-            values = recivedData.Split(','); 
+            fetchAvailablePorts();
+            values = recivedData.Split(',');
             btnBaglantiyiBitir.Enabled = false;
         }
         void fetchAvailablePorts()
@@ -65,10 +67,10 @@ namespace TOBBETUROCKETRY
             comboBoxComPort.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             comboBoxComPort.Items.AddRange(ports);
-            if (comboBoxComPort.Items.Count > 0) comboBoxComPort.SelectedIndex = comboBoxComPort.Items.Count-1;
+            if (comboBoxComPort.Items.Count > 0) comboBoxComPort.SelectedIndex = comboBoxComPort.Items.Count - 1;
             else comboBoxComPort.Text = "Takılı Cihaz Yok";
             lblDurum.ForeColor = Color.Red;
-            lblDurum.Text = "Bağlantı Yok!"; 
+            lblDurum.Text = "Bağlantı Yok!";
         }
 
         #region BAĞLANTI BAŞLATMA / BİTİRME
@@ -94,7 +96,7 @@ namespace TOBBETUROCKETRY
             serialPort.DataBits = 8;
             serialPort.StopBits = StopBits.One;
             serialPort.ReadBufferSize = 200000000;
-            serialPort.DataReceived += serialPort_DataReceived; 
+            serialPort.DataReceived += serialPort_DataReceived;
 
             try
             {
@@ -110,7 +112,7 @@ namespace TOBBETUROCKETRY
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
             }
-        } 
+        }
         private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
@@ -135,21 +137,21 @@ namespace TOBBETUROCKETRY
             //burası her data geldiğinde çalışır
             Thread.Sleep(100); //will sleep for 100ms
             //TODO: burda degerleri guncelle 
-            textBoxPaketNum_AnaBil.Text =  GetPinValue(PackageElements.packageNum);
-            textBoxBasinc_AnaBil.Text =    GetPinValue(PackageElements.pressure);
-            textBoxGPSEnlem_AnaBil.Text =  GetPinValue(PackageElements.GPSe);
+            textBoxPaketNum_AnaBil.Text = GetPinValue(PackageElements.packageNum);
+            textBoxBasinc_AnaBil.Text = GetPinValue(PackageElements.pressure);
+            textBoxGPSEnlem_AnaBil.Text = GetPinValue(PackageElements.GPSe);
             textBoxGPSBoylam_AnaBil.Text = GetPinValue(PackageElements.GPSb);
-            textBoxJiroX_AnaBil.Text =     GetPinValue(PackageElements.X_jiro);
-            textBoxJiroY_AnaBil.Text =     GetPinValue(PackageElements.Y_jiro);
-            textBoxJiroZ_AnaBil.Text =     GetPinValue(PackageElements.Z_jiro); 
-            textBoxIvmeX_AnaBil.Text =     GetPinValue(PackageElements.X_ivme);
-            textBoxIvmeY_AnaBil.Text =     GetPinValue(PackageElements.Y_ivme);
-            textBoxIvmeZ_AnaBil.Text =     GetPinValue(PackageElements.Z_ivme);
+            textBoxJiroX_AnaBil.Text = GetPinValue(PackageElements.X_jiro);
+            textBoxJiroY_AnaBil.Text = GetPinValue(PackageElements.Y_jiro);
+            textBoxJiroZ_AnaBil.Text = GetPinValue(PackageElements.Z_jiro);
+            textBoxIvmeX_AnaBil.Text = GetPinValue(PackageElements.X_ivme);
+            textBoxIvmeY_AnaBil.Text = GetPinValue(PackageElements.Y_ivme);
+            textBoxIvmeZ_AnaBil.Text = GetPinValue(PackageElements.Z_ivme);
 
-            x_angle_3d_model =  GetPinValueFloat(PackageElements.X_jiro);
-            y_angle_3d_model =  GetPinValueFloat(PackageElements.Y_jiro) + 90;
-            z_angle_3d_model =  GetPinValueFloat(PackageElements.Z_jiro);
-             
+            x_angle_3d_model = GetPinValueFloat(PackageElements.X_jiro);
+            y_angle_3d_model = GetPinValueFloat(PackageElements.Y_jiro) + 90;
+            z_angle_3d_model = GetPinValueFloat(PackageElements.Z_jiro);
+
             try
             {
                 glControl1.Invalidate();
@@ -164,14 +166,14 @@ namespace TOBBETUROCKETRY
             {
                 serialPort.Close();
                 btnBaglan.Enabled = true;
-                btnBaglantiyiBitir.Enabled = false; 
+                btnBaglantiyiBitir.Enabled = false;
                 lblDurum.ForeColor = Color.Red;
                 lblDurum.Text = "Bağlantı Yok!";
             }
             else
             {
-                btnBaglan.Enabled = true; 
-                btnBaglantiyiBitir.Enabled = false; 
+                btnBaglan.Enabled = true;
+                btnBaglantiyiBitir.Enabled = false;
                 lblDurum.Text = "Cihaz Bağlantısı Koptu!";
                 lblDurum.ForeColor = Color.Red;
             }
@@ -181,20 +183,21 @@ namespace TOBBETUROCKETRY
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try{
-                if (serialPort.IsOpen) 
+            try
+            {
+                if (serialPort.IsOpen)
                 {
                     MessageBox.Show("COM PORT bağlantısını kapatmadınız! Otomatik sonlandırılıyor...");
                     serialPort.Close();
                 }
             }
-            catch(Exception ex) { MessageBox.Show(""+ex); }
+            catch (Exception ex) { MessageBox.Show("" + ex); }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             gMapAnaBilgisayar.DragButton = MouseButtons.Left;
-            gMapAnaBilgisayar.MouseWheelZoomEnabled= true;
+            gMapAnaBilgisayar.MouseWheelZoomEnabled = true;
             gMapAnaBilgisayar.MapProvider = GMapProviders.GoogleMap;
             gMapAnaBilgisayar.Position = new PointLatLng(39.9272, 32.8644);
             gMapAnaBilgisayar.MinZoom = 1;
@@ -208,7 +211,7 @@ namespace TOBBETUROCKETRY
             gMapGorevYuku.MinZoom = 1;
             gMapGorevYuku.MaxZoom = 100;
             gMapGorevYuku.Zoom = 16;
-            
+
         }
         private void RefreshMapToNewGPS()
         {
@@ -231,9 +234,18 @@ namespace TOBBETUROCKETRY
         }
         private float GetPinValueFloat(PackageElements pe)
         {
-            return float.Parse( GetPinValue(pe).IndexOf(".")>=0 ? GetPinValue(pe).Replace(".", ","): GetPinValue(pe));
+            return float.Parse(GetPinValue(pe).IndexOf(".") >= 0 ? GetPinValue(pe).Replace(".", ",") : GetPinValue(pe));
         }
-        #region 3d nesne
+
+        #region 3D NESNE OPENGL
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+        List<Vector3> normals = new List<Vector3>();
+        List<Vector2> texCoords = new List<Vector2>();
+        int VertexBufferObject;
+        int VertexArrayObject;
+
         private void silindir(float step, float topla, float radius, float dikey1, float dikey2)
         {
             float eski_step = 0.1f;
@@ -447,7 +459,7 @@ namespace TOBBETUROCKETRY
 
         }
 
-        float x_angle_3d_model =180, y_angle_3d_model =0, z_angle_3d_model = -180;
+        float x_angle_3d_model = 180, y_angle_3d_model = 0, z_angle_3d_model = -180;
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -475,7 +487,7 @@ namespace TOBBETUROCKETRY
             GL.Rotate(y_angle_3d_model, 0.0, 0.0, 1.0);
 
             silindir(step, topla, radius, 3, -10);
-           // silindir(0.01f, topla, 0.5f, 9, 9.7f);
+            // silindir(0.01f, topla, 0.5f, 9, 9.7f);
             //silindir(0.01f, topla, 0.1f, 5, dikey1 + 5);
             //koni(0.01f, 0.01f, radius, 3.0f, 3, 5);
             koni(0.01f, 0.01f, radius, 0.5f, -10.0f, -15.0f);
@@ -504,6 +516,50 @@ namespace TOBBETUROCKETRY
         {
             GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             GL.Enable(EnableCap.DepthTest);//sonradan yazdık
+            //ModelLoadToBuffer("Patriot___MIM-104.obj");
+        }
+
+
+        private void ModelLoadToBuffer(string filePath)
+        {
+
+            ObjImporter.LoadModel(filePath, out vertices, out triangles, out normals, out texCoords);
+            //System.Console.WriteLine("vertices : " + vertices.Count); 
+            //System.Console.WriteLine("triangles : " + triangles.Count); 
+            //System.Console.WriteLine("normals : " + normals.Count); 
+            //System.Console.WriteLine("texCoords : " + texCoords.Count);
+
+
+            List<float> vertexBuffer = new List<float>();
+
+            for (int i = 0; i < triangles.Count; i += 3)
+            {
+                vertexBuffer.Add(vertices[i].X);
+                vertexBuffer.Add(vertices[i].Y);
+                vertexBuffer.Add(vertices[i].Z);
+
+                vertexBuffer.Add(texCoords[i + 1].X);
+                vertexBuffer.Add(texCoords[i + 1].Y);
+
+                vertexBuffer.Add(normals[i + 2].X);
+                vertexBuffer.Add(normals[i + 2].Y);
+                vertexBuffer.Add(normals[i + 2].Z);
+            }
+
+            VertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * vertexBuffer.Count, vertexBuffer.ToArray(), BufferUsageHint.StaticDraw);
+
+            VertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(VertexArrayObject);
+
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 5 * sizeof(float));
+
+            GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(1);
+            GL.EnableVertexAttribArray(2);
         }
         #endregion
     }

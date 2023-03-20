@@ -1,0 +1,183 @@
+private class Model {
+            public List<Vector3> vertices;
+            public List<int> triangles;
+
+            public Model() {
+                vertices = new List<Vector3>();
+                triangles = new List<int>();
+            }
+        }
+
+        private static Dictionary<string, Model> models = null;
+
+
+        public static void LoadModel(string filePath, out List<Vector3> vertices, out List<int> triangles, bool generateBinaryFile, bool cacheModel) {
+            vertices = new List<Vector3>();
+            triangles = new List<int>();
+
+            if (models == null) {
+                models = new Dictionary<string, Model>();
+            }
+            else {
+                if (models.ContainsKey(filePath)) {
+                    Model model = models[filePath];
+
+                    vertices.AddRange(model.vertices);
+                    triangles.AddRange(model.triangles);
+
+                    return;
+                }
+            }
+
+            if (File.Exists(filePath)) {
+
+                string binFilePath = filePath.Replace(".obj", ".bin");
+
+                if (!File.Exists(binFilePath)) {
+                    string[] lines = File.ReadAllLines(filePath);
+
+                    for (int i = 0; i < lines.Length; i++) {
+                        if (lines[i].Contains("v ")) {
+                            string[] tokens = lines[i].Split(' ');
+
+                            float x = 0, y = 0, z = 0;
+
+                            float.TryParse(tokens[1], out x);
+                            float.TryParse(tokens[2], out y);
+
+                            if (tokens.Length > 3)
+                                float.TryParse(tokens[3], out z);
+
+                            vertices.Add(new Vector3(x, y, z));
+                        }
+                        else if (lines[i].Contains("f ")) {
+                            string[] tokens = lines[i].Split(' ');
+                            for (int j = 1; j < tokens.Length; j++) {
+                                if(tokens[j].Contains('/')) {
+                                    string[] subTokens = tokens[j].Split('/');
+
+                                    int index;
+                                    Int32.TryParse(subTokens[0], out index);
+
+                                    triangles.Add(index - 1);
+                                }else {
+                                    int index;
+                                    Int32.TryParse(tokens[j], out index);  
+                                    triangles.Add(index - 1);
+                                }
+                                
+                            }
+
+                            //for (int j = 1; j < tokens.Length; j += 2) {
+                            //    int index = 0;
+                            //    Int32.TryParse(tokens[j], out index);
+                            //
+                            //    triangles.Add(index - 1);
+                            //}
+                        }
+                        // else if (lines[i].Contains("vt ")) {
+                        //     string[] tokens = lines[i].Split(' ');
+                        // 
+                        //     float x = 0, y = 0;
+                        // 
+                        //     float.TryParse(tokens[1], out x);
+                        //     float.TryParse(tokens[2], out y);
+                        // 
+                        //     texCoords.Add(new Vector2(x, y));
+                        // }
+                        // else if (lines[i].Contains("vn ")) {
+                        //     string[] tokens = lines[i].Split(' ');
+                        // 
+                        //     float x = 0, y = 0, z = 0;
+                        // 
+                        //     float.TryParse(tokens[1], out x);
+                        //     float.TryParse(tokens[2], out y);
+                        // 
+                        //     if (tokens.Length > 3)
+                        //         float.TryParse(tokens[3], out z);
+                        // 
+                        //     normals.Add(new Vector3(x, y, z));
+                        // }
+
+                    }
+
+                    //After loading the model from obj file; to save time from next loadings, vertices and indices can be saved as a binary file 
+                    if (generateBinaryFile) {
+                        Stream stream = File.Open(binFilePath, FileMode.Create);
+                        BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8, false);
+
+                        writer.Write(vertices.Count);
+                        writer.Write(triangles.Count);
+
+                        for (int i = 0; i < vertices.Count; i++) {
+                            writer.Write(vertices[i].x);
+                            writer.Write(vertices[i].y);
+                            writer.Write(vertices[i].z);
+                        }
+
+                        for (int i = 0; i < triangles.Count; i++) {
+                            writer.Write(triangles[i]);
+                        }
+
+                        writer.Close();
+                    }
+
+                    if (cacheModel) {
+                        if (!models.ContainsKey(filePath)) {
+                            Model model = new Model();
+                            model.vertices.AddRange(vertices);
+                            model.triangles.AddRange(triangles);
+
+                            models.Add(filePath, model);
+                        }
+                    }
+
+                }
+                else if (File.Exists(binFilePath)) {
+                    //If .bin file exists, load model from the binary file to save time
+                    Stream stream = File.Open(binFilePath, FileMode.Open);
+                    BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false);
+
+                    int vertexCount = reader.ReadInt32();
+                    int IndicesCount = reader.ReadInt32();
+
+                    //Debug.Log("Vertex count: " + vertexCount);
+                    //Debug.Log("Indices count: " + IndicesCount);
+
+                    for (int i = 0; i < vertexCount; i++) {
+                        Vector3 vertex = new Vector3();
+                        vertex.x = reader.ReadSingle();
+                        vertex.y = reader.ReadSingle();
+                        vertex.z = reader.ReadSingle();
+
+                        vertices.Add(vertex);
+                    }
+
+                    for (int i = 0; i < IndicesCount; i++) {
+                        triangles.Add(reader.ReadInt32());
+                    }
+
+                    reader.Close();
+
+                    if (cacheModel) {
+                        if (!models.ContainsKey(filePath)) {
+                            Model model = new Model();
+                            model.vertices.AddRange(vertices);
+                            model.triangles.AddRange(triangles);
+
+                            models.Add(filePath, model);
+                        }
+                    }
+                }
+            }
+            else {
+                throw new System.Exception("OBJ file not found: " + filePath);
+            }
+        }
+
+        public static void DeleteCachedModel(string filePath) {
+            if (models != null && models.ContainsKey(filePath)) {
+                models.Remove(filePath);
+            }
+        }
+    }
