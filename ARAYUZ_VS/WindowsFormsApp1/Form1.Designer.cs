@@ -36,6 +36,10 @@ namespace TOBBETUROCKETRY
             this.numericUpDownBaudRate = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.panelBaglanti = new System.Windows.Forms.Panel();
+            this.lblHakemDurum = new System.Windows.Forms.Label();
+            this.btnHakemIletisim = new System.Windows.Forms.Button();
+            this.lblDosyaKayit = new System.Windows.Forms.Label();
+            this.btnDosyayaKaydet = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.lblDurum = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -143,7 +147,6 @@ namespace TOBBETUROCKETRY
             this.btnBaglan.TabIndex = 0;
             this.btnBaglan.Text = "Baglan";
             this.btnBaglan.UseVisualStyleBackColor = false;
-            this.btnBaglan.Click += new System.EventHandler(this.btnBaglan_Click);
             // 
             // btnBaglantiyiBitir
             // 
@@ -207,6 +210,10 @@ namespace TOBBETUROCKETRY
             this.panelBaglanti.AutoScroll = true;
             this.panelBaglanti.AutoSize = true;
             this.panelBaglanti.BackColor = System.Drawing.SystemColors.WindowText;
+            this.panelBaglanti.Controls.Add(this.lblHakemDurum);
+            this.panelBaglanti.Controls.Add(this.btnHakemIletisim);
+            this.panelBaglanti.Controls.Add(this.lblDosyaKayit);
+            this.panelBaglanti.Controls.Add(this.btnDosyayaKaydet);
             this.panelBaglanti.Controls.Add(this.btnRefresh);
             this.panelBaglanti.Controls.Add(this.lblDurum);
             this.panelBaglanti.Controls.Add(this.comboBoxComPort);
@@ -218,8 +225,61 @@ namespace TOBBETUROCKETRY
             this.panelBaglanti.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelBaglanti.Location = new System.Drawing.Point(0, 0);
             this.panelBaglanti.Name = "panelBaglanti";
-            this.panelBaglanti.Size = new System.Drawing.Size(1486, 60);
+            this.panelBaglanti.Size = new System.Drawing.Size(1904, 61);
             this.panelBaglanti.TabIndex = 6;
+            // 
+            // lblHakemDurum
+            // 
+            this.lblHakemDurum.AutoSize = true;
+            this.lblHakemDurum.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.lblHakemDurum.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblHakemDurum.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblHakemDurum.Location = new System.Drawing.Point(1373, 0);
+            this.lblHakemDurum.Name = "lblHakemDurum";
+            this.lblHakemDurum.Size = new System.Drawing.Size(113, 18);
+            this.lblHakemDurum.TabIndex = 11;
+            this.lblHakemDurum.Text = "*HYİ Bağlı Değil!";
+            // 
+            // btnHakemIletisim
+            // 
+            this.btnHakemIletisim.BackColor = System.Drawing.Color.MediumAquamarine;
+            this.btnHakemIletisim.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnHakemIletisim.Font = new System.Drawing.Font("Agency FB", 18F);
+            this.btnHakemIletisim.ForeColor = System.Drawing.Color.White;
+            this.btnHakemIletisim.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnHakemIletisim.Location = new System.Drawing.Point(1376, 20);
+            this.btnHakemIletisim.Name = "btnHakemIletisim";
+            this.btnHakemIletisim.Size = new System.Drawing.Size(516, 34);
+            this.btnHakemIletisim.TabIndex = 10;
+            this.btnHakemIletisim.Text = "Hakem Yer İstasyonuna Bagla";
+            this.btnHakemIletisim.UseVisualStyleBackColor = false;
+            // 
+            // lblDosyaKayit
+            // 
+            this.lblDosyaKayit.AutoSize = true;
+            this.lblDosyaKayit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.lblDosyaKayit.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDosyaKayit.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblDosyaKayit.Location = new System.Drawing.Point(964, 0);
+            this.lblDosyaKayit.Name = "lblDosyaKayit";
+            this.lblDosyaKayit.Size = new System.Drawing.Size(109, 18);
+            this.lblDosyaKayit.TabIndex = 9;
+            this.lblDosyaKayit.Text = "*Kaydedilmiyor!";
+            // 
+            // btnDosyayaKaydet
+            // 
+            this.btnDosyayaKaydet.BackColor = System.Drawing.Color.DarkGoldenrod;
+            this.btnDosyayaKaydet.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDosyayaKaydet.Font = new System.Drawing.Font("Agency FB", 18F);
+            this.btnDosyayaKaydet.ForeColor = System.Drawing.Color.White;
+            this.btnDosyayaKaydet.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnDosyayaKaydet.Location = new System.Drawing.Point(967, 22);
+            this.btnDosyayaKaydet.Name = "btnDosyayaKaydet";
+            this.btnDosyayaKaydet.Size = new System.Drawing.Size(234, 36);
+            this.btnDosyayaKaydet.TabIndex = 8;
+            this.btnDosyayaKaydet.Text = "Dosyaya Kaydetmeye Basla";
+            this.btnDosyayaKaydet.UseVisualStyleBackColor = false;
+            this.btnDosyayaKaydet.Click += new System.EventHandler(this.btnDosyayaKaydet_Click);
             // 
             // btnRefresh
             // 
@@ -268,9 +328,9 @@ namespace TOBBETUROCKETRY
             this.panel1.Controls.Add(this.flowLayoutPanel8);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 60);
+            this.panel1.Location = new System.Drawing.Point(0, 61);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(490, 934);
+            this.panel1.Size = new System.Drawing.Size(490, 980);
             this.panel1.TabIndex = 7;
             // 
             // pictureBox1
@@ -306,7 +366,7 @@ namespace TOBBETUROCKETRY
             this.gMapAnaBilgisayar.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapAnaBilgisayar.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapAnaBilgisayar.ShowTileGridLines = false;
-            this.gMapAnaBilgisayar.Size = new System.Drawing.Size(473, 457);
+            this.gMapAnaBilgisayar.Size = new System.Drawing.Size(473, 503);
             this.gMapAnaBilgisayar.TabIndex = 27;
             this.gMapAnaBilgisayar.Zoom = 0D;
             // 
@@ -693,9 +753,9 @@ namespace TOBBETUROCKETRY
             this.panel2.Controls.Add(this.flowLayoutPanel3);
             this.panel2.Controls.Add(this.label22);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(996, 60);
+            this.panel2.Location = new System.Drawing.Point(1414, 61);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(490, 934);
+            this.panel2.Size = new System.Drawing.Size(490, 980);
             this.panel2.TabIndex = 8;
             // 
             // pictureBox2
@@ -731,7 +791,7 @@ namespace TOBBETUROCKETRY
             this.gMapGorevYuku.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapGorevYuku.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapGorevYuku.ShowTileGridLines = false;
-            this.gMapGorevYuku.Size = new System.Drawing.Size(473, 572);
+            this.gMapGorevYuku.Size = new System.Drawing.Size(473, 618);
             this.gMapGorevYuku.TabIndex = 28;
             this.gMapGorevYuku.Zoom = 0D;
             // 
@@ -934,7 +994,7 @@ namespace TOBBETUROCKETRY
             // 
             this.pictureBox3.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.ilk;
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox3.Location = new System.Drawing.Point(5, 6);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(150, 150);
             this.pictureBox3.TabIndex = 9;
@@ -1035,21 +1095,21 @@ namespace TOBBETUROCKETRY
             this.panel4.Controls.Add(this.label12);
             this.panel4.Controls.Add(this.patlama2_no);
             this.panel4.Controls.Add(this.patlama2_yes);
-            this.panel4.Location = new System.Drawing.Point(3, 165);
+            this.panel4.Location = new System.Drawing.Point(327, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(318, 156);
             this.panel4.TabIndex = 25;
             // 
             // flowLayoutPanel5
             // 
-            this.flowLayoutPanel5.AutoSize = true;
+            this.flowLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel5.Controls.Add(this.panel3);
             this.flowLayoutPanel5.Controls.Add(this.panel4);
-            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(490, 670);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(622, 859);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(506, 324);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(655, 170);
             this.flowLayoutPanel5.TabIndex = 26;
             // 
             // glControl1
@@ -1057,14 +1117,14 @@ namespace TOBBETUROCKETRY
             this.glControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.glControl1.AutoScroll = true;
             this.glControl1.AutoSize = true;
             this.glControl1.BackColor = System.Drawing.Color.Black;
             this.glControl1.Location = new System.Drawing.Point(495, 60);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(495, 458);
+            this.glControl1.Size = new System.Drawing.Size(913, 505);
             this.glControl1.TabIndex = 27;
             this.glControl1.VSync = false;
+            this.glControl1.AutoSizeChanged += new System.EventHandler(this.glControl1_AutoSizeChanged);
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             this.glControl1.Resize += new System.EventHandler(this.glControl1_AutoSizeChanged);
@@ -1075,7 +1135,7 @@ namespace TOBBETUROCKETRY
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1486, 994);
+            this.ClientSize = new System.Drawing.Size(1904, 1041);
             this.Controls.Add(this.glControl1);
             this.Controls.Add(this.flowLayoutPanel5);
             this.Controls.Add(this.panel2);
@@ -1199,6 +1259,10 @@ namespace TOBBETUROCKETRY
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private OpenTK.GLControl glControl1;
+        private System.Windows.Forms.Label lblHakemDurum;
+        private System.Windows.Forms.Button btnHakemIletisim;
+        private System.Windows.Forms.Label lblDosyaKayit;
+        private System.Windows.Forms.Button btnDosyayaKaydet;
     }
 }
 

@@ -12,9 +12,23 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main(){
-    vec4 a = vec4(vPos, 1.0f) * model * view;
+    vec4 a = projection * view * model * vec4(vPos, 1.0f);
+    pos = (model * vec4(vPos, 1.0f)).xyz;
+    gl_Position = a;
+
+    vec3 aNormal = vNormal;
+    aNormal.z *= -1.0f;
+    //aNormal.y = vNormal.z;
+    //aNormal.z = vNormal.y;
+
+    normal = mat3(model) * aNormal; 
+    texCoord = vTexCoord.xy;
+}
+
+/*
+ vec4 a = vec4(vPos, 1.0f) * model * view;
     pos = vec3(a.xyz);
     gl_Position = a * projection;
     normal = vNormal * mat3(model);
     texCoord = vTexCoord.xy;
-}
+*/

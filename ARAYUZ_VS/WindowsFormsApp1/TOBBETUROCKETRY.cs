@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GMap.NET.MapProviders;
 using GMap.NET;
-using GMap.NET.WindowsForms;
-using GMap.NET.WindowsForms.Markers;
 
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.Data.Entity.Core.Objects;
 using System.IO;
 
 using StbImageSharp;
@@ -28,29 +20,6 @@ BYTE BOYUTU (60Byte)  =====>     1BYTE       ,  1BYTE ,  1BYTE , 4BYTE    ,4BYTE
 
 namespace TOBBETUROCKETRY
 {
-
-    enum PackageElements
-    {
-        packageNum_Ana,
-        patlama1,
-        patlama2,
-        basinc_Ana,
-        X_jiro,
-        Y_jiro,
-        Z_jiro,
-        X_ivme,
-        Y_ivme,
-        Z_ivme,
-        GPSe_Ana,
-        GPSb_Ana,
-        packageNum_Gorev,
-        sicaklik_Gorev,
-        nem_Gorev,
-        basinc_Gorev,
-        GPSe_Gorev,
-        GPSb_Gorev
-    }
-
     //https://www.google.com/maps?q=39.9272,32.8644
     public partial class TOBBETUROCKETRY : Form
     {
@@ -61,8 +30,7 @@ namespace TOBBETUROCKETRY
         SerialPort serialPort = new SerialPort();
 
         public string filenameRoket = "RoketValues.csv";
-
-        private string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
+        public string filenameFaydaliYuk = "FaydaliYukValues.csv";
         private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,39.9103241,32.8529681";
         private string[] values = new string[DATA_COUNT];
 
@@ -172,7 +140,7 @@ namespace TOBBETUROCKETRY
 
             try
             {
-                glControl1.Invalidate();
+                s.Invalidate();
                 RefreshMapToNewGPS();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message.ToString(), "Error"); }
@@ -200,9 +168,6 @@ namespace TOBBETUROCKETRY
 
 
         #region EVENTS
-
-        Thread FileSaveThread = null;
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
@@ -214,10 +179,6 @@ namespace TOBBETUROCKETRY
                 }
             }
             catch (Exception ex) { MessageBox.Show("" + ex); }
-            if (FileSaveThread != null)
-            {
-                FileSaveThread.Abort();
-            }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -241,42 +202,8 @@ namespace TOBBETUROCKETRY
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             FetchAvailablePorts();
-            glControl1.Invalidate();
+            s.Invalidate();
         }
-        private void btnDosyayaKaydet_Click(object sender, EventArgs e)
-        {
-            if (FileSaveThread == null)
-            {
-                lblDosyaKayit.Text = "Kayıt Ediliyor!";
-                FileSaveThread = new Thread(() =>
-                {
-                    while (true)
-                    {
-                        if (!File.Exists(filenameRoket))
-                        {
-                            File.WriteAllText(filenameRoket, dataTitles + "\n" + recivedData + "\n");
-                        }
-                        else
-                        {
-                            File.AppendAllText(filenameRoket, recivedData + "\n");
-                        }
-                        Thread.Sleep(100);
-                    }
-                }
-                );
-                FileSaveThread.Start();
-                lblDosyaKayit.Text = "Kayıt Ediliyor!";
-                btnDosyayaKaydet.Text = "Kaydı Bitir";
-            }
-            else
-            {
-                FileSaveThread.Abort();
-                FileSaveThread = null;
-                lblDosyaKayit.Text = "Kayıt Edilmiyor!";
-                btnDosyayaKaydet.Text = "Dosyaya Kaydetmeye Basla";
-            }
-        }
-
         #endregion
 
 
@@ -341,7 +268,7 @@ namespace TOBBETUROCKETRY
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, glControl1.AspectRatio, 0.1f, 1000);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, s.AspectRatio, 0.1f, 1000);
             Matrix4 lookat = Matrix4.LookAt(cameraPos.X, cameraPos.Y, cameraPos.Z, cameraDir.X, cameraDir.Y, cameraDir.Z, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
@@ -349,7 +276,7 @@ namespace TOBBETUROCKETRY
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.LoadMatrix(ref lookat);
-            GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
+            GL.Viewport(0, 0, s.Width, s.Height);
         }
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
@@ -357,7 +284,7 @@ namespace TOBBETUROCKETRY
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, glControl1.AspectRatio, 0.1f, 1000);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, s.AspectRatio, 0.1f, 1000);
             Matrix4 lookat = Matrix4.LookAt(cameraPos.X, cameraPos.Y, cameraPos.Z, cameraDir.X, cameraDir.Y, cameraDir.Z, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
@@ -437,7 +364,7 @@ namespace TOBBETUROCKETRY
             GL.BindVertexArray(0);
             GL.UseProgram(0);
 
-            glControl1.SwapBuffers();
+            s.SwapBuffers();
 
         }
         private void glControl1_Load(object sender, EventArgs e)
