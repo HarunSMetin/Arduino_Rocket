@@ -1,8 +1,8 @@
-newmtl patriot___mim-104
+newmtl rocket
 Ka 0.300000 0.300000 0.300000
 Kd 0.700000 0.700000 0.700000
 Ks 0.000000 0.000000 0.000000
 Ns 20.000000
 Tr 0.000000
 illum 1
-map_Kd Patriot___MIM-104_diffuse.png
+map_Kd rocket_diffuse.png
