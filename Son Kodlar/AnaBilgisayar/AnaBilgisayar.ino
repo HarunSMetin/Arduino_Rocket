@@ -14,11 +14,11 @@ LoRa_E32 e32ttl(&Serial3);
 //******************************************************
 //SD KART Modülü
 //	            MOSI	MİSO	SCK	CS
-//Arduino Mega	51	  50	  52	4   
+//Arduino Mega	51	  50	  52	43   
 // CS pini değiştirilebilir. İstedğimiz herhangi bir dijital pin olur
 #include <SPI.h>
 #include <SD.h>
-#define SD_KART_CS_PIN 4
+#define SD_KART_CS_PIN 43
 File myFile;
 
 //******************************************************
