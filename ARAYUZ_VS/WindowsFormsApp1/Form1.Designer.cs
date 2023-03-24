@@ -207,7 +207,6 @@ namespace TOBBETUROCKETRY
             // 
             // panelBaglanti
             // 
-            this.panelBaglanti.AutoScroll = true;
             this.panelBaglanti.AutoSize = true;
             this.panelBaglanti.BackColor = System.Drawing.SystemColors.WindowText;
             this.panelBaglanti.Controls.Add(this.lblHakemDurum);
@@ -225,7 +224,7 @@ namespace TOBBETUROCKETRY
             this.panelBaglanti.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelBaglanti.Location = new System.Drawing.Point(0, 0);
             this.panelBaglanti.Name = "panelBaglanti";
-            this.panelBaglanti.Size = new System.Drawing.Size(1904, 61);
+            this.panelBaglanti.Size = new System.Drawing.Size(1904, 60);
             this.panelBaglanti.TabIndex = 6;
             // 
             // lblHakemDurum
@@ -234,7 +233,7 @@ namespace TOBBETUROCKETRY
             this.lblHakemDurum.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.lblHakemDurum.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblHakemDurum.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblHakemDurum.Location = new System.Drawing.Point(1373, 0);
+            this.lblHakemDurum.Location = new System.Drawing.Point(1411, 0);
             this.lblHakemDurum.Name = "lblHakemDurum";
             this.lblHakemDurum.Size = new System.Drawing.Size(113, 18);
             this.lblHakemDurum.TabIndex = 11;
@@ -247,9 +246,9 @@ namespace TOBBETUROCKETRY
             this.btnHakemIletisim.Font = new System.Drawing.Font("Agency FB", 18F);
             this.btnHakemIletisim.ForeColor = System.Drawing.Color.White;
             this.btnHakemIletisim.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnHakemIletisim.Location = new System.Drawing.Point(1376, 20);
+            this.btnHakemIletisim.Location = new System.Drawing.Point(1414, 20);
             this.btnHakemIletisim.Name = "btnHakemIletisim";
-            this.btnHakemIletisim.Size = new System.Drawing.Size(516, 34);
+            this.btnHakemIletisim.Size = new System.Drawing.Size(490, 34);
             this.btnHakemIletisim.TabIndex = 10;
             this.btnHakemIletisim.Text = "Hakem Yer İstasyonuna Bagla";
             this.btnHakemIletisim.UseVisualStyleBackColor = false;
@@ -260,7 +259,7 @@ namespace TOBBETUROCKETRY
             this.lblDosyaKayit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
             this.lblDosyaKayit.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblDosyaKayit.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblDosyaKayit.Location = new System.Drawing.Point(964, 0);
+            this.lblDosyaKayit.Location = new System.Drawing.Point(909, 0);
             this.lblDosyaKayit.Name = "lblDosyaKayit";
             this.lblDosyaKayit.Size = new System.Drawing.Size(109, 18);
             this.lblDosyaKayit.TabIndex = 9;
@@ -273,7 +272,7 @@ namespace TOBBETUROCKETRY
             this.btnDosyayaKaydet.Font = new System.Drawing.Font("Agency FB", 18F);
             this.btnDosyayaKaydet.ForeColor = System.Drawing.Color.White;
             this.btnDosyayaKaydet.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnDosyayaKaydet.Location = new System.Drawing.Point(967, 22);
+            this.btnDosyayaKaydet.Location = new System.Drawing.Point(912, 19);
             this.btnDosyayaKaydet.Name = "btnDosyayaKaydet";
             this.btnDosyayaKaydet.Size = new System.Drawing.Size(234, 36);
             this.btnDosyayaKaydet.TabIndex = 8;
@@ -328,9 +327,9 @@ namespace TOBBETUROCKETRY
             this.panel1.Controls.Add(this.flowLayoutPanel8);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 61);
+            this.panel1.Location = new System.Drawing.Point(0, 60);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(490, 980);
+            this.panel1.Size = new System.Drawing.Size(490, 981);
             this.panel1.TabIndex = 7;
             // 
             // pictureBox1
@@ -366,7 +365,7 @@ namespace TOBBETUROCKETRY
             this.gMapAnaBilgisayar.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapAnaBilgisayar.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapAnaBilgisayar.ShowTileGridLines = false;
-            this.gMapAnaBilgisayar.Size = new System.Drawing.Size(473, 503);
+            this.gMapAnaBilgisayar.Size = new System.Drawing.Size(473, 507);
             this.gMapAnaBilgisayar.TabIndex = 27;
             this.gMapAnaBilgisayar.Zoom = 0D;
             // 
@@ -753,9 +752,9 @@ namespace TOBBETUROCKETRY
             this.panel2.Controls.Add(this.flowLayoutPanel3);
             this.panel2.Controls.Add(this.label22);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(1414, 61);
+            this.panel2.Location = new System.Drawing.Point(1414, 60);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(490, 980);
+            this.panel2.Size = new System.Drawing.Size(490, 981);
             this.panel2.TabIndex = 8;
             // 
             // pictureBox2
@@ -791,7 +790,7 @@ namespace TOBBETUROCKETRY
             this.gMapGorevYuku.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapGorevYuku.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapGorevYuku.ShowTileGridLines = false;
-            this.gMapGorevYuku.Size = new System.Drawing.Size(473, 618);
+            this.gMapGorevYuku.Size = new System.Drawing.Size(473, 622);
             this.gMapGorevYuku.TabIndex = 28;
             this.gMapGorevYuku.Zoom = 0D;
             // 
@@ -1019,7 +1018,7 @@ namespace TOBBETUROCKETRY
             this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label11.Location = new System.Drawing.Point(159, 3);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(139, 44);
+            this.label11.Size = new System.Drawing.Size(138, 44);
             this.label11.TabIndex = 18;
             this.label11.Text = "1. Patlama";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1033,7 +1032,7 @@ namespace TOBBETUROCKETRY
             this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label12.Location = new System.Drawing.Point(161, 6);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(147, 44);
+            this.label12.Size = new System.Drawing.Size(146, 44);
             this.label12.TabIndex = 19;
             this.label12.Text = "2. Patlama";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1119,7 +1118,7 @@ namespace TOBBETUROCKETRY
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glControl1.AutoSize = true;
             this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.Location = new System.Drawing.Point(495, 60);
+            this.glControl1.Location = new System.Drawing.Point(492, 67);
             this.glControl1.Name = "glControl1";
             this.glControl1.Size = new System.Drawing.Size(913, 505);
             this.glControl1.TabIndex = 27;

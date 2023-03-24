@@ -55,14 +55,12 @@ namespace TOBBETUROCKETRY
     public partial class TOBBETUROCKETRY : Form
     {
         static readonly int DATA_COUNT = 18;
-        private readonly string nameOfModel = "rocket"; // without ".obj"
-
+        private readonly string nameOfModel = "rocket"; // without ".obj" 
+        public readonly string filenameRoket = "RoketValues.csv";
 
         SerialPort serialPort = new SerialPort();
-
-        public string filenameRoket = "RoketValues.csv";
-
-        private string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
+         
+        private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
         private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,39.9103241,32.8529681";
         private string[] values = new string[DATA_COUNT];
 
@@ -169,6 +167,16 @@ namespace TOBBETUROCKETRY
             textBoxBasinc_GorevYuku.Text = GetPinValue(PackageElements.basinc_Gorev);
             textBoxGPSEnlem_GorevYuku.Text = GetPinValue(PackageElements.GPSe_Gorev);
             textBoxGPSBoylam_GorevYuku.Text = GetPinValue(PackageElements.GPSb_Gorev);
+            if (GetPinValue(PackageElements.patlama1).Equals("1")|| GetPinValue(PackageElements.patlama1).Equals("1.0"))
+            {
+                patlama1_no.Visible= false;
+                patlama1_yes.Visible= true;
+            } 
+            if (GetPinValue(PackageElements.patlama2).Equals("1") || GetPinValue(PackageElements.patlama2).Equals("1.0"))
+            {
+                patlama2_no.Visible = false;
+                patlama2_yes.Visible = true;
+            }
 
             try
             {
@@ -214,10 +222,7 @@ namespace TOBBETUROCKETRY
                 }
             }
             catch (Exception ex) { MessageBox.Show("" + ex); }
-            if (FileSaveThread != null)
-            {
-                FileSaveThread.Abort();
-            }
+            FileSaveThread?.Abort();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -236,6 +241,11 @@ namespace TOBBETUROCKETRY
             gMapGorevYuku.MinZoom = 1;
             gMapGorevYuku.MaxZoom = 100;
             gMapGorevYuku.Zoom = 16;
+
+            patlama1_no.Visible     = true;
+            patlama1_yes.Visible    = false; 
+            patlama2_no.Visible     = true;
+            patlama2_yes.Visible    = false;
 
         }
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -323,8 +333,7 @@ namespace TOBBETUROCKETRY
             public float intensity;
         };
 
-        List<Vector3> vertices = new List<Vector3>();
-        List<int> triangles = new List<int>();
+        List<Vector3> vertices = new List<Vector3>(); 
         List<Vector3> normals = new List<Vector3>();
         List<Vector2> texCoords = new List<Vector2>();
         private List<int[]> faces = new List<int[]>();
@@ -367,18 +376,18 @@ namespace TOBBETUROCKETRY
             GL.LoadMatrix(ref lookat);
 
             GL.Begin(BeginMode.Lines);
-            GL.Color3(Color.Blue);
-            GL.Vertex3(0, 0.0, -10.0);
-            GL.Vertex3(0.0, 0.0, 10.0);
+                GL.Color3(Color.Blue);
+                GL.Vertex3(0, 0.0, -10.0);
+                GL.Vertex3(0.0, 0.0, 10.0);
 
 
-            GL.Color3(Color.Green);
-            GL.Vertex3(0.0, -10, 0.0);
-            GL.Vertex3(0.0, 10, 0.0);
+                GL.Color3(Color.Green);
+                GL.Vertex3(0.0, -10, 0.0);
+                GL.Vertex3(0.0, 10, 0.0);
 
-            GL.Color3(Color.Red);
-            GL.Vertex3(-10.0, 0.0, 0);
-            GL.Vertex3(10.0, 0.0, 0);
+                GL.Color3(Color.Red);
+                GL.Vertex3(-10.0, 0.0, 0);
+                GL.Vertex3(10.0, 0.0, 0);
             GL.End();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexArrayObject);
