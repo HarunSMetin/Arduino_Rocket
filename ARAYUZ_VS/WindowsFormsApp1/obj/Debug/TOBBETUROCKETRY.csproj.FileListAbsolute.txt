@@ -113,3 +113,7 @@ C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\W
 C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.csproj.CopyComplete
 C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.exe
 C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.pdb
+C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.HYI.resources
+C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\bin\Debug\en-US\TOBBETUROCKETRY.resources.dll
+C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\TOBBETUROCKETRY.TOBBETUROCKETRY.en-US.resources
+C:\Users\Harun Serkan Metin\Desktop\TOBB ETU ROCKETRY\Arduino_Rocket\ARAYUZ_VS\WindowsFormsApp1\obj\Debug\en-US\TOBBETUROCKETRY.resources.dll

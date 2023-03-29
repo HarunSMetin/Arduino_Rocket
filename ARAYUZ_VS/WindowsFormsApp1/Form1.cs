@@ -21,6 +21,7 @@ using System.Data.Entity.Core.Objects;
 using System.IO;
 
 using StbImageSharp;
+using System.Globalization;
 /*
 SERIAL'A BASILAN      =====>  "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev"
 BYTE BOYUTU (60Byte)  =====>     1BYTE       ,  1BYTE ,  1BYTE , 4BYTE    ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE  ,4BYTE   ,  1BYTE         ,  4BYTE       ,  4BYTE  , 4BYTE      ,4BYTE     ,  4BYTE ,
@@ -55,64 +56,76 @@ namespace TOBBETUROCKETRY
     public partial class TOBBETUROCKETRY : Form
     {
         static readonly int DATA_COUNT = 18;
-        private readonly string nameOfModel = "rocket"; // without ".obj" 
+        private readonly string nameOfModel = AppDomain.CurrentDomain.BaseDirectory + "/rocket"; // without ".obj" 
         public readonly string filenameRoket = "RoketValues.csv";
 
-        SerialPort serialPort = new SerialPort();
+        SerialPort serialPort_YerIst = new SerialPort();
+        SerialPort SerialPort_HYI = new SerialPort();
          
         private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
         private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,39.9103241,32.8529681";
         private string[] values = new string[DATA_COUNT];
 
+        public static string HYI_Port           = "";
+        public static int    HYI_BaudRate       = 19200;
+        public static int    HYI_DataBits       = 8;
+        public static int    HYI_StopBits       = 1;
+        public static int    HYI_Parity         = 0;
+
         public TOBBETUROCKETRY()
         {
-            InitializeComponent();
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US"); 
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            this.InitializeComponent();
             FetchAvailablePorts();
             values = recivedData.Split(',');
             btnBaglantiyiBitir.Enabled = false;
         }
 
-        #region BAĞLANTI BAŞLATMA / BİTİRME
+        #region BAGLANTI BASLATMA / BITIRME
         private void FetchAvailablePorts()
         {
             numericUpDownBaudRate.Value = 9600;
             comboBoxComPort.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             comboBoxComPort.Items.AddRange(ports);
-            if (comboBoxComPort.Items.Count > 0) comboBoxComPort.SelectedIndex = comboBoxComPort.Items.Count - 1;
-            else comboBoxComPort.Text = "Takılı Cihaz Yok";
-            lblDurum.ForeColor = Color.Red;
-            lblDurum.Text = "Bağlantı Yok!";
+            if (ports.Length > 0) comboBoxComPort.SelectedIndex = comboBoxComPort.Items.Count - 1;
+            else
+            { 
+                comboBoxComPort.Text = "Takili Cihaz Yok";
+                lblDurum.ForeColor = Color.Red;
+                lblDurum.Text = "Baglanti Yok!";
+            } 
         }
         private void btnBaglan_Click(object sender, EventArgs e)
         {
-            serialPort = new SerialPort();
+            serialPort_YerIst = new SerialPort();
             if (comboBoxComPort.SelectedItem != null)
             {
-                serialPort.PortName = comboBoxComPort.SelectedItem.ToString();
+                serialPort_YerIst.PortName = comboBoxComPort.SelectedItem.ToString();
                 btnBaglan.Enabled = false;
                 btnBaglantiyiBitir.Enabled = true;
             }
             else
             {
                 FetchAvailablePorts();
-                MessageBox.Show("COM PORT'u Yeniden Seçiniz ");
+                MessageBox.Show("COM PORT'u Yeniden Seciniz ");
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
             }
-            serialPort.BaudRate = (int)numericUpDownBaudRate.Value;
-            serialPort.Parity = Parity.None;
-            serialPort.DataBits = 8;
-            serialPort.StopBits = StopBits.One;
-            serialPort.ReadBufferSize = 200000000;
-            serialPort.DataReceived += serialPort_DataReceived;
+            serialPort_YerIst.BaudRate = (int)numericUpDownBaudRate.Value;
+            serialPort_YerIst.Parity = Parity.None;
+            serialPort_YerIst.DataBits = 8;
+            serialPort_YerIst.StopBits = StopBits.One;
+            serialPort_YerIst.ReadBufferSize = 200000000;
+            serialPort_YerIst.DataReceived += serialPort_DataReceived;
 
             try
             {
-                serialPort.Open();
+                serialPort_YerIst.Open();
                 Thread.Sleep(1000);
                 lblDurum.ForeColor = Color.Green;
-                lblDurum.Text = "Bağlandı!";
+                lblDurum.Text = "Baglandi!";
             }
             catch (Exception ex)
             {
@@ -126,9 +139,9 @@ namespace TOBBETUROCKETRY
         {
             try
             {
-                if (serialPort.IsOpen)
+                if (serialPort_YerIst.IsOpen)
                 {
-                    recivedData = serialPort.ReadLine();
+                    recivedData = serialPort_YerIst.ReadLine();
                     this.Invoke(new Action(ProcessingData));
                     this.Invoke(new Action(ValueUpdate));
                 }
@@ -143,7 +156,7 @@ namespace TOBBETUROCKETRY
         }
         private void ValueUpdate()
         {
-            //burası her data geldiğinde çalışır
+            //burasi her data geldiginde calisir
             Thread.Sleep(100); //will sleep for 100ms
             //TODO: burda degerleri guncelle 
             textBoxPaketNum_AnaBil.Text = GetPinValue(PackageElements.packageNum_Ana);
@@ -188,22 +201,91 @@ namespace TOBBETUROCKETRY
         }
         private void btnBaglantiyiBitir_Click(object sender, EventArgs e)
         {
-            if (serialPort.IsOpen)
+            if (serialPort_YerIst.IsOpen)
             {
-                serialPort.Close();
+                serialPort_YerIst.Close();
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
                 lblDurum.ForeColor = Color.Red;
-                lblDurum.Text = "Bağlantı Yok!";
+                lblDurum.Text = "Baglanti Yok!";
             }
             else
             {
                 btnBaglan.Enabled = true;
                 btnBaglantiyiBitir.Enabled = false;
-                lblDurum.Text = "Cihaz Bağlantısı Koptu!";
+                lblDurum.Text = "Cihaz Baglantisi Koptu!";
                 lblDurum.ForeColor = Color.Red;
             }
         }
+        //HYI 
+        private void btnHakemIletisim_Click(object sender, EventArgs e)
+        {
+            using (HYI hyi = new HYI())
+            { 
+                if (hyi.ShowDialog() == DialogResult.OK)
+                {
+                    HYI_Port = hyi.HYI_Port()  ;
+                    HYI_BaudRate = hyi.HYI_BaudRate();          
+                    HYI_DataBits = hyi.HYI_DataBits();          
+                    HYI_StopBits = hyi.HYI_StopBits();          
+                    HYI_Parity = hyi.HYI_Parity();
+                    HYI_Baglan();
+                }
+            }
+        }
+        public void HYI_Baglan()
+        {
+            SerialPort_HYI = new SerialPort();
+            if (HYI_Port != null && HYI_Port!="")
+            {
+                try
+                {
+
+                    SerialPort_HYI.PortName = HYI_Port;
+                    SerialPort_HYI.BaudRate = HYI_BaudRate;
+                    SerialPort_HYI.Parity = (Parity)HYI_Parity;
+                    SerialPort_HYI.DataBits = HYI_DataBits;
+                    SerialPort_HYI.StopBits = (StopBits)HYI_StopBits;
+                    SerialPort_HYI.ReadBufferSize = 200000000;
+                    SerialPort_HYI.DataReceived += SerialPort_HYI_dataSend;
+                }
+                catch { }
+            }
+            else
+            {
+                MessageBox.Show("Port Secmediniz");
+                lblHakemDurum.ForeColor = Color.Red;
+                lblHakemDurum.Text = "Baglanti Kurulamadi";
+            }
+
+            try
+            {
+                SerialPort_HYI.Open();
+                Thread.Sleep(1000);
+                lblHakemDurum.ForeColor = Color.Green;
+                lblHakemDurum.Text = "Baglandi!";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error occured while opening port");
+                FetchAvailablePorts();
+                lblHakemDurum.ForeColor = Color.Red;
+                lblHakemDurum.Text = "Baglanti Kurulamadi";
+            }
+        }
+        private void SerialPort_HYI_dataSend(object sender, SerialDataReceivedEventArgs e)
+        {
+                try
+                {
+                    if (SerialPort_HYI.IsOpen)
+                    {
+                        SerialPort_HYI.Write(recivedData);
+                    }
+                }
+                catch (Exception) { }
+            
+        }
+
         #endregion
 
 
@@ -215,10 +297,15 @@ namespace TOBBETUROCKETRY
         {
             try
             {
-                if (serialPort.IsOpen)
+                if (serialPort_YerIst.IsOpen)
                 {
-                    MessageBox.Show("COM PORT bağlantısını kapatmadınız! Otomatik sonlandırılıyor...");
-                    serialPort.Close();
+                    MessageBox.Show("Yer Istasyonu COM PORT baglantisini kapatmadiniz! Otomatik sonlandiriliyor...");
+                    serialPort_YerIst.Close();
+                }
+                if (SerialPort_HYI.IsOpen)
+                {
+                    MessageBox.Show("Hakem Istasyonu COM PORT baglantisini kapatmadiniz! Otomatik sonlandiriliyor...");
+                    SerialPort_HYI.Close();
                 }
             }
             catch (Exception ex) { MessageBox.Show("" + ex); }
@@ -245,19 +332,24 @@ namespace TOBBETUROCKETRY
             patlama1_no.Visible     = true;
             patlama1_yes.Visible    = false; 
             patlama2_no.Visible     = true;
-            patlama2_yes.Visible    = false;
+            patlama2_yes.Visible    = false;   
+             
 
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             FetchAvailablePorts();
             glControl1.Invalidate();
+            gMapAnaBilgisayar.Position = new PointLatLng(39.9103241f, 32.8529681f); 
+            gMapAnaBilgisayar.Zoom = 16;
+            gMapGorevYuku.Position = new PointLatLng(39.9103241f, 32.8529681f);
+            gMapGorevYuku.Zoom = 16;
         }
         private void btnDosyayaKaydet_Click(object sender, EventArgs e)
         {
             if (FileSaveThread == null)
             {
-                lblDosyaKayit.Text = "Kayıt Ediliyor!";
+                lblDosyaKayit.Text = "Kayit Ediliyor!";
                 FileSaveThread = new Thread(() =>
                 {
                     while (true)
@@ -275,14 +367,14 @@ namespace TOBBETUROCKETRY
                 }
                 );
                 FileSaveThread.Start();
-                lblDosyaKayit.Text = "Kayıt Ediliyor!";
-                btnDosyayaKaydet.Text = "Kaydı Bitir";
+                lblDosyaKayit.Text = "Kayit Ediliyor!";
+                btnDosyayaKaydet.Text = "Kaydi Bitir";
             }
             else
             {
                 FileSaveThread.Abort();
                 FileSaveThread = null;
-                lblDosyaKayit.Text = "Kayıt Edilmiyor!";
+                lblDosyaKayit.Text = "Kayit Edilmiyor!";
                 btnDosyayaKaydet.Text = "Dosyaya Kaydetmeye Basla";
             }
         }
@@ -290,7 +382,7 @@ namespace TOBBETUROCKETRY
         #endregion
 
 
-        #region EK FONKSİYONLAR
+        #region EK FONKSIYONLAR
 
         private string GetPinValue(PackageElements pe)
         {
@@ -337,36 +429,22 @@ namespace TOBBETUROCKETRY
         List<Vector3> normals = new List<Vector3>();
         List<Vector2> texCoords = new List<Vector2>();
         private List<int[]> faces = new List<int[]>();
+
         int vertexCount;
         int VertexBufferObject, VertexArrayObject, ShaderObject, TextureObject;
         float x_angle_3d_model = 0, y_angle_3d_model = 0, z_angle_3d_model = 0;
+
         Material modelMat;
         DirectionalLight light;
         Vector3 cameraPos = new Vector3(6, 0, 0);
         Vector3 cameraDir = new Vector3(0, 0, 0);
 
-        private void glControl1_AutoSizeChanged(object sender, EventArgs e)
-        {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.Clear(ClearBufferMask.DepthBufferBit);
-
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, glControl1.AspectRatio, 0.1f, 1000);
-            Matrix4 lookat = Matrix4.LookAt(cameraPos.X, cameraPos.Y, cameraPos.Z, cameraDir.X, cameraDir.Y, cameraDir.Z, 0, 1, 0);
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.LoadMatrix(ref perspective);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-            GL.LoadMatrix(ref lookat);
-            GL.Viewport(0, 0, glControl1.Width, glControl1.Height);
-        }
         private void glControl1_Paint(object sender, PaintEventArgs e)
-        {
-
+        {   
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, glControl1.AspectRatio, 0.1f, 1000);
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(1.04f, glControl1.AspectRatio, 0.1f, 100);
             Matrix4 lookat = Matrix4.LookAt(cameraPos.X, cameraPos.Y, cameraPos.Z, cameraDir.X, cameraDir.Y, cameraDir.Z, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
@@ -374,7 +452,7 @@ namespace TOBBETUROCKETRY
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.LoadMatrix(ref lookat);
-
+           
             GL.Begin(BeginMode.Lines);
                 GL.Color3(Color.Blue);
                 GL.Vertex3(0, 0.0, -10.0);
@@ -389,8 +467,8 @@ namespace TOBBETUROCKETRY
                 GL.Vertex3(-10.0, 0.0, 0);
                 GL.Vertex3(10.0, 0.0, 0);
             GL.End();
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexArrayObject);
+            
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BindVertexArray(VertexArrayObject);
             GL.UseProgram(ShaderObject);
 
@@ -414,7 +492,6 @@ namespace TOBBETUROCKETRY
             GL.BindTexture(TextureTarget.Texture2D, TextureObject);
 
             int texLocation = GL.GetUniformLocation(TextureObject, "texture_diffuse1");
-
             GL.Uniform1(texLocation, 0);
 
             int location = GL.GetUniformLocation(ShaderObject, "material.ambient");
@@ -426,33 +503,31 @@ namespace TOBBETUROCKETRY
             location = GL.GetUniformLocation(ShaderObject, "material.shininess");
             GL.Uniform1(location, modelMat.shininess);
 
+            location = GL.GetUniformLocation(ShaderObject, "light.direction");
+            GL.Uniform3(location, light.direction);
             location = GL.GetUniformLocation(ShaderObject, "light.ambient");
             GL.Uniform3(location, light.ambient);
             location = GL.GetUniformLocation(ShaderObject, "light.diffuse");
             GL.Uniform3(location, light.diffuse);
             location = GL.GetUniformLocation(ShaderObject, "light.specular");
             GL.Uniform3(location, light.specular);
-            location = GL.GetUniformLocation(ShaderObject, "light.direction");
-            GL.Uniform3(location, light.direction);
             location = GL.GetUniformLocation(ShaderObject, "light.intensity");
             GL.Uniform1(location, light.intensity);
 
             location = GL.GetUniformLocation(ShaderObject, "camPos");
             GL.Uniform3(location, new Vector3(0, 0, 8));
 
-            GL.DrawArrays(BeginMode.Triangles, 0, vertexCount);
-
+            GL.DrawArrays(BeginMode.Triangles, 0, vertexCount); 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
             GL.UseProgram(0);
 
             glControl1.SwapBuffers();
-
         }
         private void glControl1_Load(object sender, EventArgs e)
-        {
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL.Enable(EnableCap.DepthTest);//sonradan yazdık 
+        { 
+            GL.ClearColor(0, 0, 0, 0);
+            GL.Enable(EnableCap.DepthTest);
             ModelLoadToBuffer(nameOfModel);
         }
         private void ModelLoadToBuffer(string filePath)
@@ -461,10 +536,10 @@ namespace TOBBETUROCKETRY
 
             ObjParser.ParseFile(filePath + ".obj");
 
-            vertices = ObjParser.Vertices;
-            normals = ObjParser.Normals;
-            texCoords = ObjParser.TexCoords;
-            faces = ObjParser.Faces;
+            vertices    = ObjParser.Vertices;
+            normals     = ObjParser.Normals;
+            texCoords   = ObjParser.TexCoords;
+            faces       = ObjParser.Faces;
 
             List<float> vertexBuffer = new List<float>();
 
@@ -571,7 +646,13 @@ namespace TOBBETUROCKETRY
             light.specular = new Vector3(0.9f, 0.9f, 0.9f);
             light.direction = new Vector3(0, -1, 0);
             light.intensity = 4;
-        }
-        #endregion
-    }
+
+            Console.WriteLine("vertices : "+vertices.Count);
+            Console.WriteLine("normals  : "+normals.Count);
+            Console.WriteLine("texCoords: "+texCoords.Count);
+            Console.WriteLine("faces    : "+faces.Count); 
+
+        }                      
+        #endregion             
+    }                          
 }
