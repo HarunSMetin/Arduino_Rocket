@@ -30,6 +30,15 @@ namespace TOBBETUROCKETRY
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TOBBETUROCKETRY));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnBaglan = new System.Windows.Forms.Button();
             this.btnBaglantiyiBitir = new System.Windows.Forms.Button();
             this.comboBoxComPort = new System.Windows.Forms.ComboBox();
@@ -40,9 +49,11 @@ namespace TOBBETUROCKETRY
             this.btnHakemIletisim = new System.Windows.Forms.Button();
             this.lblDosyaKayit = new System.Windows.Forms.Label();
             this.btnDosyayaKaydet = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.lblDurum = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gMapAnaBilgisayar = new GMap.NET.WindowsForms.GMapControl();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
@@ -75,6 +86,7 @@ namespace TOBBETUROCKETRY
             this.textBoxIvmeZ_AnaBil = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.gMapGorevYuku = new GMap.NET.WindowsForms.GMapControl();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
@@ -96,42 +108,47 @@ namespace TOBBETUROCKETRY
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.glControl1 = new OpenTK.GLControl();
             this.patlama1_no = new System.Windows.Forms.PictureBox();
             this.patlama1_yes = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.patlama2_no = new System.Windows.Forms.PictureBox();
             this.patlama2_yes = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.glControl1 = new OpenTK.GLControl();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaudRate)).BeginInit();
             this.panelBaglanti.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel8.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
             this.flowLayoutPanel12.SuspendLayout();
             this.flowLayoutPanel13.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patlama1_no)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama1_yes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.flowLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
+            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBaglan
@@ -230,6 +247,15 @@ namespace TOBBETUROCKETRY
             this.btnDosyayaKaydet.UseVisualStyleBackColor = false;
             this.btnDosyayaKaydet.Click += new System.EventHandler(this.btnDosyayaKaydet_Click);
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.btnRefresh, "btnRefresh");
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // lblDurum
             // 
             resources.ApplyResources(this.lblDurum, "lblDurum");
@@ -252,6 +278,13 @@ namespace TOBBETUROCKETRY
             this.panel1.Controls.Add(this.label3);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.rocket;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
             // 
             // gMapAnaBilgisayar
             // 
@@ -484,6 +517,13 @@ namespace TOBBETUROCKETRY
             this.panel2.Controls.Add(this.label22);
             this.panel2.Name = "panel2";
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.gorev_yuku;
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.TabStop = false;
+            // 
             // gMapGorevYuku
             // 
             resources.ApplyResources(this.gMapGorevYuku, "gMapGorevYuku");
@@ -639,31 +679,6 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.pictureBox4);
-            this.panel4.Controls.Add(this.label12);
-            this.panel4.Controls.Add(this.patlama2_no);
-            this.panel4.Controls.Add(this.patlama2_yes);
-            resources.ApplyResources(this.panel4, "panel4");
-            this.panel4.Name = "panel4";
-            // 
-            // flowLayoutPanel5
-            // 
-            resources.ApplyResources(this.flowLayoutPanel5, "flowLayoutPanel5");
-            this.flowLayoutPanel5.Controls.Add(this.panel3);
-            this.flowLayoutPanel5.Controls.Add(this.panel4);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            // 
-            // glControl1
-            // 
-            resources.ApplyResources(this.glControl1, "glControl1");
-            this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.Name = "glControl1";
-            this.glControl1.VSync = false;
-            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
-            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
-            // 
             // patlama1_no
             // 
             resources.ApplyResources(this.patlama1_no, "patlama1_no");
@@ -683,6 +698,15 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.pictureBox3, "pictureBox3");
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.TabStop = false;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.pictureBox4);
+            this.panel4.Controls.Add(this.label12);
+            this.panel4.Controls.Add(this.patlama2_no);
+            this.panel4.Controls.Add(this.patlama2_yes);
+            resources.ApplyResources(this.panel4, "panel4");
+            this.panel4.Name = "panel4";
             // 
             // pictureBox4
             // 
@@ -704,28 +728,70 @@ namespace TOBBETUROCKETRY
             this.patlama2_yes.Name = "patlama2_yes";
             this.patlama2_yes.TabStop = false;
             // 
-            // pictureBox2
+            // flowLayoutPanel5
             // 
-            this.pictureBox2.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.gorev_yuku;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.TabStop = false;
+            resources.ApplyResources(this.flowLayoutPanel5, "flowLayoutPanel5");
+            this.flowLayoutPanel5.Controls.Add(this.panel3);
+            this.flowLayoutPanel5.Controls.Add(this.panel4);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             // 
-            // pictureBox1
+            // glControl1
             // 
-            this.pictureBox1.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.rocket;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
+            resources.ApplyResources(this.glControl1, "glControl1");
+            this.glControl1.BackColor = System.Drawing.Color.Black;
+            this.glControl1.Name = "glControl1";
+            this.glControl1.VSync = false;
+            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
+            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             // 
-            // btnRefresh
+            // chart1
             // 
-            this.btnRefresh.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(this.btnRefresh, "btnRefresh");
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            resources.ApplyResources(this.chart1, "chart1");
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
+            this.chart1.Name = "chart1";
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chart1.Series.Add(series4);
+            // 
+            // chart2
+            // 
+            resources.ApplyResources(this.chart2, "chart2");
+            chartArea5.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chart2.Legends.Add(legend5);
+            this.chart2.Name = "chart2";
+            this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chart2.Series.Add(series5);
+            // 
+            // chart3
+            // 
+            resources.ApplyResources(this.chart3, "chart3");
+            chartArea6.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart3.Legends.Add(legend6);
+            this.chart3.Name = "chart3";
+            this.chart3.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.EarthTones;
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.chart3.Series.Add(series6);
+            // 
+            // flowLayoutPanel6
+            // 
+            resources.ApplyResources(this.flowLayoutPanel6, "flowLayoutPanel6");
+            this.flowLayoutPanel6.Controls.Add(this.chart3);
+            this.flowLayoutPanel6.Controls.Add(this.chart2);
+            this.flowLayoutPanel6.Controls.Add(this.chart1);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             // 
             // TOBBETUROCKETRY
             // 
@@ -733,6 +799,7 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Controls.Add(this.flowLayoutPanel6);
             this.Controls.Add(this.glControl1);
             this.Controls.Add(this.flowLayoutPanel5);
             this.Controls.Add(this.panel2);
@@ -745,6 +812,7 @@ namespace TOBBETUROCKETRY
             this.panelBaglanti.ResumeLayout(false);
             this.panelBaglanti.PerformLayout();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel8.ResumeLayout(false);
             this.flowLayoutPanel11.ResumeLayout(false);
             this.flowLayoutPanel12.ResumeLayout(false);
@@ -754,6 +822,7 @@ namespace TOBBETUROCKETRY
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -762,17 +831,19 @@ namespace TOBBETUROCKETRY
             this.flowLayoutPanel7.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.flowLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.patlama1_no)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama1_yes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
+            this.flowLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -858,6 +929,10 @@ namespace TOBBETUROCKETRY
         private System.Windows.Forms.Label lblDosyaKayit;
         private System.Windows.Forms.Button btnDosyayaKaydet;
         private OpenTK.GLControl glControl1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
     }
 }
 

@@ -22,6 +22,7 @@ using System.IO;
 
 using StbImageSharp;
 using System.Globalization;
+using System.Collections;
 /*
 SERIAL'A BASILAN      =====>  "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev"
 BYTE BOYUTU (60Byte)  =====>     1BYTE       ,  1BYTE ,  1BYTE , 4BYTE    ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE  ,4BYTE   ,  1BYTE         ,  4BYTE       ,  4BYTE  , 4BYTE      ,4BYTE     ,  4BYTE ,
@@ -58,25 +59,28 @@ namespace TOBBETUROCKETRY
         static readonly int DATA_COUNT = 18;
         private readonly string nameOfModel = AppDomain.CurrentDomain.BaseDirectory + "/rocket"; // without ".obj" 
         public readonly string filenameRoket = "RoketValues.csv";
+        public byte paketNumarasıHYI = 0;
+        public readonly int Takim_ID = 0;
 
         SerialPort serialPort_YerIst = new SerialPort();
         SerialPort SerialPort_HYI = new SerialPort();
-         
+
         private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
         private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,39.9103241,32.8529681";
         private string[] values = new string[DATA_COUNT];
 
-        public static string HYI_Port           = "";
-        public static int    HYI_BaudRate       = 19200;
-        public static int    HYI_DataBits       = 8;
-        public static int    HYI_StopBits       = 1;
-        public static int    HYI_Parity         = 0;
+        public static string HYI_Port = "";
+        public static int HYI_BaudRate = 19200;
+        public static int HYI_DataBits = 8;
+        public static int HYI_StopBits = 1;
+        public static int HYI_Parity = 0;
 
         public TOBBETUROCKETRY()
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US"); 
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             this.InitializeComponent();
+
             FetchAvailablePorts();
             values = recivedData.Split(',');
             btnBaglantiyiBitir.Enabled = false;
@@ -91,11 +95,11 @@ namespace TOBBETUROCKETRY
             comboBoxComPort.Items.AddRange(ports);
             if (ports.Length > 0) comboBoxComPort.SelectedIndex = comboBoxComPort.Items.Count - 1;
             else
-            { 
+            {
                 comboBoxComPort.Text = "Takili Cihaz Yok";
                 lblDurum.ForeColor = Color.Red;
                 lblDurum.Text = "Baglanti Yok!";
-            } 
+            }
         }
         private void btnBaglan_Click(object sender, EventArgs e)
         {
@@ -180,11 +184,11 @@ namespace TOBBETUROCKETRY
             textBoxBasinc_GorevYuku.Text = GetPinValue(PackageElements.basinc_Gorev);
             textBoxGPSEnlem_GorevYuku.Text = GetPinValue(PackageElements.GPSe_Gorev);
             textBoxGPSBoylam_GorevYuku.Text = GetPinValue(PackageElements.GPSb_Gorev);
-            if (GetPinValue(PackageElements.patlama1).Equals("1")|| GetPinValue(PackageElements.patlama1).Equals("1.0"))
+            if (GetPinValue(PackageElements.patlama1).Equals("1") || GetPinValue(PackageElements.patlama1).Equals("1.0"))
             {
-                patlama1_no.Visible= false;
-                patlama1_yes.Visible= true;
-            } 
+                patlama1_no.Visible = false;
+                patlama1_yes.Visible = true;
+            }
             if (GetPinValue(PackageElements.patlama2).Equals("1") || GetPinValue(PackageElements.patlama2).Equals("1.0"))
             {
                 patlama2_no.Visible = false;
@@ -220,34 +224,48 @@ namespace TOBBETUROCKETRY
         //HYI 
         private void btnHakemIletisim_Click(object sender, EventArgs e)
         {
-            using (HYI hyi = new HYI())
+            if(HYIDataSendThread == null)
             { 
-                if (hyi.ShowDialog() == DialogResult.OK)
+                using (HYI hyi = new HYI())
                 {
-                    HYI_Port = hyi.HYI_Port()  ;
-                    HYI_BaudRate = hyi.HYI_BaudRate();          
-                    HYI_DataBits = hyi.HYI_DataBits();          
-                    HYI_StopBits = hyi.HYI_StopBits();          
-                    HYI_Parity = hyi.HYI_Parity();
-                    HYI_Baglan();
+                    if (hyi.ShowDialog() == DialogResult.OK)
+                    {
+                        HYI_Port = hyi.HYI_Port();
+                        HYI_BaudRate = hyi.HYI_BaudRate();
+                        HYI_DataBits = hyi.HYI_DataBits();
+                        HYI_StopBits = hyi.HYI_StopBits();
+                        HYI_Parity = hyi.HYI_Parity();
+                        HYI_Baglan();
+                    }
                 }
+            }
+            else
+            { 
+                if (SerialPort_HYI.IsOpen)
+                {
+                    SerialPort_HYI.Close();
+                    MessageBox.Show("Bağlantı Sonlandırılıyor");
+                }
+                lblHakemDurum.Text = "Bağlantı Sonlandırıldı!";
+                lblHakemDurum.ForeColor = Color.White;
+                btnHakemIletisim.Text = "Hakem Yer Istasyonuna Baglan";
+                HYIDataSendThread?.Abort();
+                HYIDataSendThread = null;
             }
         }
         public void HYI_Baglan()
         {
             SerialPort_HYI = new SerialPort();
-            if (HYI_Port != null && HYI_Port!="")
+            if (HYI_Port != null && HYI_Port != "")
             {
                 try
                 {
-
                     SerialPort_HYI.PortName = HYI_Port;
                     SerialPort_HYI.BaudRate = HYI_BaudRate;
                     SerialPort_HYI.Parity = (Parity)HYI_Parity;
                     SerialPort_HYI.DataBits = HYI_DataBits;
                     SerialPort_HYI.StopBits = (StopBits)HYI_StopBits;
                     SerialPort_HYI.ReadBufferSize = 200000000;
-                    SerialPort_HYI.DataReceived += SerialPort_HYI_dataSend;
                 }
                 catch { }
             }
@@ -261,9 +279,14 @@ namespace TOBBETUROCKETRY
             try
             {
                 SerialPort_HYI.Open();
+                btnHakemIletisim.Enabled =false;
                 Thread.Sleep(1000);
-                lblHakemDurum.ForeColor = Color.Green;
-                lblHakemDurum.Text = "Baglandi!";
+                if (SerialPort_HYI.IsOpen)
+                {
+                    SerialPort_HYI_dataSend();
+                    lblHakemDurum.ForeColor = Color.Green;
+                    lblHakemDurum.Text = "Baglandi!"; 
+                }
             }
             catch (Exception ex)
             {
@@ -273,25 +296,56 @@ namespace TOBBETUROCKETRY
                 lblHakemDurum.Text = "Baglanti Kurulamadi";
             }
         }
-        private void SerialPort_HYI_dataSend(object sender, SerialDataReceivedEventArgs e)
+        private void SerialPort_HYI_dataSend()
         {
-                try
+            try
+            {
+                if (HYIDataSendThread == null)
                 {
-                    if (SerialPort_HYI.IsOpen)
+                    HYIDataSendThread = new Thread(() =>
                     {
-                        SerialPort_HYI.Write(recivedData);
-                    }
+                        string paketstr = ""; 
+                        while (SerialPort_HYI.IsOpen)
+                        {
+                            try
+                            {
+                                byte[] paket = new byte[78];
+                                paketstr = PaketOlustur(ref paket);
+                                SerialPort_HYI.Write(paketstr);
+                                Thread.Sleep(100);
+                            }
+                            catch(Exception ex) 
+                            {
+                                Console.WriteLine(ex.StackTrace);
+                            }
+                        }
+                    });
+                    HYIDataSendThread.Start();
+                    btnHakemIletisim.Text = "Hakem Yer Istasyonu Baglantısını Kes";
+                    Thread.Sleep(1000);
+                    btnHakemIletisim.Enabled = true;
                 }
-                catch (Exception) { }
-            
+
+            }
+            catch (Exception ex) { 
+                MessageBox.Show("HYI Paket Gonderilemedi. Bağlantı Sonlandırılıyor\n" + ex );
+                lblHakemDurum.Text ="Bağlantı Kesildi";
+                lblHakemDurum.ForeColor = Color.Red;
+                SerialPort_HYI.Close();
+                HYIDataSendThread?.Abort(); 
+                HYIDataSendThread = null;
+            }
+
         }
 
         #endregion
 
 
+        Thread HYIDataSendThread = null;
+        Thread FileSaveThread = null;
+
         #region EVENTS
 
-        Thread FileSaveThread = null;
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -310,6 +364,7 @@ namespace TOBBETUROCKETRY
             }
             catch (Exception ex) { MessageBox.Show("" + ex); }
             FileSaveThread?.Abort();
+            HYIDataSendThread?.Abort();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -329,18 +384,16 @@ namespace TOBBETUROCKETRY
             gMapGorevYuku.MaxZoom = 100;
             gMapGorevYuku.Zoom = 16;
 
-            patlama1_no.Visible     = true;
-            patlama1_yes.Visible    = false; 
-            patlama2_no.Visible     = true;
-            patlama2_yes.Visible    = false;   
-             
-
+            patlama1_no.Visible = true;
+            patlama1_yes.Visible = false;
+            patlama2_no.Visible = true;
+            patlama2_yes.Visible = false;
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             FetchAvailablePorts();
             glControl1.Invalidate();
-            gMapAnaBilgisayar.Position = new PointLatLng(39.9103241f, 32.8529681f); 
+            gMapAnaBilgisayar.Position = new PointLatLng(39.9103241f, 32.8529681f);
             gMapAnaBilgisayar.Zoom = 16;
             gMapGorevYuku.Position = new PointLatLng(39.9103241f, 32.8529681f);
             gMapGorevYuku.Zoom = 16;
@@ -425,7 +478,7 @@ namespace TOBBETUROCKETRY
             public float intensity;
         };
 
-        List<Vector3> vertices = new List<Vector3>(); 
+        List<Vector3> vertices = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
         List<Vector2> texCoords = new List<Vector2>();
         private List<int[]> faces = new List<int[]>();
@@ -440,7 +493,7 @@ namespace TOBBETUROCKETRY
         Vector3 cameraDir = new Vector3(0, 0, 0);
 
         private void glControl1_Paint(object sender, PaintEventArgs e)
-        {   
+        {
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
 
@@ -452,22 +505,22 @@ namespace TOBBETUROCKETRY
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.LoadMatrix(ref lookat);
-           
+
             GL.Begin(BeginMode.Lines);
-                GL.Color3(Color.Blue);
-                GL.Vertex3(0, 0.0, -10.0);
-                GL.Vertex3(0.0, 0.0, 10.0);
+            GL.Color3(Color.Blue);
+            GL.Vertex3(0, 0.0, -10.0);
+            GL.Vertex3(0.0, 0.0, 10.0);
 
 
-                GL.Color3(Color.Green);
-                GL.Vertex3(0.0, -10, 0.0);
-                GL.Vertex3(0.0, 10, 0.0);
+            GL.Color3(Color.Green);
+            GL.Vertex3(0.0, -10, 0.0);
+            GL.Vertex3(0.0, 10, 0.0);
 
-                GL.Color3(Color.Red);
-                GL.Vertex3(-10.0, 0.0, 0);
-                GL.Vertex3(10.0, 0.0, 0);
+            GL.Color3(Color.Red);
+            GL.Vertex3(-10.0, 0.0, 0);
+            GL.Vertex3(10.0, 0.0, 0);
             GL.End();
-            
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BindVertexArray(VertexArrayObject);
             GL.UseProgram(ShaderObject);
@@ -517,7 +570,7 @@ namespace TOBBETUROCKETRY
             location = GL.GetUniformLocation(ShaderObject, "camPos");
             GL.Uniform3(location, new Vector3(0, 0, 8));
 
-            GL.DrawArrays(BeginMode.Triangles, 0, vertexCount); 
+            GL.DrawArrays(BeginMode.Triangles, 0, vertexCount);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
             GL.UseProgram(0);
@@ -525,7 +578,7 @@ namespace TOBBETUROCKETRY
             glControl1.SwapBuffers();
         }
         private void glControl1_Load(object sender, EventArgs e)
-        { 
+        {
             GL.ClearColor(0, 0, 0, 0);
             GL.Enable(EnableCap.DepthTest);
             ModelLoadToBuffer(nameOfModel);
@@ -536,10 +589,10 @@ namespace TOBBETUROCKETRY
 
             ObjParser.ParseFile(filePath + ".obj");
 
-            vertices    = ObjParser.Vertices;
-            normals     = ObjParser.Normals;
-            texCoords   = ObjParser.TexCoords;
-            faces       = ObjParser.Faces;
+            vertices = ObjParser.Vertices;
+            normals = ObjParser.Normals;
+            texCoords = ObjParser.TexCoords;
+            faces = ObjParser.Faces;
 
             List<float> vertexBuffer = new List<float>();
 
@@ -647,12 +700,151 @@ namespace TOBBETUROCKETRY
             light.direction = new Vector3(0, -1, 0);
             light.intensity = 4;
 
-            Console.WriteLine("vertices : "+vertices.Count);
-            Console.WriteLine("normals  : "+normals.Count);
-            Console.WriteLine("texCoords: "+texCoords.Count);
-            Console.WriteLine("faces    : "+faces.Count); 
+            Console.WriteLine("vertices : " + vertices.Count);
+            Console.WriteLine("normals  : " + normals.Count);
+            Console.WriteLine("texCoords: " + texCoords.Count);
+            Console.WriteLine("faces    : " + faces.Count);
 
-        }                      
-        #endregion             
-    }                          
+        }
+        #endregion
+
+
+        #region 78 BIT DONUSTURUCU
+
+
+        public byte CheckSumHesapla(byte[] olusturalacak_paket)
+        {
+            int checkSum = 0;
+            for (int i = 4; i < 75; i++)
+            {
+                checkSum += olusturalacak_paket[i];
+            }
+            return (byte)(checkSum % 256);
+        }
+        
+        //public byte[] olusturalacak_paket = new byte[78];
+        public string PaketOlustur( ref byte[] olusturalacak_paket)
+        { 
+            byte[] byteArray = new byte[4];
+            olusturalacak_paket[0] = 0xFF; // Sabit
+            olusturalacak_paket[1] = 0xFF; // Sabit
+            olusturalacak_paket[2] = 0x54; // Sabit
+            olusturalacak_paket[3] = 0x52; // Sabit
+            olusturalacak_paket[4] = (byte)Takim_ID; // Takim ID =
+            olusturalacak_paket[5] = paketNumarasıHYI; // Sayac degeri = 0; 
+            /*
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Irtifa_basinc_Ana));
+            olusturalacak_paket[6] = byteArray[0];
+            olusturalacak_paket[7] = byteArray[1];
+            olusturalacak_paket[8] = byteArray[2];
+            olusturalacak_paket[9] = byteArray[3]; 
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSIrtifa_Ana));
+            olusturalacak_paket[10] = byteArray[0];
+            olusturalacak_paket[11] = byteArray[1];
+            olusturalacak_paket[12] = byteArray[2];
+            olusturalacak_paket[13] = byteArray[3];
+            */
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSe_Ana));
+            olusturalacak_paket[14] = byteArray[0];
+            olusturalacak_paket[15] = byteArray[1];
+            olusturalacak_paket[16] = byteArray[2];
+            olusturalacak_paket[17] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSb_Ana));
+            olusturalacak_paket[18] = byteArray[0];
+            olusturalacak_paket[19] = byteArray[1];
+            olusturalacak_paket[20] = byteArray[2];
+            olusturalacak_paket[21] = byteArray[3];
+            /*
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSIrtifa_Gorev));
+            olusturalacak_paket[22] = byteArray[0];
+            olusturalacak_paket[23] = byteArray[1];
+            olusturalacak_paket[24] = byteArray[2];
+            olusturalacak_paket[25] = byteArray[3];
+            */
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSe_Gorev));
+            olusturalacak_paket[26] = byteArray[0];
+            olusturalacak_paket[27] = byteArray[1];
+            olusturalacak_paket[28] = byteArray[2];
+            olusturalacak_paket[29] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSb_Gorev));
+            olusturalacak_paket[30] = byteArray[0];
+            olusturalacak_paket[31] = byteArray[1];
+            olusturalacak_paket[32] = byteArray[2];
+            olusturalacak_paket[33] = byteArray[3];
+
+            olusturalacak_paket[34] = 0;
+            olusturalacak_paket[35] = 0;
+            olusturalacak_paket[36] = 0;
+            olusturalacak_paket[37] = 0;
+            olusturalacak_paket[38] = 0;
+            olusturalacak_paket[39] = 0;
+            olusturalacak_paket[40] = 0;
+            olusturalacak_paket[41] = 0;
+            olusturalacak_paket[42] = 0;
+            olusturalacak_paket[43] = 0;
+            olusturalacak_paket[44] = 0;
+            olusturalacak_paket[45] = 0;
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.X_jiro));
+            olusturalacak_paket[46] = byteArray[0];
+            olusturalacak_paket[47] = byteArray[1];
+            olusturalacak_paket[48] = byteArray[2];
+            olusturalacak_paket[49] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Y_jiro));
+            olusturalacak_paket[50] = byteArray[0];
+            olusturalacak_paket[51] = byteArray[1];
+            olusturalacak_paket[52] = byteArray[2];
+            olusturalacak_paket[53] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Z_jiro));
+            olusturalacak_paket[54] = byteArray[0];
+            olusturalacak_paket[55] = byteArray[1];
+            olusturalacak_paket[56] = byteArray[2];
+            olusturalacak_paket[57] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.X_ivme));
+            olusturalacak_paket[58] = byteArray[0];
+            olusturalacak_paket[59] = byteArray[1];
+            olusturalacak_paket[60] = byteArray[2];
+            olusturalacak_paket[61] = byteArray[3];
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Y_ivme));
+            olusturalacak_paket[62] = byteArray[0];
+            olusturalacak_paket[63] = byteArray[1];
+            olusturalacak_paket[64] = byteArray[2];
+            olusturalacak_paket[65] = byteArray[3];
+
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Z_ivme));
+            olusturalacak_paket[66] = byteArray[0];
+            olusturalacak_paket[67] = byteArray[1];
+            olusturalacak_paket[68] = byteArray[2];
+            olusturalacak_paket[69] = byteArray[3];
+            /*
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.aci));
+            olusturalacak_paket[70] = byteArray[0];
+            olusturalacak_paket[71] = byteArray[1];
+            olusturalacak_paket[72] = byteArray[2];
+            olusturalacak_paket[73] = byteArray[3];
+            */
+            olusturalacak_paket[74] = 1;
+            olusturalacak_paket[75] = CheckSumHesapla(olusturalacak_paket);
+            olusturalacak_paket[76] = 0x0D; // Sabit
+            olusturalacak_paket[77] = 0x0A; // Sabit
+
+            paketNumarasıHYI++;
+            string outputToHYI = "";
+            for (int i = 0; i < 78; i++)
+            {
+                outputToHYI += string.Format("0x{0:X2} ", olusturalacak_paket[i]);
+            }  
+            return outputToHYI;
+        }
+        #endregion
+    }
 }
