@@ -24,8 +24,8 @@ using StbImageSharp;
 using System.Globalization;
 using System.Collections;
 /*
-SERIAL'A BASILAN      =====>  "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev"
-BYTE BOYUTU (60Byte)  =====>     1BYTE       ,  1BYTE ,  1BYTE , 4BYTE    ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE  ,4BYTE   ,  1BYTE         ,  4BYTE       ,  4BYTE  , 4BYTE      ,4BYTE     ,  4BYTE ,
+SERIAL'A BASILAN      =====>  "packageNum_Ana,patlama1,patlama2,Irtifa_basinc_Ana,GPSIrtifa_Ana,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev"
+BYTE BOYUTU (68Byte)  =====>     1BYTE       ,  1BYTE ,  1BYTE ,     4BYTE       ,    4BYTE    , 4BYTE    ,4BYTE ,4BYTE ,4BYTE ,4BYTE , 4BYTE ,4BYTE ,4BYTE  ,4BYTE   ,  1BYTE         ,  4BYTE       ,  4BYTE  , 4BYTE      ,4BYTE     ,  4BYTE ,
 */
 
 namespace TOBBETUROCKETRY
@@ -36,6 +36,8 @@ namespace TOBBETUROCKETRY
         packageNum_Ana,
         patlama1,
         patlama2,
+        Irtifa_basinc_Ana, 
+        GPSIrtifa_Ana,
         basinc_Ana,
         X_jiro,
         Y_jiro,
@@ -43,9 +45,11 @@ namespace TOBBETUROCKETRY
         X_ivme,
         Y_ivme,
         Z_ivme,
+        Aci_Ana,
         GPSe_Ana,
         GPSb_Ana,
-        packageNum_Gorev,
+        packageNum_Gorev, 
+        GPSIrtifa_Gorev,
         sicaklik_Gorev,
         nem_Gorev,
         basinc_Gorev,
@@ -56,17 +60,19 @@ namespace TOBBETUROCKETRY
     //https://www.google.com/maps?q=39.9272,32.8644
     public partial class TOBBETUROCKETRY : Form
     {
-        static readonly int DATA_COUNT = 18;
+        ////////////////////////////////////////  
+        public byte paketNumarasıHYI = 0;
+        public readonly int Takim_ID = 99;
+        ////////////////////////////////////////    
+        static readonly int DATA_COUNT = 22;
         private readonly string nameOfModel = AppDomain.CurrentDomain.BaseDirectory + "/rocket"; // without ".obj" 
         public readonly string filenameRoket = "RoketValues.csv";
-        public byte paketNumarasıHYI = 0;
-        public readonly int Takim_ID = 0;
 
         SerialPort serialPort_YerIst = new SerialPort();
         SerialPort SerialPort_HYI = new SerialPort();
 
-        private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,GPSe_Ana,GPSb_Ana,packageNum_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
-        private string recivedData = "0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,39.9103241,32.8529681";
+        private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,Irtifa_basinc_Ana,GPSIrtifa_Ana,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,Aci_Ana,GPSe_Ana,GPSb_Ana,packageNum_Gorev,GPSIrtifa_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
+        private string recivedData =         "0,0,0,0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,0,39.9103241,32.8529681";
         private string[] values = new string[DATA_COUNT];
 
         public static string HYI_Port = "";
@@ -173,14 +179,11 @@ namespace TOBBETUROCKETRY
             textBoxIvmeX_AnaBil.Text = GetPinValue(PackageElements.X_ivme);
             textBoxIvmeY_AnaBil.Text = GetPinValue(PackageElements.Y_ivme);
             textBoxIvmeZ_AnaBil.Text = GetPinValue(PackageElements.Z_ivme);
-
-            x_angle_3d_model = GetPinValueFloat(PackageElements.X_jiro);
-            y_angle_3d_model = GetPinValueFloat(PackageElements.Y_jiro) + 90;
-            z_angle_3d_model = GetPinValueFloat(PackageElements.Z_jiro);
-
+            y_angle_3d_model =(float)(GetPinValueFloat(PackageElements.X_jiro) /-100000000);
+            z_angle_3d_model = 20+(float)(GetPinValueFloat(PackageElements.Aci_Ana)/100000000);
             textBoxPaketNum_GorevYuku.Text = GetPinValue(PackageElements.packageNum_Gorev);
-            textBoxSicaklik_GorevYuku.Text = GetPinValue(PackageElements.packageNum_Gorev);
-            textBoxNem_GorevYuku.Text = GetPinValue(PackageElements.packageNum_Gorev);
+            textBoxSicaklik_GorevYuku.Text = GetPinValue(PackageElements.sicaklik_Gorev);
+            textBoxNem_GorevYuku.Text = GetPinValue(PackageElements.nem_Gorev);
             textBoxBasinc_GorevYuku.Text = GetPinValue(PackageElements.basinc_Gorev);
             textBoxGPSEnlem_GorevYuku.Text = GetPinValue(PackageElements.GPSe_Gorev);
             textBoxGPSBoylam_GorevYuku.Text = GetPinValue(PackageElements.GPSb_Gorev);
@@ -194,14 +197,29 @@ namespace TOBBETUROCKETRY
                 patlama2_no.Visible = false;
                 patlama2_yes.Visible = true;
             }
+            if (GetPinValue(PackageElements.patlama1).Equals("0") || GetPinValue(PackageElements.patlama1).Equals("0.0"))
+            {
+                patlama1_no.Visible = true;
+                patlama1_yes.Visible = false;
+            }
+            if (GetPinValue(PackageElements.patlama2).Equals("0") || GetPinValue(PackageElements.patlama2).Equals("0.0"))
+            {
+                patlama2_no.Visible = true;
+                patlama2_yes.Visible = false;
+            }
+            
 
             try
             {
-                glControl1.Invalidate();
+                glControl1.Invalidate(); 
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message.ToString(), "Error While Drawing GLControl"); }
+
+            try
+            { 
                 RefreshMapToNewGPS();
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message.ToString(), "Error"); }
-
+            catch (Exception ex) { MessageBox.Show(ex.Message.ToString(), "Error While Refreshing GPS"); }
         }
         private void btnBaglantiyiBitir_Click(object sender, EventArgs e)
         {
@@ -304,14 +322,14 @@ namespace TOBBETUROCKETRY
                 {
                     HYIDataSendThread = new Thread(() =>
                     {
-                        string paketstr = ""; 
+                        byte[] paketstr = new byte[78];
                         while (SerialPort_HYI.IsOpen)
                         {
                             try
                             {
                                 byte[] paket = new byte[78];
-                                paketstr = PaketOlustur(ref paket);
-                                SerialPort_HYI.Write(paketstr);
+                                paketstr = PaketOlustur();
+                                 SerialPort_HYI.Write(paketstr, 0, paketstr.Length); 
                                 Thread.Sleep(100);
                             }
                             catch(Exception ex) 
@@ -371,7 +389,7 @@ namespace TOBBETUROCKETRY
             gMapAnaBilgisayar.DragButton = MouseButtons.Left;
             gMapAnaBilgisayar.MouseWheelZoomEnabled = true;
             gMapAnaBilgisayar.MapProvider = GMapProviders.GoogleMap;
-            gMapAnaBilgisayar.Position = new PointLatLng(GetPinValueFloat(PackageElements.GPSe_Ana), GetPinValueFloat(PackageElements.GPSb_Ana));
+            gMapAnaBilgisayar.Position = new PointLatLng(GetPinValueDouble(PackageElements.GPSe_Ana), GetPinValueDouble(PackageElements.GPSb_Ana));
             gMapAnaBilgisayar.MinZoom = 1;
             gMapAnaBilgisayar.MaxZoom = 100;
             gMapAnaBilgisayar.Zoom = 16;
@@ -379,7 +397,7 @@ namespace TOBBETUROCKETRY
             gMapGorevYuku.DragButton = MouseButtons.Left;
             gMapGorevYuku.MouseWheelZoomEnabled = true;
             gMapGorevYuku.MapProvider = GMapProviders.GoogleMap;
-            gMapGorevYuku.Position = new PointLatLng(GetPinValueFloat(PackageElements.GPSe_Gorev), GetPinValueFloat(PackageElements.GPSb_Gorev));
+            gMapGorevYuku.Position = new PointLatLng(GetPinValueDouble(PackageElements.GPSe_Gorev), GetPinValueDouble(PackageElements.GPSb_Gorev));
             gMapGorevYuku.MinZoom = 1;
             gMapGorevYuku.MaxZoom = 100;
             gMapGorevYuku.Zoom = 16;
@@ -445,16 +463,22 @@ namespace TOBBETUROCKETRY
         {
             return float.Parse(GetPinValue(pe).IndexOf(".") >= 0 ? GetPinValue(pe).Replace(".", ",") : GetPinValue(pe));
         }
+        private Double GetPinValueDouble(PackageElements pe)
+        {
+            return Double.Parse(GetPinValue(pe));
+        }
         private void RefreshMapToNewGPS()
         {
-            gMapAnaBilgisayar.Position = new PointLatLng(GetPinValueFloat(PackageElements.GPSe_Ana), GetPinValueFloat(PackageElements.GPSb_Ana));
+            gMapAnaBilgisayar.Position = new PointLatLng((double)GetPinValueDouble(PackageElements.GPSe_Ana), (double)GetPinValueDouble(PackageElements.GPSb_Ana));
             gMapAnaBilgisayar.MinZoom = 1;
             gMapAnaBilgisayar.MaxZoom = 100;
             gMapAnaBilgisayar.Zoom = 16;
-            gMapGorevYuku.Position = new PointLatLng(GetPinValueFloat(PackageElements.GPSe_Gorev), GetPinValueFloat(PackageElements.GPSb_Gorev));
+            gMapAnaBilgisayar.ShowCenter= true;
+            gMapGorevYuku.Position = new PointLatLng((double)GetPinValueDouble(PackageElements.GPSe_Gorev), (double)GetPinValueDouble(PackageElements.GPSb_Gorev));
             gMapGorevYuku.MinZoom = 1;
             gMapGorevYuku.MaxZoom = 100;
             gMapGorevYuku.Zoom = 16;
+            gMapGorevYuku.ShowCenter = true;
         }
 
         #endregion
@@ -710,29 +734,28 @@ namespace TOBBETUROCKETRY
 
 
         #region 78 BIT DONUSTURUCU
-
-
-        public byte CheckSumHesapla(byte[] olusturalacak_paket)
+         
+        public byte CheckSumHesapla(byte[] o)
         {
-            int checkSum = 0;
+            byte checkSum = 0;
             for (int i = 4; i < 75; i++)
             {
-                checkSum += olusturalacak_paket[i];
+                checkSum += o[i];
             }
-            return (byte)(checkSum % 256);
+            return checkSum ;
         }
-        
-        //public byte[] olusturalacak_paket = new byte[78];
-        public string PaketOlustur( ref byte[] olusturalacak_paket)
-        { 
-            byte[] byteArray = new byte[4];
+
+        byte[] byteArray = new byte[4];
+        public byte[] PaketOlustur(  )
+        {
+            byte[] olusturalacak_paket = new byte[78];
             olusturalacak_paket[0] = 0xFF; // Sabit
             olusturalacak_paket[1] = 0xFF; // Sabit
             olusturalacak_paket[2] = 0x54; // Sabit
             olusturalacak_paket[3] = 0x52; // Sabit
             olusturalacak_paket[4] = (byte)Takim_ID; // Takim ID =
             olusturalacak_paket[5] = paketNumarasıHYI; // Sayac degeri = 0; 
-            /*
+            
             byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Irtifa_basinc_Ana));
             olusturalacak_paket[6] = byteArray[0];
             olusturalacak_paket[7] = byteArray[1];
@@ -744,7 +767,7 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[11] = byteArray[1];
             olusturalacak_paket[12] = byteArray[2];
             olusturalacak_paket[13] = byteArray[3];
-            */
+            
 
             byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSe_Ana));
             olusturalacak_paket[14] = byteArray[0];
@@ -756,14 +779,14 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[18] = byteArray[0];
             olusturalacak_paket[19] = byteArray[1];
             olusturalacak_paket[20] = byteArray[2];
-            olusturalacak_paket[21] = byteArray[3];
-            /*
+            olusturalacak_paket[21] = byteArray[3]; 
+
             byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSIrtifa_Gorev));
             olusturalacak_paket[22] = byteArray[0];
             olusturalacak_paket[23] = byteArray[1];
             olusturalacak_paket[24] = byteArray[2];
-            olusturalacak_paket[25] = byteArray[3];
-            */
+            olusturalacak_paket[25] = byteArray[3]; 
+
             byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.GPSe_Gorev));
             olusturalacak_paket[26] = byteArray[0];
             olusturalacak_paket[27] = byteArray[1];
@@ -825,26 +848,25 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[67] = byteArray[1];
             olusturalacak_paket[68] = byteArray[2];
             olusturalacak_paket[69] = byteArray[3];
-            /*
-            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.aci));
+
+            byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.Aci_Ana));
             olusturalacak_paket[70] = byteArray[0];
             olusturalacak_paket[71] = byteArray[1];
             olusturalacak_paket[72] = byteArray[2];
             olusturalacak_paket[73] = byteArray[3];
-            */
+
             olusturalacak_paket[74] = 1;
             olusturalacak_paket[75] = CheckSumHesapla(olusturalacak_paket);
             olusturalacak_paket[76] = 0x0D; // Sabit
             olusturalacak_paket[77] = 0x0A; // Sabit
 
-            paketNumarasıHYI++;
-            string outputToHYI = "";
+            paketNumarasıHYI++; 
             for (int i = 0; i < 78; i++)
             {
-                outputToHYI += string.Format("0x{0:X2} ", olusturalacak_paket[i]);
-            }  
-            return outputToHYI;
-        }
+                olusturalacak_paket[i]  = Convert.ToByte(string.Format("0x{0:X2}", olusturalacak_paket[i]),16);
+            }
+            return olusturalacak_paket;
+        } 
         #endregion
     }
 }

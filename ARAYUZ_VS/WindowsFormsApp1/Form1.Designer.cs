@@ -30,15 +30,6 @@ namespace TOBBETUROCKETRY
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TOBBETUROCKETRY));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnBaglan = new System.Windows.Forms.Button();
             this.btnBaglantiyiBitir = new System.Windows.Forms.Button();
             this.comboBoxComPort = new System.Windows.Forms.ComboBox();
@@ -117,10 +108,6 @@ namespace TOBBETUROCKETRY
             this.patlama2_yes = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.glControl1 = new OpenTK.GLControl();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaudRate)).BeginInit();
             this.panelBaglanti.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -145,10 +132,6 @@ namespace TOBBETUROCKETRY
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).BeginInit();
             this.flowLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
-            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBaglan
@@ -225,8 +208,8 @@ namespace TOBBETUROCKETRY
             // 
             // btnHakemIletisim
             // 
-            this.btnHakemIletisim.BackColor = System.Drawing.Color.Purple;
             resources.ApplyResources(this.btnHakemIletisim, "btnHakemIletisim");
+            this.btnHakemIletisim.BackColor = System.Drawing.Color.Purple;
             this.btnHakemIletisim.ForeColor = System.Drawing.Color.White;
             this.btnHakemIletisim.Name = "btnHakemIletisim";
             this.btnHakemIletisim.UseVisualStyleBackColor = false;
@@ -240,8 +223,8 @@ namespace TOBBETUROCKETRY
             // 
             // btnDosyayaKaydet
             // 
-            this.btnDosyayaKaydet.BackColor = System.Drawing.Color.DarkGoldenrod;
             resources.ApplyResources(this.btnDosyayaKaydet, "btnDosyayaKaydet");
+            this.btnDosyayaKaydet.BackColor = System.Drawing.Color.DarkGoldenrod;
             this.btnDosyayaKaydet.ForeColor = System.Drawing.Color.White;
             this.btnDosyayaKaydet.Name = "btnDosyayaKaydet";
             this.btnDosyayaKaydet.UseVisualStyleBackColor = false;
@@ -672,11 +655,11 @@ namespace TOBBETUROCKETRY
             // 
             // panel3
             // 
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Controls.Add(this.patlama1_no);
             this.panel3.Controls.Add(this.patlama1_yes);
             this.panel3.Controls.Add(this.pictureBox3);
             this.panel3.Controls.Add(this.label11);
-            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
             // 
             // patlama1_no
@@ -701,11 +684,11 @@ namespace TOBBETUROCKETRY
             // 
             // panel4
             // 
+            resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Controls.Add(this.pictureBox4);
             this.panel4.Controls.Add(this.label12);
             this.panel4.Controls.Add(this.patlama2_no);
             this.panel4.Controls.Add(this.patlama2_yes);
-            resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Name = "panel4";
             // 
             // pictureBox4
@@ -744,62 +727,12 @@ namespace TOBBETUROCKETRY
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             // 
-            // chart1
-            // 
-            resources.ApplyResources(this.chart1, "chart1");
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
-            this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
-            // 
-            // chart2
-            // 
-            resources.ApplyResources(this.chart2, "chart2");
-            chartArea5.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart2.Legends.Add(legend5);
-            this.chart2.Name = "chart2";
-            this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chart2.Series.Add(series5);
-            // 
-            // chart3
-            // 
-            resources.ApplyResources(this.chart3, "chart3");
-            chartArea6.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chart3.Legends.Add(legend6);
-            this.chart3.Name = "chart3";
-            this.chart3.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.EarthTones;
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chart3.Series.Add(series6);
-            // 
-            // flowLayoutPanel6
-            // 
-            resources.ApplyResources(this.flowLayoutPanel6, "flowLayoutPanel6");
-            this.flowLayoutPanel6.Controls.Add(this.chart3);
-            this.flowLayoutPanel6.Controls.Add(this.chart2);
-            this.flowLayoutPanel6.Controls.Add(this.chart1);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            // 
             // TOBBETUROCKETRY
             // 
             this.AcceptButton = this.btnHakemIletisim;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.Controls.Add(this.flowLayoutPanel6);
             this.Controls.Add(this.glControl1);
             this.Controls.Add(this.flowLayoutPanel5);
             this.Controls.Add(this.panel2);
@@ -840,10 +773,7 @@ namespace TOBBETUROCKETRY
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).EndInit();
             this.flowLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
-            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -929,10 +859,6 @@ namespace TOBBETUROCKETRY
         private System.Windows.Forms.Label lblDosyaKayit;
         private System.Windows.Forms.Button btnDosyayaKaydet;
         private OpenTK.GLControl glControl1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
     }
 }
 

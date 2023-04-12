@@ -270,113 +270,8 @@
   <data name="panelBaglanti.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;lblHakemDurum.Name" xml:space="preserve">
-    <value>lblHakemDurum</value>
-  </data>
-  <data name="&gt;&gt;lblHakemDurum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblHakemDurum.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;lblHakemDurum.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnHakemIletisim.Name" xml:space="preserve">
-    <value>btnHakemIletisim</value>
-  </data>
-  <data name="&gt;&gt;btnHakemIletisim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHakemIletisim.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;btnHakemIletisim.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;lblDosyaKayit.Name" xml:space="preserve">
-    <value>lblDosyaKayit</value>
-  </data>
-  <data name="&gt;&gt;lblDosyaKayit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDosyaKayit.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;lblDosyaKayit.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnDosyayaKaydet.Name" xml:space="preserve">
-    <value>btnDosyayaKaydet</value>
-  </data>
-  <data name="&gt;&gt;btnDosyayaKaydet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDosyayaKaydet.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;btnDosyayaKaydet.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnRefresh.Name" xml:space="preserve">
-    <value>btnRefresh</value>
-  </data>
-  <data name="&gt;&gt;btnRefresh.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRefresh.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;btnRefresh.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;lblDurum.Name" xml:space="preserve">
-    <value>lblDurum</value>
-  </data>
-  <data name="&gt;&gt;lblDurum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDurum.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;lblDurum.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="panelBaglanti.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="panelBaglanti.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panelBaglanti.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1904, 61</value>
-  </data>
-  <data name="panelBaglanti.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;panelBaglanti.Name" xml:space="preserve">
-    <value>panelBaglanti</value>
-  </data>
-  <data name="&gt;&gt;panelBaglanti.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelBaglanti.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panelBaglanti.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="lblHakemDurum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="lblHakemDurum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,7 +283,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblHakemDurum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1411, 0</value>
+    <value>1345, 0</value>
   </data>
   <data name="lblHakemDurum.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 18</value>
@@ -411,6 +306,9 @@
   <data name="&gt;&gt;lblHakemDurum.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="btnHakemIletisim.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="btnHakemIletisim.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
@@ -421,10 +319,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnHakemIletisim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1414, 19</value>
+    <value>1348, 17</value>
   </data>
   <data name="btnHakemIletisim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 39</value>
+    <value>478, 38</value>
   </data>
   <data name="btnHakemIletisim.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -444,6 +342,9 @@
   <data name="&gt;&gt;btnHakemIletisim.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="lblDosyaKayit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="lblDosyaKayit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -454,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDosyaKayit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>909, 0</value>
+    <value>839, 0</value>
   </data>
   <data name="lblDosyaKayit.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 18</value>
@@ -477,6 +378,9 @@
   <data name="&gt;&gt;lblDosyaKayit.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="btnDosyayaKaydet.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="btnDosyayaKaydet.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
@@ -487,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnDosyayaKaydet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>912, 19</value>
+    <value>842, 20</value>
   </data>
   <data name="btnDosyayaKaydet.Size" type="System.Drawing.Size, System.Drawing">
     <value>234, 36</value>
@@ -622,6 +526,30 @@
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
+  <data name="panelBaglanti.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panelBaglanti.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelBaglanti.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1838, 60</value>
+  </data>
+  <data name="panelBaglanti.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;panelBaglanti.Name" xml:space="preserve">
+    <value>panelBaglanti</value>
+  </data>
+  <data name="&gt;&gt;panelBaglanti.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelBaglanti.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelBaglanti.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
     <value>pictureBox1</value>
   </data>
@@ -674,10 +602,10 @@
     <value>Left</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 61</value>
+    <value>0, 60</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 980</value>
+    <value>490, 923</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -692,7 +620,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="pictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -728,7 +656,7 @@
     <value>7, 464</value>
   </data>
   <data name="gMapAnaBilgisayar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 506</value>
+    <value>473, 848</value>
   </data>
   <data name="gMapAnaBilgisayar.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -2096,10 +2024,10 @@
     <value>Right</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1414, 61</value>
+    <value>1348, 60</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 980</value>
+    <value>490, 923</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2114,7 +2042,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="pictureBox2.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -2150,7 +2078,7 @@
     <value>9, 349</value>
   </data>
   <data name="gMapGorevYuku.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 621</value>
+    <value>473, 963</value>
   </data>
   <data name="gMapGorevYuku.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -2932,6 +2860,12 @@
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="panel3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="panel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;patlama1_no.Name" xml:space="preserve">
     <value>patlama1_no</value>
   </data>
@@ -2972,7 +2906,7 @@
     <value>3, 3</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>318, 156</value>
+    <value>300, 159</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -3291,6 +3225,9 @@
   <data name="&gt;&gt;pictureBox3.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="panel4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="&gt;&gt;pictureBox4.Name" xml:space="preserve">
     <value>pictureBox4</value>
   </data>
@@ -3328,10 +3265,10 @@
     <value>3</value>
   </data>
   <data name="panel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 3</value>
+    <value>309, 3</value>
   </data>
   <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>318, 156</value>
+    <value>310, 159</value>
   </data>
   <data name="panel4.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -3651,16 +3588,13 @@
     <value>3</value>
   </data>
   <data name="flowLayoutPanel5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="flowLayoutPanel5.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="flowLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>622, 859</value>
+    <value>602, 525</value>
   </data>
   <data name="flowLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 170</value>
+    <value>631, 172</value>
   </data>
   <data name="flowLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -3675,19 +3609,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;flowLayoutPanel5.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="glControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="glControl1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="glControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>498, 70</value>
+    <value>495, 62</value>
   </data>
   <data name="glControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>910, 447</value>
+    <value>848, 447</value>
   </data>
   <data name="glControl1.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -3702,111 +3633,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;glControl1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="chart1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="chart1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>579, 3</value>
-  </data>
-  <data name="chart1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 153</value>
-  </data>
-  <data name="chart1.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="chart1.Text" xml:space="preserve">
-    <value>chart1</value>
-  </data>
-  <data name="&gt;&gt;chart1.Name" xml:space="preserve">
-    <value>chart1</value>
-  </data>
-  <data name="&gt;&gt;chart1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
-  </data>
-  <data name="&gt;&gt;chart1.Parent" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;chart1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="chart2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="chart2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>291, 3</value>
-  </data>
-  <data name="chart2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 153</value>
-  </data>
-  <data name="chart2.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="chart2.Text" xml:space="preserve">
-    <value>chart2</value>
-  </data>
-  <data name="&gt;&gt;chart2.Name" xml:space="preserve">
-    <value>chart2</value>
-  </data>
-  <data name="&gt;&gt;chart2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
-  </data>
-  <data name="&gt;&gt;chart2.Parent" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;chart2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="chart3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="chart3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="chart3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 153</value>
-  </data>
-  <data name="chart3.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="chart3.Text" xml:space="preserve">
-    <value>chart3</value>
-  </data>
-  <data name="&gt;&gt;chart3.Name" xml:space="preserve">
-    <value>chart3</value>
-  </data>
-  <data name="&gt;&gt;chart3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
-  </data>
-  <data name="&gt;&gt;chart3.Parent" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;chart3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="flowLayoutPanel6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="flowLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>503, 692</value>
-  </data>
-  <data name="flowLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>867, 161</value>
-  </data>
-  <data name="flowLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Name" xml:space="preserve">
-    <value>flowLayoutPanel6</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel6.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -3819,7 +3645,7 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1904, 1041</value>
+    <value>1838, 983</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

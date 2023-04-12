@@ -1,6 +1,6 @@
 
 #include "Arduino.h"
-#define VERI_SAYISI 5 
+#define VERI_SAYISI 10 
 
 //******************************************************
 //Pinler
@@ -37,17 +37,12 @@ Adafruit_BME680 bme; //0x77 I2C address
 static const int RXPin = 16, TXPin = 17;
 static const uint32_t GPSBaud = 9600;
 TinyGPSPlus gps;
-
-
-byte packageNumber = 0; 
-
-float totalBasinc = 0; 
-float avarageBasinc = 91 ;   
-float ilkBasincDegeri = 91;   
+ 
+byte packageNumber = 0;  
 
 float  curPressure =0;  //HPA  
-
-float BASINC_OFFSET = 0.2;
+ 
+String SerialString=""; 
 
 void setup()
 { 
@@ -60,46 +55,42 @@ void setup()
   if(!SD.begin(SD_KART_CS_PIN))
     Serial.println("SD Card Module NOT detected!");
 
-  myFile = SD.open("Veriler_GorevYuku.txt", FILE_WRITE); 
+  myFile = SD.open("verilerg.txt", FILE_WRITE); 
+  delay(200);
   delay(200);
   e32ttl.begin();     
   delay(200);
  
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
-  bme.setPressureOversampling(BME680_OS_4X);
-  
-  for (int i =0; i < VERI_SAYISI; i++) {  
-    delay(100); 
-    totalBasinc += bme.readPressure();   
-  }  
-  avarageBasinc = totalBasinc / VERI_SAYISI;   
-  ilkBasincDegeri = avarageBasinc;
-  BASINC_OFFSET = ilkBasincDegeri/300;
-  if (myFile) { 
-     myFile.println("PakatNumarasi,1Patlama,2Patlama,Basinc,X_Jiro,Y_Jiro,Z_Jiro,GPSEnlem,GPSBoylam;"); 
-      myFile.close();
+  bme.setPressureOversampling(BME680_OS_4X); 
+  if (myFile) {  
+     myFile.println("PakatNumarasi,Irtifa_GPS,Sicaklik,Nem,Basinc,GPSEnlem,GPSBoylam;"); 
+     myFile.close();
   }
 }  
 
-struct Message_yuk {  
-      byte packageNum ; 
+struct MessageYuk {  
+      byte packageNum; 
+      byte Irtifa_GPS[4]; 
       byte temperature[4]; 
       byte humadity[4];
-      byte pressure[4] ;
+      byte pressure[4];
       byte GPSe[4]; 
       byte GPSb[4];  
 } message_yuk; 
  
 void loop()
 {  
+    SerialString=""; 
   packageNumber++;  
  
-  myFile = SD.open("Veriler_GorevYuku.txt", FILE_WRITE); 
+  myFile = SD.open("verilerg.txt",  FILE_WRITE  ); 
   smartDelay(100);  
   curPressure =bme.readPressure();  
   
   message_yuk.packageNum =  packageNumber; 
+  *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.isValid() ? gps.altitude.meters() : 0; 
   *(float*)(message_yuk.temperature) =   bme.temperature;  //Hekto pascal cinsinden
   *(float*)(message_yuk.humadity) =  bme.humidity; 
   *(float*)(message_yuk.pressure) =  curPressure; 
@@ -107,34 +98,19 @@ void loop()
   *(float*)(message_yuk.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;  
 
 
-  ResponseStatus rs = e32ttl.sendFixedMessage(0,3,6,&message_yuk, sizeof(Message_yuk));
-  Serial.println(rs.getResponseDescription());
 
-  packageNumber = (packageNumber==255) ? 0 : packageNumber;
-   
-    totalBasinc += (curPressure- avarageBasinc); 
-    avarageBasinc = totalBasinc / VERI_SAYISI ; 
-  
-    Serial.print("PAKET NUMARASI: "); Serial.println((byte)message_yuk.packageNum);   
-    Serial.print("Sicaklik: "); 
-    Serial.println(*(float*)(message_yuk.temperature));
-    Serial.print("Nem: "); 
-    Serial.println (*(float*)(message_yuk.humadity),6);  
-    Serial.print("Basinç: "); 
-    Serial.println (*(float*)(message_yuk.pressure),6);    
-    Serial.print("GPS Enlem: "); 
-    Serial.print (*(float*)(message_yuk.GPSe),6); 
-    Serial.print("\t GPS Boylam: "); 
-    Serial.println(*(float*)(message_yuk.GPSb),6); 
-    /*    
-        Serial.println(); 
-        Serial.println ("***************************************************************");
-        Serial.print("calibrated altitude(m) :");
-        Serial.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); //çok yavaş //kapat
-   */
-    Serial.println ("------------------------------------------------------------------");
-   if (myFile) {
+    
+     SerialString = SerialString+(byte)(message_yuk.packageNum)+","+*(float*)(message_yuk.Irtifa_GPS)+","+
+      *(float*)(message_yuk.temperature)+","+ *(float*)(message_yuk.humadity)+","+ *(float*)(message_yuk.pressure)+","+
+       *(float*)(message_yuk.GPSe)+","+*(float*)(message_yuk.GPSb)+";"; 
+       Serial.println(SerialString);
+       
+  e32ttl.sendFixedMessage(0,3,6,&SerialString, sizeof(SerialString)); 
+  packageNumber = (packageNumber==255) ? 0 : packageNumber; 
+    if (myFile){
           myFile.print((byte)message_yuk.packageNum);  
+          myFile.print(",");  
+          myFile.print(*(float*)message_yuk.Irtifa_GPS);  
           myFile.print(",");  
           myFile.print(*(float*)(message_yuk.temperature),6);
           myFile.print(","); 
@@ -146,7 +122,7 @@ void loop()
           myFile.print(","); 
           myFile.print (*(float*)(message_yuk.GPSb),6);     
           myFile.println("");
-      myFile.close();
+      myFile.close();  
     }
 }
 

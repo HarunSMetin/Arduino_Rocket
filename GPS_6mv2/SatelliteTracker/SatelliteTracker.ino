@@ -30,7 +30,7 @@ TinyGPSPlus gps;
       $GPGSV,3,2,11,14,25,170,00,16,57,208,39,18,67,296,40,19,40,246,00*74
       $GPGSV,3,3,11,22,42,067,42,24,14,311,43,27,05,244,00,,,,*4D
 
-  1    = Total number of messages of this type in this cycle
+  1    = Total number of messages of this type in this cycle++++++++++++++++++++++++6
   2    = Message number
   3    = Total number of SVs in view
   4    = SV PRN number
