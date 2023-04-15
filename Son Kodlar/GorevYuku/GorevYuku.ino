@@ -9,7 +9,7 @@
 //e32 nin pini      RX  TX   M1   M2
 //Arduino Mega      14  15  GND   GND 
 #include "LoRa_E32.h" 
-LoRa_E32 e32ttl(&Serial3); 
+LoRa_E32 e32ttl(&Serial3,UART_BPS_RATE_19200); 
 
 //******************************************************
 //SD KART Modülü
@@ -46,7 +46,7 @@ String SerialString="";
 
 void setup()
 { 
-  Serial.begin(9600);   
+  Serial.begin(19200);   
   Serial2.begin(GPSBaud);
   delay(100);
   
@@ -105,7 +105,7 @@ void loop()
        *(float*)(message_yuk.GPSe)+","+*(float*)(message_yuk.GPSb)+";"; 
        Serial.println(SerialString);
        
-  e32ttl.sendFixedMessage(0,3,6,&SerialString, sizeof(SerialString)); 
+  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk )); 
   packageNumber = (packageNumber==255) ? 0 : packageNumber; 
     if (myFile){
           myFile.print((byte)message_yuk.packageNum);  

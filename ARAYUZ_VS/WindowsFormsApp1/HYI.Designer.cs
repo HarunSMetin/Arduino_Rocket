@@ -45,8 +45,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.label7 = new System.Windows.Forms.Label(); 
+            this.panel1.SuspendLayout(); 
             this.SuspendLayout();
             // 
             // panel1
@@ -159,7 +159,7 @@
             "2400",
             "4800",
             "9600",
-            "1440",
+            "14400",
             "19200",
             "38400",
             "56000",
@@ -170,7 +170,7 @@
             this.comboBoxBaudRate.Location = new System.Drawing.Point(129, 32);
             this.comboBoxBaudRate.Name = "comboBoxBaudRate";
             this.comboBoxBaudRate.Size = new System.Drawing.Size(166, 28);
-            this.comboBoxBaudRate.TabIndex = 7;
+            this.comboBoxBaudRate.TabIndex = 8;
             // 
             // comboBoxPort
             // 
@@ -306,7 +306,7 @@
             this.Text = "HYI";
             this.Load += new System.EventHandler(this.HYI_Load);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panel1.PerformLayout(); 
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,6 +330,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnRefresh; 
     }
 }

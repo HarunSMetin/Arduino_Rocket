@@ -171,7 +171,7 @@ namespace TOBBETUROCKETRY
             0});
             this.numericUpDownBaudRate.Name = "numericUpDownBaudRate";
             this.numericUpDownBaudRate.Value = new decimal(new int[] {
-            9600,
+            19200,
             0,
             0,
             0});

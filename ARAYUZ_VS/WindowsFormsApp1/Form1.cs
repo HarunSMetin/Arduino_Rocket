@@ -95,7 +95,7 @@ namespace TOBBETUROCKETRY
         #region BAGLANTI BASLATMA / BITIRME
         private void FetchAvailablePorts()
         {
-            numericUpDownBaudRate.Value = 9600;
+            numericUpDownBaudRate.Value =19200;
             comboBoxComPort.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             comboBoxComPort.Items.AddRange(ports);

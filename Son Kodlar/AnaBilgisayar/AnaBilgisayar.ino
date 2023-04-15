@@ -1,6 +1,6 @@
 
 #include "Arduino.h"
-#define VERI_SAYISI 3
+#define VERI_SAYISI 10 
 
 //******************************************************
 //Pinler
@@ -9,7 +9,7 @@
 //e32 nin pini      RX	TX   M1   M2
 //Arduino Mega      14  15  GND   GND 
 #include "LoRa_E32.h" 
-LoRa_E32 e32ttl(&Serial3); 
+LoRa_E32 e32ttl(&Serial3,UART_BPS_RATE_19200); 
 
 //******************************************************
 //SD KART Modülü
@@ -120,7 +120,7 @@ void setup()
   digitalWrite(ROLE1_KONTROL, LOW);
   digitalWrite(ROLE2_KONTROL, LOW);
   digitalWrite(BUZZER, LOW);
-   Serial.begin(9600);
+   Serial.begin(19200);
   Serial2.begin(GPSBaud);
   delay(100);
 
@@ -261,9 +261,7 @@ Serial.println(avarageY);
         digitalWrite(ROLE2_KONTROL, LOW); 
       } 
     }
-  }
-
-  
+  }     
 //////////////////////////////////Serial Visual ///////////////////////////////////////
   SerialString = SerialString +"PAKET NUMARASI: "+(byte)(message.packageNum)+"Yerden yukseklik: "+yerdenYukseklik+"\n1. PATLAMA DURUMU: "+ (byte)!patla1 +"\n2. PATLAMA DURUMU: "+ (byte)!patla2+"\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+
       *(float*)(message.pressure)+"\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+
