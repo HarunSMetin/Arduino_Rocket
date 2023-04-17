@@ -1,6 +1,6 @@
 
 #include "Arduino.h"
-#define VERI_SAYISI 10 
+#define VERI_SAYISI 3
 
 //******************************************************
 //Pinler
@@ -47,8 +47,24 @@ Adafruit_BME680 bme; //0x77 I2C address
 //Arduino Mega	16  17
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
-static const uint32_t GPSBaud = 9600;
+static const uint32_t GPSBaud = 19200;
+
 TinyGPSPlus gps;
+static const int MAX_SATELLITES = 40; 
+TinyGPSCustom totalGPGSVMessages(gps, "GPGSV", 1); // $GPGSV sentence, first element
+TinyGPSCustom messageNumber(gps, "GPGSV", 2);      // $GPGSV sentence, second element
+TinyGPSCustom satsInView(gps, "GPGSV", 3);         // $GPGSV sentence, third element
+TinyGPSCustom satNumber[4]; // to be initialized later
+TinyGPSCustom elevation[4];
+TinyGPSCustom azimuth[4];
+TinyGPSCustom snr[4];
+struct
+{
+  bool active;
+  int elevation;
+  int azimuth;
+  int snr;
+} sats[MAX_SATELLITES];
 
 //******************************************************
 //ROLE 1 
@@ -108,6 +124,44 @@ void Beep(int ms=400){
   delay(ms);
   digitalWrite(BUZZER, LOW);
 }
+void SearchSatalite(){
+  uint8_t satCount = 0;
+  uint32_t timer = millis();
+  while (satCount < 10 && ( millis() - timer < 60000  ) ) //1dk
+  { 
+   if (Serial2.available() > 0)
+    {
+      Serial.print("Uydu aranıyor...");
+      gps.encode(Serial2.read());
+      
+      for (int i=0; i<4; ++i)
+      {
+        int no = atoi(satNumber[i].value());
+          // Serial.print(F("SatNumber is ")); Serial.println(no);
+        if (no >= 1 && no <= MAX_SATELLITES)
+        {
+          sats[no-1].elevation = atoi(elevation[i].value());
+          sats[no-1].azimuth = atoi(azimuth[i].value());
+          sats[no-1].snr = atoi(snr[i].value());
+          sats[no-1].active = true;
+        }
+      }
+      int totalMessages = atoi(totalGPGSVMessages.value());
+      int currentMessage = atoi(messageNumber.value());
+      if (totalMessages == currentMessage)
+      {
+        satCount = gps.satellites.value();
+        Serial.print("\t\t Uydu Sayısı= "); 
+        Serial.println(satCount);
+        //Beep(200);
+      }
+    }
+    else{
+        Serial.println("GPS Modulu Bulunamadı!");
+    }
+  }
+  Beep(1000);
+}
 void setup()
 { 
   pinMode(ROLE1, OUTPUT);
@@ -120,8 +174,16 @@ void setup()
   digitalWrite(ROLE1_KONTROL, LOW);
   digitalWrite(ROLE2_KONTROL, LOW);
   digitalWrite(BUZZER, LOW);
-   Serial.begin(19200);
+
+  Serial.begin(19200);
   Serial2.begin(GPSBaud);
+  for (int i=0; i<4; ++i)
+  {
+    satNumber[i].begin(gps, "GPGSV", 4 + 4 * i); // offsets 4, 8, 12, 16
+    elevation[i].begin(gps, "GPGSV", 5 + 4 * i); // offsets 5, 9, 13, 17
+    azimuth[i].begin(  gps, "GPGSV", 6 + 4 * i); // offsets 6, 10, 14, 18
+    snr[i].begin(      gps, "GPGSV", 7 + 4 * i); // offsets 7, 11, 15, 19
+  }
   delay(100);
 
   if(!bno.begin())
@@ -163,7 +225,9 @@ void setup()
      Beep();
      Beep();
   }
+  //SearchSatalite();
 }  
+
 struct Message {   
       byte packageNum ;
       byte explode1 ; 
@@ -215,7 +279,6 @@ void loop(){
 
   e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message));
   packageNumber = (packageNumber==255) ? 0 : packageNumber;
-
 //Tuz gölü rakımı yaklaşık 905 m yani 2969,16 feet 
 //14616 feete çıkılacak 
 //https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=0CAQQw7AJahcKEwiw3uys4JH-AhUAAAAAHQAAAAAQBw&url=https%3A%2F%2Fwww.ngdc.noaa.gov%2Fstp%2Fspace-weather%2Fonline-publications%2Fmiscellaneous%2Fus-standard-atmosphere-1976%2Fus-standard-atmosphere_st76-1562_noaa.pdf&psig=AOvVaw34JdSmuRhWO3bbcUJQLBqC&ust=1680750139172882
@@ -261,9 +324,11 @@ Serial.println(avarageY);
         digitalWrite(ROLE2_KONTROL, LOW); 
       } 
     }
-  }     
+  }
+
+  
 //////////////////////////////////Serial Visual ///////////////////////////////////////
-  SerialString = SerialString +"PAKET NUMARASI: "+(byte)(message.packageNum)+"Yerden yukseklik: "+yerdenYukseklik+"\n1. PATLAMA DURUMU: "+ (byte)!patla1 +"\n2. PATLAMA DURUMU: "+ (byte)!patla2+"\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+
+  SerialString = SerialString +"PAKET NUMARASI: "+(byte)(message.packageNum)+"\nYerden yukseklik: "+yerdenYukseklik+"\n1. PATLAMA DURUMU: "+ (byte)!patla1 +"\n2. PATLAMA DURUMU: "+ (byte)!patla2+"\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+
       *(float*)(message.pressure)+"\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+
       *(float*)(message.Z_Jiro)  +
       *(float*)(message.Z_Ivme) + "\n\n";   

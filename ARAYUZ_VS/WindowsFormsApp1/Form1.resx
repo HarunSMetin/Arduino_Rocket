@@ -283,7 +283,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblHakemDurum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1345, 0</value>
+    <value>1411, 0</value>
   </data>
   <data name="lblHakemDurum.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 18</value>
@@ -319,7 +319,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnHakemIletisim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1348, 17</value>
+    <value>1414, 17</value>
   </data>
   <data name="btnHakemIletisim.Size" type="System.Drawing.Size, System.Drawing">
     <value>478, 38</value>
@@ -355,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDosyaKayit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>839, 0</value>
+    <value>905, 0</value>
   </data>
   <data name="lblDosyaKayit.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 18</value>
@@ -391,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnDosyayaKaydet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>842, 20</value>
+    <value>908, 20</value>
   </data>
   <data name="btnDosyayaKaydet.Size" type="System.Drawing.Size, System.Drawing">
     <value>234, 36</value>
@@ -533,7 +533,7 @@
     <value>0, 0</value>
   </data>
   <data name="panelBaglanti.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1838, 60</value>
+    <value>1904, 60</value>
   </data>
   <data name="panelBaglanti.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -548,7 +548,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panelBaglanti.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>8</value>
+  </data>
+  <data name="pictureBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="pictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -557,7 +560,7 @@
     <value>NoControl</value>
   </data>
   <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>338, 3</value>
+    <value>386, 3</value>
   </data>
   <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -578,13 +581,16 @@
     <value>0</value>
   </data>
   <data name="gMapAnaBilgisayar.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom</value>
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="gMapAnaBilgisayar.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="gMapAnaBilgisayar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 464</value>
+    <value>7, 473</value>
   </data>
   <data name="gMapAnaBilgisayar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 848</value>
+    <value>505, 495</value>
   </data>
   <data name="gMapAnaBilgisayar.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -611,16 +617,16 @@
     <value>None</value>
   </data>
   <data name="label7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 0</value>
+    <value>3, 0</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 41</value>
+    <value>202, 35</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -647,16 +653,16 @@
     <value>None</value>
   </data>
   <data name="label20.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 41</value>
+    <value>3, 35</value>
   </data>
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 44</value>
+    <value>202, 35</value>
   </data>
   <data name="label20.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -679,20 +685,92 @@
   <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="label27.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="label27.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Agency FB, 21.75pt</value>
+  </data>
+  <data name="label27.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 70</value>
+  </data>
+  <data name="label27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 35</value>
+  </data>
+  <data name="label27.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="label27.Text" xml:space="preserve">
+    <value>Basınç İrtifa</value>
+  </data>
+  <data name="label27.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label27.Name" xml:space="preserve">
+    <value>label27</value>
+  </data>
+  <data name="&gt;&gt;label27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label27.Parent" xml:space="preserve">
+    <value>flowLayoutPanel11</value>
+  </data>
+  <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label28.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="label28.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Agency FB, 21.75pt</value>
+  </data>
+  <data name="label28.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 105</value>
+  </data>
+  <data name="label28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 35</value>
+  </data>
+  <data name="label28.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="label28.Text" xml:space="preserve">
+    <value>GPS İrtifa</value>
+  </data>
+  <data name="label28.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label28.Name" xml:space="preserve">
+    <value>label28</value>
+  </data>
+  <data name="&gt;&gt;label28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label28.Parent" xml:space="preserve">
+    <value>flowLayoutPanel11</value>
+  </data>
+  <data name="&gt;&gt;label28.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="label21.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="label21.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label21.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 85</value>
+    <value>3, 140</value>
   </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 44</value>
+    <value>202, 35</value>
   </data>
   <data name="label21.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -713,22 +791,22 @@
     <value>flowLayoutPanel11</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="label24.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="label24.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label24.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 129</value>
+    <value>3, 175</value>
   </data>
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 44</value>
+    <value>202, 33</value>
   </data>
   <data name="label24.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -749,7 +827,7 @@
     <value>flowLayoutPanel11</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="flowLayoutPanel11.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
     <value>TopDown</value>
@@ -758,7 +836,7 @@
     <value>3, 3</value>
   </data>
   <data name="flowLayoutPanel11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 187</value>
+    <value>190, 221</value>
   </data>
   <data name="flowLayoutPanel11.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -779,13 +857,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="textBoxPaketNum_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 20pt</value>
+    <value>Microsoft Sans Serif, 15pt</value>
   </data>
   <data name="textBoxPaketNum_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
   <data name="textBoxPaketNum_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 38</value>
+    <value>128, 30</value>
   </data>
   <data name="textBoxPaketNum_AnaBil.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -806,13 +884,13 @@
     <value>0</value>
   </data>
   <data name="textBoxBasinc_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 20pt</value>
+    <value>Microsoft Sans Serif, 15pt</value>
   </data>
   <data name="textBoxBasinc_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 47</value>
+    <value>3, 39</value>
   </data>
   <data name="textBoxBasinc_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 38</value>
+    <value>128, 30</value>
   </data>
   <data name="textBoxBasinc_AnaBil.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -832,14 +910,68 @@
   <data name="&gt;&gt;textBoxBasinc_AnaBil.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="textBoxBasincIrtifa_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 15pt</value>
+  </data>
+  <data name="textBoxBasincIrtifa_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 75</value>
+  </data>
+  <data name="textBoxBasincIrtifa_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 30</value>
+  </data>
+  <data name="textBoxBasincIrtifa_AnaBil.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="textBoxBasincIrtifa_AnaBil.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxBasincIrtifa_AnaBil.Name" xml:space="preserve">
+    <value>textBoxBasincIrtifa_AnaBil</value>
+  </data>
+  <data name="&gt;&gt;textBoxBasincIrtifa_AnaBil.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxBasincIrtifa_AnaBil.Parent" xml:space="preserve">
+    <value>flowLayoutPanel12</value>
+  </data>
+  <data name="&gt;&gt;textBoxBasincIrtifa_AnaBil.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="textBoxGPSIrtifa_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 15pt</value>
+  </data>
+  <data name="textBoxGPSIrtifa_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 111</value>
+  </data>
+  <data name="textBoxGPSIrtifa_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 30</value>
+  </data>
+  <data name="textBoxGPSIrtifa_AnaBil.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="textBoxGPSIrtifa_AnaBil.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_AnaBil.Name" xml:space="preserve">
+    <value>textBoxGPSIrtifa_AnaBil</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_AnaBil.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_AnaBil.Parent" xml:space="preserve">
+    <value>flowLayoutPanel12</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_AnaBil.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="textBoxGPSEnlem_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 20pt</value>
+    <value>Microsoft Sans Serif, 15pt</value>
   </data>
   <data name="textBoxGPSEnlem_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 91</value>
+    <value>3, 147</value>
   </data>
   <data name="textBoxGPSEnlem_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 38</value>
+    <value>128, 30</value>
   </data>
   <data name="textBoxGPSEnlem_AnaBil.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -857,16 +989,16 @@
     <value>flowLayoutPanel12</value>
   </data>
   <data name="&gt;&gt;textBoxGPSEnlem_AnaBil.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="textBoxGPSBoylam_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 20pt</value>
+    <value>Microsoft Sans Serif, 15pt</value>
   </data>
   <data name="textBoxGPSBoylam_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 135</value>
+    <value>3, 183</value>
   </data>
   <data name="textBoxGPSBoylam_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 38</value>
+    <value>128, 30</value>
   </data>
   <data name="textBoxGPSBoylam_AnaBil.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -884,16 +1016,16 @@
     <value>flowLayoutPanel12</value>
   </data>
   <data name="&gt;&gt;textBoxGPSBoylam_AnaBil.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="flowLayoutPanel12.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
     <value>TopDown</value>
   </data>
   <data name="flowLayoutPanel12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>244, 3</value>
+    <value>199, 3</value>
   </data>
   <data name="flowLayoutPanel12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 187</value>
+    <value>145, 221</value>
   </data>
   <data name="flowLayoutPanel12.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -910,20 +1042,113 @@
   <data name="&gt;&gt;flowLayoutPanel12.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="label29.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label29.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Agency FB, 22pt</value>
+  </data>
+  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 108</value>
+  </data>
+  <data name="label29.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="label29.Text" xml:space="preserve">
+    <value>Dünya Normaliyle Açısı : </value>
+  </data>
+  <data name="label29.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label29.Name" xml:space="preserve">
+    <value>label29</value>
+  </data>
+  <data name="&gt;&gt;label29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label29.Parent" xml:space="preserve">
+    <value>flowLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="textBoxAci_AnaBil.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="textBoxAci_AnaBil.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 15pt</value>
+  </data>
+  <data name="textBoxAci_AnaBil.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 111</value>
+  </data>
+  <data name="textBoxAci_AnaBil.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 30</value>
+  </data>
+  <data name="textBoxAci_AnaBil.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="textBoxAci_AnaBil.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxAci_AnaBil.Name" xml:space="preserve">
+    <value>textBoxAci_AnaBil</value>
+  </data>
+  <data name="&gt;&gt;textBoxAci_AnaBil.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxAci_AnaBil.Parent" xml:space="preserve">
+    <value>flowLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;textBoxAci_AnaBil.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="flowLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>350, 3</value>
+  </data>
+  <data name="flowLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 152</value>
+  </data>
+  <data name="flowLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel6.Name" xml:space="preserve">
+    <value>flowLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel6.Parent" xml:space="preserve">
+    <value>flowLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 193</value>
+    <value>3, 227</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>470, 53</value>
+    <value>140, 34</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -944,7 +1169,7 @@
     <value>flowLayoutPanel8</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="flowLayoutPanel13.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1187,7 +1412,7 @@
     <value>6</value>
   </data>
   <data name="flowLayoutPanel13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 249</value>
+    <value>3, 264</value>
   </data>
   <data name="flowLayoutPanel13.Size" type="System.Drawing.Size, System.Drawing">
     <value>470, 44</value>
@@ -1205,22 +1430,25 @@
     <value>flowLayoutPanel8</value>
   </data>
   <data name="&gt;&gt;flowLayoutPanel13.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Agency FB, 27.75pt</value>
+    <value>Agency FB, 21.75pt</value>
   </data>
   <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 296</value>
+    <value>3, 311</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>470, 50</value>
+    <value>141, 34</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1241,7 +1469,7 @@
     <value>flowLayoutPanel8</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1484,7 +1712,7 @@
     <value>6</value>
   </data>
   <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 349</value>
+    <value>3, 348</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>470, 44</value>
@@ -1502,13 +1730,13 @@
     <value>flowLayoutPanel8</value>
   </data>
   <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="flowLayoutPanel8.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 53</value>
   </data>
   <data name="flowLayoutPanel8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>478, 404</value>
+    <value>505, 407</value>
   </data>
   <data name="flowLayoutPanel8.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -1538,7 +1766,7 @@
     <value>0, 0</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 50</value>
+    <value>525, 50</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1568,7 +1796,7 @@
     <value>0, 60</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 923</value>
+    <value>527, 981</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1583,7 +1811,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="panel2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1619,10 +1847,10 @@
     <value>Top, Bottom</value>
   </data>
   <data name="gMapGorevYuku.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 349</value>
+    <value>9, 429</value>
   </data>
   <data name="gMapGorevYuku.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 963</value>
+    <value>505, 539</value>
   </data>
   <data name="gMapGorevYuku.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1796,7 +2024,7 @@
     <value>3, 3</value>
   </data>
   <data name="flowLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 187</value>
+    <value>221, 187</value>
   </data>
   <data name="flowLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1928,10 +2156,10 @@
     <value>TopDown</value>
   </data>
   <data name="flowLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 3</value>
+    <value>230, 3</value>
   </data>
   <data name="flowLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 187</value>
+    <value>222, 187</value>
   </data>
   <data name="flowLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1948,6 +2176,72 @@
   <data name="&gt;&gt;flowLayoutPanel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="flowLayoutPanel7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="label30.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="label30.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Agency FB, 27.75pt</value>
+  </data>
+  <data name="label30.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>218, 44</value>
+  </data>
+  <data name="label30.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="label30.Text" xml:space="preserve">
+    <value>GPS İrtifa</value>
+  </data>
+  <data name="label30.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label30.Name" xml:space="preserve">
+    <value>label30</value>
+  </data>
+  <data name="&gt;&gt;label30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label30.Parent" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="textBoxGPSIrtifa_GorevYuku.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 20pt</value>
+  </data>
+  <data name="textBoxGPSIrtifa_GorevYuku.Location" type="System.Drawing.Point, System.Drawing">
+    <value>227, 3</value>
+  </data>
+  <data name="textBoxGPSIrtifa_GorevYuku.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 38</value>
+  </data>
+  <data name="textBoxGPSIrtifa_GorevYuku.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="textBoxGPSIrtifa_GorevYuku.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_GorevYuku.Name" xml:space="preserve">
+    <value>textBoxGPSIrtifa_GorevYuku</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_GorevYuku.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_GorevYuku.Parent" xml:space="preserve">
+    <value>flowLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;textBoxGPSIrtifa_GorevYuku.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="label16.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -1958,7 +2252,7 @@
     <value>NoControl</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>3, 44</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>218, 44</value>
@@ -1982,13 +2276,13 @@
     <value>flowLayoutPanel7</value>
   </data>
   <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="textBoxGPSEnlem_GorevYuku.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 20pt</value>
   </data>
   <data name="textBoxGPSEnlem_GorevYuku.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 3</value>
+    <value>227, 47</value>
   </data>
   <data name="textBoxGPSEnlem_GorevYuku.Size" type="System.Drawing.Size, System.Drawing">
     <value>214, 38</value>
@@ -2009,7 +2303,7 @@
     <value>flowLayoutPanel7</value>
   </data>
   <data name="&gt;&gt;textBoxGPSEnlem_GorevYuku.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label17.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
@@ -2021,7 +2315,7 @@
     <value>NoControl</value>
   </data>
   <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 44</value>
+    <value>3, 88</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
     <value>218, 44</value>
@@ -2045,13 +2339,13 @@
     <value>flowLayoutPanel7</value>
   </data>
   <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="textBoxGPSBoylam_GorevYuku.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 20pt</value>
   </data>
   <data name="textBoxGPSBoylam_GorevYuku.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 47</value>
+    <value>227, 91</value>
   </data>
   <data name="textBoxGPSBoylam_GorevYuku.Size" type="System.Drawing.Size, System.Drawing">
     <value>214, 38</value>
@@ -2072,13 +2366,13 @@
     <value>flowLayoutPanel7</value>
   </data>
   <data name="&gt;&gt;textBoxGPSBoylam_GorevYuku.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="flowLayoutPanel7.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 196</value>
   </data>
   <data name="flowLayoutPanel7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 91</value>
+    <value>449, 149</value>
   </data>
   <data name="flowLayoutPanel7.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -2096,10 +2390,10 @@
     <value>2</value>
   </data>
   <data name="flowLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 53</value>
+    <value>26, 53</value>
   </data>
   <data name="flowLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>468, 304</value>
+    <value>478, 370</value>
   </data>
   <data name="flowLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -2129,7 +2423,7 @@
     <value>0, 0</value>
   </data>
   <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 44</value>
+    <value>525, 44</value>
   </data>
   <data name="label22.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -2156,10 +2450,10 @@
     <value>Right</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1348, 60</value>
+    <value>1377, 60</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 923</value>
+    <value>527, 981</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2174,7 +2468,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2906,11 +3200,14 @@
   <data name="flowLayoutPanel5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="flowLayoutPanel5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="flowLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>602, 525</value>
+    <value>647, 490</value>
   </data>
   <data name="flowLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>631, 172</value>
+    <value>626, 172</value>
   </data>
   <data name="flowLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -2925,16 +3222,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;flowLayoutPanel5.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>5</value>
   </data>
   <data name="glControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="glControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>495, 62</value>
+    <value>533, 64</value>
   </data>
   <data name="glControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>848, 447</value>
+    <value>838, 420</value>
   </data>
   <data name="glControl1.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -2949,6 +3246,102 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;glControl1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="chartIrtifa_Ana.Location" type="System.Drawing.Point, System.Drawing">
+    <value>533, 668</value>
+  </data>
+  <data name="chartIrtifa_Ana.Size" type="System.Drawing.Size, System.Drawing">
+    <value>417, 135</value>
+  </data>
+  <data name="chartIrtifa_Ana.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="chartIrtifa_Ana.Text" xml:space="preserve">
+    <value>chart1</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Ana.Name" xml:space="preserve">
+    <value>chartIrtifa_Ana</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Ana.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Ana.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Ana.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="chartIrtifa_Gorev.Location" type="System.Drawing.Point, System.Drawing">
+    <value>961, 668</value>
+  </data>
+  <data name="chartIrtifa_Gorev.Size" type="System.Drawing.Size, System.Drawing">
+    <value>410, 135</value>
+  </data>
+  <data name="chartIrtifa_Gorev.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="chartIrtifa_Gorev.Text" xml:space="preserve">
+    <value>chart1</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Gorev.Name" xml:space="preserve">
+    <value>chartIrtifa_Gorev</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Gorev.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Gorev.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;chartIrtifa_Gorev.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="chartBasinc_Ana.Location" type="System.Drawing.Point, System.Drawing">
+    <value>533, 809</value>
+  </data>
+  <data name="chartBasinc_Ana.Size" type="System.Drawing.Size, System.Drawing">
+    <value>414, 135</value>
+  </data>
+  <data name="chartBasinc_Ana.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="chartBasinc_Ana.Text" xml:space="preserve">
+    <value>chart1</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Ana.Name" xml:space="preserve">
+    <value>chartBasinc_Ana</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Ana.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Ana.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Ana.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="chartBasinc_Gorev.Location" type="System.Drawing.Point, System.Drawing">
+    <value>961, 809</value>
+  </data>
+  <data name="chartBasinc_Gorev.Size" type="System.Drawing.Size, System.Drawing">
+    <value>410, 135</value>
+  </data>
+  <data name="chartBasinc_Gorev.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="chartBasinc_Gorev.Text" xml:space="preserve">
+    <value>chart2</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Gorev.Name" xml:space="preserve">
+    <value>chartBasinc_Gorev</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Gorev.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Gorev.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;chartBasinc_Gorev.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -2961,7 +3354,7 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1838, 983</value>
+    <value>1904, 1041</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -5949,6 +6342,9 @@
         AAAAAAAAAAAAAAAdJCQBHSQkAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8PwAA8A8AAOAHAADA
         AwAAgAEAAIABAACAAQAAAAAAAAAAAACAAQAAgAEAAIABAADAAwAA4AcAAPAPAAD+fwAA
 </value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TOBB ETU Rocketry Yer Istasyonu Yazilimi</value>

@@ -7,11 +7,11 @@ LoRa_E32 e32ttl_yuk(&Serial2,UART_BPS_RATE_19200);  //mega 16 17
 void setup()
 {
   Serial.begin(19200); 
-  delay(200);  
-  e32ttl_yuk.begin(); 
   delay(200); 
   e32ttl.begin();
-  delay(200);
+  delay(200); 
+  e32ttl_yuk.begin(); 
+  delay(200);  
   Serial.print("Begin");
 
 }  

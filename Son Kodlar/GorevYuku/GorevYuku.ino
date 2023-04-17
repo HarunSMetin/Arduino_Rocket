@@ -35,17 +35,85 @@ Adafruit_BME680 bme; //0x77 I2C address
 //Arduino Mega  16  17
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
-static const uint32_t GPSBaud = 9600;
+static const uint32_t GPSBaud =19200;
 TinyGPSPlus gps;
- 
+static const int MAX_SATELLITES = 40; 
+TinyGPSCustom totalGPGSVMessages(gps, "GPGSV", 1); // $GPGSV sentence, first element
+TinyGPSCustom messageNumber(gps, "GPGSV", 2);      // $GPGSV sentence, second element
+TinyGPSCustom satsInView(gps, "GPGSV", 3);         // $GPGSV sentence, third element
+TinyGPSCustom satNumber[4]; // to be initialized later
+TinyGPSCustom elevation[4];
+TinyGPSCustom azimuth[4];
+TinyGPSCustom snr[4];
+struct
+{
+  bool active;
+  int elevation;
+  int azimuth;
+  int snr;
+} sats[MAX_SATELLITES]; 
+
+//******************************************************
+//BUZZER
+//              Trigger
+//Arduino Mega	10 
+#define BUZZER 10
+
+//******************************************************
+
 byte packageNumber = 0;  
 
 float  curPressure =0;  //HPA  
  
 String SerialString=""; 
+void Beep(int ms=400){
+  delay(ms);
+  digitalWrite(BUZZER, HIGH);
+  delay(ms);
+  digitalWrite(BUZZER, LOW);
+}
+void SearchSatalite(){
+  uint8_t satCount = 0;
+  uint32_t timer = millis();
+  while (satCount < 10 && ( millis() - timer < 60000  ) ) //1dk
+  { 
+   if (Serial2.available() > 0)
+    {
+      Serial.print("Uydu aranıyor...");
+      gps.encode(Serial2.read());
+      
+      for (int i=0; i<4; ++i)
+      {
+        int no = atoi(satNumber[i].value());
+          // Serial.print(F("SatNumber is ")); Serial.println(no);
+        if (no >= 1 && no <= MAX_SATELLITES)
+        {
+          sats[no-1].elevation = atoi(elevation[i].value());
+          sats[no-1].azimuth = atoi(azimuth[i].value());
+          sats[no-1].snr = atoi(snr[i].value());
+          sats[no-1].active = true;
+        }
+      }
+      int totalMessages = atoi(totalGPGSVMessages.value());
+      int currentMessage = atoi(messageNumber.value());
+      if (totalMessages == currentMessage)
+      {
+        satCount = gps.satellites.value();
+        Serial.print("\t\t Uydu Sayısı= "); 
+        Serial.println(satCount);
+        //Beep(200);
+      }
+    }
+    else{
+        Serial.println("GPS Modulu Bulunamadı!");
+    }
+  }
+  Beep(1000);
+}
 
 void setup()
 { 
+  digitalWrite(BUZZER, LOW);
   Serial.begin(19200);   
   Serial2.begin(GPSBaud);
   delay(100);
@@ -67,7 +135,9 @@ void setup()
   if (myFile) {  
      myFile.println("PakatNumarasi,Irtifa_GPS,Sicaklik,Nem,Basinc,GPSEnlem,GPSBoylam;"); 
      myFile.close();
+     Beep(400);
   }
+  SearchSatalite();
 }  
 
 struct MessageYuk {  

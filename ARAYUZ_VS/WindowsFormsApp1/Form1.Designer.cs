@@ -30,6 +30,18 @@ namespace TOBBETUROCKETRY
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TOBBETUROCKETRY));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnBaglan = new System.Windows.Forms.Button();
             this.btnBaglantiyiBitir = new System.Windows.Forms.Button();
             this.comboBoxComPort = new System.Windows.Forms.ComboBox();
@@ -50,13 +62,20 @@ namespace TOBBETUROCKETRY
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBoxPaketNum_AnaBil = new System.Windows.Forms.TextBox();
             this.textBoxBasinc_AnaBil = new System.Windows.Forms.TextBox();
+            this.textBoxBasincIrtifa_AnaBil = new System.Windows.Forms.TextBox();
+            this.textBoxGPSIrtifa_AnaBil = new System.Windows.Forms.TextBox();
             this.textBoxGPSEnlem_AnaBil = new System.Windows.Forms.TextBox();
             this.textBoxGPSBoylam_AnaBil = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label29 = new System.Windows.Forms.Label();
+            this.textBoxAci_AnaBil = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.flowLayoutPanel13 = new System.Windows.Forms.FlowLayoutPanel();
             this.label18 = new System.Windows.Forms.Label();
@@ -91,6 +110,8 @@ namespace TOBBETUROCKETRY
             this.textBoxNem_GorevYuku = new System.Windows.Forms.TextBox();
             this.textBoxBasinc_GorevYuku = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label30 = new System.Windows.Forms.Label();
+            this.textBoxGPSIrtifa_GorevYuku = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.textBoxGPSEnlem_GorevYuku = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -108,6 +129,10 @@ namespace TOBBETUROCKETRY
             this.patlama2_yes = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.glControl1 = new OpenTK.GLControl();
+            this.chartIrtifa_Ana = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartIrtifa_Gorev = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartBasinc_Ana = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartBasinc_Gorev = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaudRate)).BeginInit();
             this.panelBaglanti.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -115,6 +140,7 @@ namespace TOBBETUROCKETRY
             this.flowLayoutPanel8.SuspendLayout();
             this.flowLayoutPanel11.SuspendLayout();
             this.flowLayoutPanel12.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel13.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -132,6 +158,10 @@ namespace TOBBETUROCKETRY
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_no)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).BeginInit();
             this.flowLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartIrtifa_Ana)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartIrtifa_Gorev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartBasinc_Ana)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartBasinc_Gorev)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBaglan
@@ -264,8 +294,8 @@ namespace TOBBETUROCKETRY
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.rocket;
             resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.BackgroundImage = global::TOBBETUROCKETRY.Properties.Resources.rocket;
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
@@ -296,8 +326,10 @@ namespace TOBBETUROCKETRY
             // flowLayoutPanel8
             // 
             resources.ApplyResources(this.flowLayoutPanel8, "flowLayoutPanel8");
+            this.flowLayoutPanel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel11);
             this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel12);
+            this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel6);
             this.flowLayoutPanel8.Controls.Add(this.label4);
             this.flowLayoutPanel8.Controls.Add(this.flowLayoutPanel13);
             this.flowLayoutPanel8.Controls.Add(this.label5);
@@ -309,6 +341,8 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.flowLayoutPanel11, "flowLayoutPanel11");
             this.flowLayoutPanel11.Controls.Add(this.label7);
             this.flowLayoutPanel11.Controls.Add(this.label20);
+            this.flowLayoutPanel11.Controls.Add(this.label27);
+            this.flowLayoutPanel11.Controls.Add(this.label28);
             this.flowLayoutPanel11.Controls.Add(this.label21);
             this.flowLayoutPanel11.Controls.Add(this.label24);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
@@ -324,6 +358,18 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.label20, "label20");
             this.label20.ForeColor = System.Drawing.SystemColors.Control;
             this.label20.Name = "label20";
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.ForeColor = System.Drawing.SystemColors.Control;
+            this.label27.Name = "label27";
+            // 
+            // label28
+            // 
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.ForeColor = System.Drawing.SystemColors.Control;
+            this.label28.Name = "label28";
             // 
             // label21
             // 
@@ -342,6 +388,8 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.flowLayoutPanel12, "flowLayoutPanel12");
             this.flowLayoutPanel12.Controls.Add(this.textBoxPaketNum_AnaBil);
             this.flowLayoutPanel12.Controls.Add(this.textBoxBasinc_AnaBil);
+            this.flowLayoutPanel12.Controls.Add(this.textBoxBasincIrtifa_AnaBil);
+            this.flowLayoutPanel12.Controls.Add(this.textBoxGPSIrtifa_AnaBil);
             this.flowLayoutPanel12.Controls.Add(this.textBoxGPSEnlem_AnaBil);
             this.flowLayoutPanel12.Controls.Add(this.textBoxGPSBoylam_AnaBil);
             this.flowLayoutPanel12.Name = "flowLayoutPanel12";
@@ -356,6 +404,16 @@ namespace TOBBETUROCKETRY
             resources.ApplyResources(this.textBoxBasinc_AnaBil, "textBoxBasinc_AnaBil");
             this.textBoxBasinc_AnaBil.Name = "textBoxBasinc_AnaBil";
             // 
+            // textBoxBasincIrtifa_AnaBil
+            // 
+            resources.ApplyResources(this.textBoxBasincIrtifa_AnaBil, "textBoxBasincIrtifa_AnaBil");
+            this.textBoxBasincIrtifa_AnaBil.Name = "textBoxBasincIrtifa_AnaBil";
+            // 
+            // textBoxGPSIrtifa_AnaBil
+            // 
+            resources.ApplyResources(this.textBoxGPSIrtifa_AnaBil, "textBoxGPSIrtifa_AnaBil");
+            this.textBoxGPSIrtifa_AnaBil.Name = "textBoxGPSIrtifa_AnaBil";
+            // 
             // textBoxGPSEnlem_AnaBil
             // 
             resources.ApplyResources(this.textBoxGPSEnlem_AnaBil, "textBoxGPSEnlem_AnaBil");
@@ -365,6 +423,25 @@ namespace TOBBETUROCKETRY
             // 
             resources.ApplyResources(this.textBoxGPSBoylam_AnaBil, "textBoxGPSBoylam_AnaBil");
             this.textBoxGPSBoylam_AnaBil.Name = "textBoxGPSBoylam_AnaBil";
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Controls.Add(this.label29);
+            this.flowLayoutPanel6.Controls.Add(this.textBoxAci_AnaBil);
+            resources.ApplyResources(this.flowLayoutPanel6, "flowLayoutPanel6");
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            // 
+            // label29
+            // 
+            resources.ApplyResources(this.label29, "label29");
+            this.label29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label29.ForeColor = System.Drawing.Color.DarkOrange;
+            this.label29.Name = "label29";
+            // 
+            // textBoxAci_AnaBil
+            // 
+            resources.ApplyResources(this.textBoxAci_AnaBil, "textBoxAci_AnaBil");
+            this.textBoxAci_AnaBil.Name = "textBoxAci_AnaBil";
             // 
             // label4
             // 
@@ -376,6 +453,7 @@ namespace TOBBETUROCKETRY
             // flowLayoutPanel13
             // 
             resources.ApplyResources(this.flowLayoutPanel13, "flowLayoutPanel13");
+            this.flowLayoutPanel13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel13.Controls.Add(this.label18);
             this.flowLayoutPanel13.Controls.Add(this.label19);
             this.flowLayoutPanel13.Controls.Add(this.textBoxJiroX_AnaBil);
@@ -434,6 +512,7 @@ namespace TOBBETUROCKETRY
             // flowLayoutPanel1
             // 
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.label6);
             this.flowLayoutPanel1.Controls.Add(this.label8);
             this.flowLayoutPanel1.Controls.Add(this.textBoxIvmeX_AnaBil);
@@ -534,9 +613,11 @@ namespace TOBBETUROCKETRY
             // flowLayoutPanel3
             // 
             resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
+            this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel2);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel7);
+            this.flowLayoutPanel3.Cursor = System.Windows.Forms.Cursors.Default;
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             // 
             // flowLayoutPanel4
@@ -603,12 +684,25 @@ namespace TOBBETUROCKETRY
             // 
             // flowLayoutPanel7
             // 
+            resources.ApplyResources(this.flowLayoutPanel7, "flowLayoutPanel7");
+            this.flowLayoutPanel7.Controls.Add(this.label30);
+            this.flowLayoutPanel7.Controls.Add(this.textBoxGPSIrtifa_GorevYuku);
             this.flowLayoutPanel7.Controls.Add(this.label16);
             this.flowLayoutPanel7.Controls.Add(this.textBoxGPSEnlem_GorevYuku);
             this.flowLayoutPanel7.Controls.Add(this.label17);
             this.flowLayoutPanel7.Controls.Add(this.textBoxGPSBoylam_GorevYuku);
-            resources.ApplyResources(this.flowLayoutPanel7, "flowLayoutPanel7");
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            // 
+            // label30
+            // 
+            resources.ApplyResources(this.label30, "label30");
+            this.label30.ForeColor = System.Drawing.SystemColors.Control;
+            this.label30.Name = "label30";
+            // 
+            // textBoxGPSIrtifa_GorevYuku
+            // 
+            resources.ApplyResources(this.textBoxGPSIrtifa_GorevYuku, "textBoxGPSIrtifa_GorevYuku");
+            this.textBoxGPSIrtifa_GorevYuku.Name = "textBoxGPSIrtifa_GorevYuku";
             // 
             // label16
             // 
@@ -727,29 +821,98 @@ namespace TOBBETUROCKETRY
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             // 
+            // chartIrtifa_Ana
+            // 
+            this.chartIrtifa_Ana.BackColor = System.Drawing.SystemColors.ControlDark;
+            chartArea1.Name = "ChartArea1";
+            this.chartIrtifa_Ana.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartIrtifa_Ana.Legends.Add(legend1);
+            resources.ApplyResources(this.chartIrtifa_Ana, "chartIrtifa_Ana");
+            this.chartIrtifa_Ana.Name = "chartIrtifa_Ana";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "İrtifa Ana bil.";
+            this.chartIrtifa_Ana.Series.Add(series1);
+            this.chartIrtifa_Ana.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.Normal;
+            // 
+            // chartIrtifa_Gorev
+            // 
+            this.chartIrtifa_Gorev.BackColor = System.Drawing.SystemColors.ControlDark;
+            chartArea2.Name = "ChartArea1";
+            this.chartIrtifa_Gorev.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartIrtifa_Gorev.Legends.Add(legend2);
+            resources.ApplyResources(this.chartIrtifa_Gorev, "chartIrtifa_Gorev");
+            this.chartIrtifa_Gorev.Name = "chartIrtifa_Gorev";
+            this.chartIrtifa_Gorev.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "İrtifa Görev";
+            this.chartIrtifa_Gorev.Series.Add(series2);
+            // 
+            // chartBasinc_Ana
+            // 
+            this.chartBasinc_Ana.BackColor = System.Drawing.SystemColors.ControlDark;
+            chartArea3.Name = "ChartArea1";
+            this.chartBasinc_Ana.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartBasinc_Ana.Legends.Add(legend3);
+            resources.ApplyResources(this.chartBasinc_Ana, "chartBasinc_Ana");
+            this.chartBasinc_Ana.Name = "chartBasinc_Ana";
+            this.chartBasinc_Ana.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Chocolate;
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Basınç Ana bil.";
+            this.chartBasinc_Ana.Series.Add(series3);
+            // 
+            // chartBasinc_Gorev
+            // 
+            this.chartBasinc_Gorev.BackColor = System.Drawing.SystemColors.ControlDark;
+            chartArea4.Name = "ChartArea1";
+            this.chartBasinc_Gorev.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chartBasinc_Gorev.Legends.Add(legend4);
+            resources.ApplyResources(this.chartBasinc_Gorev, "chartBasinc_Gorev");
+            this.chartBasinc_Gorev.Name = "chartBasinc_Gorev";
+            this.chartBasinc_Gorev.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Basınç Görev";
+            this.chartBasinc_Gorev.Series.Add(series4);
+            // 
             // TOBBETUROCKETRY
             // 
             this.AcceptButton = this.btnHakemIletisim;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Controls.Add(this.chartBasinc_Gorev);
+            this.Controls.Add(this.chartBasinc_Ana);
+            this.Controls.Add(this.chartIrtifa_Gorev);
+            this.Controls.Add(this.chartIrtifa_Ana);
             this.Controls.Add(this.glControl1);
             this.Controls.Add(this.flowLayoutPanel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelBaglanti);
             this.Name = "TOBBETUROCKETRY";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaudRate)).EndInit();
             this.panelBaglanti.ResumeLayout(false);
             this.panelBaglanti.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel8.ResumeLayout(false);
+            this.flowLayoutPanel8.PerformLayout();
             this.flowLayoutPanel11.ResumeLayout(false);
             this.flowLayoutPanel12.ResumeLayout(false);
             this.flowLayoutPanel12.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             this.flowLayoutPanel13.ResumeLayout(false);
             this.flowLayoutPanel13.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -774,6 +937,10 @@ namespace TOBBETUROCKETRY
             ((System.ComponentModel.ISupportInitialize)(this.patlama2_yes)).EndInit();
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartIrtifa_Ana)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartIrtifa_Gorev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartBasinc_Ana)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartBasinc_Gorev)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -859,6 +1026,19 @@ namespace TOBBETUROCKETRY
         private System.Windows.Forms.Label lblDosyaKayit;
         private System.Windows.Forms.Button btnDosyayaKaydet;
         private OpenTK.GLControl glControl1;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox textBoxBasincIrtifa_AnaBil;
+        private System.Windows.Forms.TextBox textBoxGPSIrtifa_AnaBil;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox textBoxAci_AnaBil;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox textBoxGPSIrtifa_GorevYuku;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartIrtifa_Ana;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartIrtifa_Gorev;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartBasinc_Ana;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartBasinc_Gorev;
     }
 }
 
