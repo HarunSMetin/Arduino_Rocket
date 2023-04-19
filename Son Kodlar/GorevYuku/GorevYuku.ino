@@ -35,7 +35,7 @@ Adafruit_BME680 bme; //0x77 I2C address
 //Arduino Mega  16  17
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
-static const uint32_t GPSBaud =19200;
+static const uint32_t GPSBaud =115200;
 TinyGPSPlus gps;
 static const int MAX_SATELLITES = 40; 
 TinyGPSCustom totalGPGSVMessages(gps, "GPGSV", 1); // $GPGSV sentence, first element
@@ -59,6 +59,7 @@ struct
 //Arduino Mega	10 
 #define BUZZER 10
 
+#define SATSEARCHTIME 5 //5dk
 //******************************************************
 
 byte packageNumber = 0;  
@@ -66,46 +67,91 @@ byte packageNumber = 0;
 float  curPressure =0;  //HPA  
  
 String SerialString=""; 
-void Beep(int ms=400){
-  delay(ms);
-  digitalWrite(BUZZER, HIGH);
-  delay(ms);
-  digitalWrite(BUZZER, LOW);
+
+struct MessageYuk {  
+      byte packageNum; 
+      byte Irtifa_GPS[4]; 
+      byte temperature[4]; 
+      byte humadity[4];
+      byte pressure[4];
+      byte GPSe[4]; 
+      byte GPSb[4];  
+      byte GPSSatcont;  
+} message_yuk;   
+
+void Beep(int ms=400, int count = 1){
+  int i =0;
+  for (i=0;i<count;i++){ 
+    delay(ms);
+    digitalWrite(BUZZER, HIGH);
+    delay(ms);
+    digitalWrite(BUZZER, LOW);
+  }
 }
-void SearchSatalite(){
-  uint8_t satCount = 0;
+void SearchSatalite(){ 
+  Serial.print("Uydu aranıyor...");
   uint32_t timer = millis();
-  while (satCount < 10 && ( millis() - timer < 60000  ) ) //1dk
+  while (gps.satellites.value() < 8 && ( (millis() - timer) < (60000*SATSEARCHTIME)  ) )
   { 
-   if (Serial2.available() > 0)
+    if (Serial2.available() > 0)
     {
-      Serial.print("Uydu aranıyor...");
       gps.encode(Serial2.read());
-      
-      for (int i=0; i<4; ++i)
+      if (totalGPGSVMessages.isUpdated())
       {
-        int no = atoi(satNumber[i].value());
-          // Serial.print(F("SatNumber is ")); Serial.println(no);
-        if (no >= 1 && no <= MAX_SATELLITES)
+        for (int i=0; i<4; ++i)
         {
-          sats[no-1].elevation = atoi(elevation[i].value());
-          sats[no-1].azimuth = atoi(azimuth[i].value());
-          sats[no-1].snr = atoi(snr[i].value());
-          sats[no-1].active = true;
+          int no = atoi(satNumber[i].value());
+          // Serial.print(F("SatNumber is ")); Serial.println(no);
+          if (no >= 1 && no <= MAX_SATELLITES)
+          {
+            sats[no-1].elevation = atoi(elevation[i].value());
+            sats[no-1].azimuth = atoi(azimuth[i].value());
+            sats[no-1].snr = atoi(snr[i].value());
+            sats[no-1].active = true;
+          }
+        }
+        
+        int totalMessages = atoi(totalGPGSVMessages.value());
+        int currentMessage = atoi(messageNumber.value());
+        if (totalMessages == currentMessage)
+        { 
+          Serial.print(F("Sats= ")); 
+          Serial.print(gps.satellites.value() );
+          Serial.print(F(" Nums="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(i+1);
+              Serial.print(F(" "));
+            }
+          Serial.print(F(" Elevation="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].elevation);
+              Serial.print(F(" "));
+            }
+          Serial.print(F(" Azimuth="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].azimuth);
+              Serial.print(F(" "));
+            }
+          
+          Serial.print(F(" SNR="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].snr);
+              Serial.print(F(" "));
+            }
+          Serial.println();
+
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            sats[i].active = false;
         }
       }
-      int totalMessages = atoi(totalGPGSVMessages.value());
-      int currentMessage = atoi(messageNumber.value());
-      if (totalMessages == currentMessage)
-      {
-        satCount = gps.satellites.value();
-        Serial.print("\t\t Uydu Sayısı= "); 
-        Serial.println(satCount);
-        //Beep(200);
-      }
-    }
-    else{
-        Serial.println("GPS Modulu Bulunamadı!");
     }
   }
   Beep(1000);
@@ -115,7 +161,14 @@ void setup()
 { 
   digitalWrite(BUZZER, LOW);
   Serial.begin(19200);   
-  Serial2.begin(GPSBaud);
+  Serial2.begin(GPSBaud);  
+  for (int i=0; i<4; ++i)
+  {
+    satNumber[i].begin(gps, "GPGSV", 4 + 4 * i); // offsets 4, 8, 12, 16
+    elevation[i].begin(gps, "GPGSV", 5 + 4 * i); // offsets 5, 9, 13, 17
+    azimuth[i].begin(  gps, "GPGSV", 6 + 4 * i); // offsets 6, 10, 14, 18
+    snr[i].begin(      gps, "GPGSV", 7 + 4 * i); // offsets 7, 11, 15, 19
+  }
   delay(100);
   
   if (!bme.begin())
@@ -124,7 +177,6 @@ void setup()
     Serial.println("SD Card Module NOT detected!");
 
   myFile = SD.open("verilerg.txt", FILE_WRITE); 
-  delay(200);
   delay(200);
   e32ttl.begin();     
   delay(200);
@@ -135,20 +187,10 @@ void setup()
   if (myFile) {  
      myFile.println("PakatNumarasi,Irtifa_GPS,Sicaklik,Nem,Basinc,GPSEnlem,GPSBoylam;"); 
      myFile.close();
-     Beep(400);
   }
-  SearchSatalite();
+ SearchSatalite();
 }  
 
-struct MessageYuk {  
-      byte packageNum; 
-      byte Irtifa_GPS[4]; 
-      byte temperature[4]; 
-      byte humadity[4];
-      byte pressure[4];
-      byte GPSe[4]; 
-      byte GPSb[4];  
-} message_yuk; 
  
 void loop()
 {  
@@ -157,23 +199,15 @@ void loop()
  
   myFile = SD.open("verilerg.txt",  FILE_WRITE  ); 
   smartDelay(100);  
-  curPressure =bme.readPressure();  
-  
+  curPressure =bme.readPressure();   
   message_yuk.packageNum =  packageNumber; 
-  *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.isValid() ? gps.altitude.meters() : 0; 
-  *(float*)(message_yuk.temperature) =   bme.temperature;  //Hekto pascal cinsinden
-  *(float*)(message_yuk.humadity) =  bme.humidity; 
-  *(float*)(message_yuk.pressure) =  curPressure; 
-  *(float*)(message_yuk.GPSe) = gps.location.isValid() ? gps.location.lat() : 0;  
-  *(float*)(message_yuk.GPSb) = gps.location.isValid() ? gps.location.lng() : 0;  
-
-
-
-    
-     SerialString = SerialString+(byte)(message_yuk.packageNum)+","+*(float*)(message_yuk.Irtifa_GPS)+","+
-      *(float*)(message_yuk.temperature)+","+ *(float*)(message_yuk.humadity)+","+ *(float*)(message_yuk.pressure)+","+
-       *(float*)(message_yuk.GPSe)+","+*(float*)(message_yuk.GPSb)+";"; 
-       Serial.println(SerialString);
+  *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.meters() ;  
+  *(float*)(message_yuk.temperature) =   (float)bme.temperature;  //Hekto pascal cinsinden
+  *(float*)(message_yuk.humadity) = (float)bme.humidity; 
+  *(float*)(message_yuk.pressure) =  (float)curPressure; 
+  *(float*)(message_yuk.GPSe) = (float)gps.location.lat() ;   
+  *(float*)(message_yuk.GPSb) =(float)gps.location.lng() ;   
+  message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
        
   e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk )); 
   packageNumber = (packageNumber==255) ? 0 : packageNumber; 
@@ -193,7 +227,12 @@ void loop()
           myFile.print (*(float*)(message_yuk.GPSb),6);     
           myFile.println("");
       myFile.close();  
-    }
+    } 
+
+     SerialString = SerialString+(byte)(message_yuk.packageNum)+","+*(float*)(message_yuk.Irtifa_GPS)+","+
+      *(float*)(message_yuk.temperature)+","+ *(float*)(message_yuk.humadity)+","+ *(float*)(message_yuk.pressure)+","+
+       *(float*)(message_yuk.GPSe)+","+*(float*)(message_yuk.GPSb)+";"; 
+       Serial.println(SerialString);
 }
 
 static void smartDelay(unsigned long ms)

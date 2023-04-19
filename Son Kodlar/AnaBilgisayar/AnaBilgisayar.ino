@@ -47,7 +47,7 @@ Adafruit_BME680 bme; //0x77 I2C address
 //Arduino Mega	16  17
 #include <TinyGPSPlus.h>
 static const int RXPin = 16, TXPin = 17;
-static const uint32_t GPSBaud = 19200;
+static const uint32_t GPSBaud = 115200;
 
 TinyGPSPlus gps;
 static const int MAX_SATELLITES = 40; 
@@ -92,8 +92,13 @@ struct
 //              Trigger
 //Arduino Mega	10 
 #define BUZZER 10
+//******************PARAMETRELER****************************
+#define SATSEARCHTIME 5 //5dk 
+#define KALKISYUKSEKLIGI 2 // 2 METRE
+#define IKINICIPATLAMAYUKSEKLIGI 500 // 500 METRE
+//******************************************************
 
-byte packageNumber = 0; 
+byte packageNumber = 0;  
 
 float totalY = 0; 
 float avarageY = 0;   
@@ -105,59 +110,112 @@ float ilkAci = 85;
 
 float  curPressure =0;  //HPA   
 
-float baslanicYukseklik = 0;
+float baslangicYukseklik = 0;
 
 bool patla1 = true;
 bool patla2 = true;
 
 bool kalkti = false;
 
- float yerdenYukseklik =0;
- float hamYukseklik = 905;
+float yerdenYukseklik =0;
+float hamYukseklik = 905;
 String SerialString="";
 
 imu::Vector<3> acc;
 
-void Beep(int ms=400){
-  delay(ms);
-  digitalWrite(BUZZER, HIGH);
-  delay(ms);
-  digitalWrite(BUZZER, LOW);
+struct Message {   
+      byte packageNum ;
+      byte explode1 ; 
+      byte explode2 ;
+      byte Irtifa_basinc[4] ;
+      byte Irtifa_GPS[4] ;
+      byte pressure[4] ;
+      byte X_Jiro [4];
+      byte Y_Jiro [4];
+      byte Z_Jiro [4]; 
+      byte X_Ivme [4];
+      byte Y_Ivme [4];
+      byte Z_Ivme [4];  
+      byte Aci [4];
+      byte GPSe[4]; 
+      byte GPSb[4];  
+      byte GPSSatcont;
+} message;  
+void Beep(int ms=400, int count = 1){
+  int i =0;
+  for (i=0;i<count;i++){ 
+    delay(ms);
+    digitalWrite(BUZZER, HIGH);
+    delay(ms);
+    digitalWrite(BUZZER, LOW);
+  }
 }
-void SearchSatalite(){
-  uint8_t satCount = 0;
+void SearchSatalite(){ 
+  Serial.print("Uydu aranıyor...");
   uint32_t timer = millis();
-  while (satCount < 10 && ( millis() - timer < 60000  ) ) //1dk
+  while (gps.satellites.value() < 8 && ( (millis() - timer) < (60000*SATSEARCHTIME)  ) )
   { 
-   if (Serial2.available() > 0)
+    if (Serial2.available() > 0)
     {
-      Serial.print("Uydu aranıyor...");
       gps.encode(Serial2.read());
-      
-      for (int i=0; i<4; ++i)
+      if (totalGPGSVMessages.isUpdated())
       {
-        int no = atoi(satNumber[i].value());
-          // Serial.print(F("SatNumber is ")); Serial.println(no);
-        if (no >= 1 && no <= MAX_SATELLITES)
+        for (int i=0; i<4; ++i)
         {
-          sats[no-1].elevation = atoi(elevation[i].value());
-          sats[no-1].azimuth = atoi(azimuth[i].value());
-          sats[no-1].snr = atoi(snr[i].value());
-          sats[no-1].active = true;
+          int no = atoi(satNumber[i].value());
+          // Serial.print(F("SatNumber is ")); Serial.println(no);
+          if (no >= 1 && no <= MAX_SATELLITES)
+          {
+            sats[no-1].elevation = atoi(elevation[i].value());
+            sats[no-1].azimuth = atoi(azimuth[i].value());
+            sats[no-1].snr = atoi(snr[i].value());
+            sats[no-1].active = true;
+          }
+        }
+        
+        int totalMessages = atoi(totalGPGSVMessages.value());
+        int currentMessage = atoi(messageNumber.value());
+        if (totalMessages == currentMessage)
+        { 
+          Serial.print(F("Sats= ")); 
+          Serial.print(gps.satellites.value() );
+          Serial.print(F(" Nums="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(i+1);
+              Serial.print(F(" "));
+            }
+          Serial.print(F(" Elevation="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].elevation);
+              Serial.print(F(" "));
+            }
+          Serial.print(F(" Azimuth="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].azimuth);
+              Serial.print(F(" "));
+            }
+          
+          Serial.print(F(" SNR="));
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            if (sats[i].active)
+            {
+              Serial.print(sats[i].snr);
+              Serial.print(F(" "));
+            }
+          Serial.println();
+
+          for (int i=0; i<MAX_SATELLITES; ++i)
+            sats[i].active = false;
+          
+          Beep(50);
         }
       }
-      int totalMessages = atoi(totalGPGSVMessages.value());
-      int currentMessage = atoi(messageNumber.value());
-      if (totalMessages == currentMessage)
-      {
-        satCount = gps.satellites.value();
-        Serial.print("\t\t Uydu Sayısı= "); 
-        Serial.println(satCount);
-        //Beep(200);
-      }
-    }
-    else{
-        Serial.println("GPS Modulu Bulunamadı!");
     }
   }
   Beep(1000);
@@ -210,11 +268,11 @@ void setup()
     delay(200); 
     totalBasinc += (float)bme.readPressure()/100;   
     totalY += (float)event.gyro.z;
-    baslanicYukseklik+=bme.readAltitude(SEALEVELPRESSURE_HPA); ;
+    baslangicYukseklik+=bme.readAltitude(SEALEVELPRESSURE_HPA); ;
   }  
   avarageY = totalY / VERI_SAYISI ; 
   avarageBasinc = totalBasinc / VERI_SAYISI;    
-  baslanicYukseklik /=VERI_SAYISI;
+  baslangicYukseklik /=VERI_SAYISI;
   ilkAci =avarageY;
   ilkBasincDegeri = avarageBasinc;
   
@@ -222,29 +280,11 @@ void setup()
      myFile.println("PakatNumarasi,1Patlama,2Patlama,Irtifa_basinc,Irtifa_GPS,Basinc,X_Jiro,Y_Jiro,Z_Jiro,X_Ivme,Y_Ivme,Z_Ivme,ACI_Y,GPSEnlem,GPSBoylam;"); 
      myFile.close();
      Serial.println(ilkAci);
-     Beep();
-     Beep();
+     Beep(200,2);
   }
-  //SearchSatalite();
+   SearchSatalite();  
 }  
-
-struct Message {   
-      byte packageNum ;
-      byte explode1 ; 
-      byte explode2 ;
-      byte Irtifa_basinc[4] ;
-      byte Irtifa_GPS[4] ;
-      byte pressure[4] ;
-      byte X_Jiro [4];
-      byte Y_Jiro [4];
-      byte Z_Jiro [4]; 
-      byte X_Ivme [4];
-      byte Y_Ivme [4];
-      byte Z_Ivme [4];  
-      byte Aci [4];
-      byte GPSe[4]; 
-      byte GPSb[4];  
-} message;   
+ 
 void loop(){  
   packageNumber++;  
  
@@ -255,13 +295,13 @@ void loop(){
   acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
 
   hamYukseklik = bme.readAltitude(SEALEVELPRESSURE_HPA)  ;
-  yerdenYukseklik = hamYukseklik - baslanicYukseklik;
+  yerdenYukseklik = hamYukseklik - baslangicYukseklik;
 //////////////////////////////////Message Package Declaration ///////////////////////////////////////
 
   message.packageNum =  packageNumber;
   message.explode1  = (byte)(!patla1);
   message.explode2  = (byte)(!patla2);
-  *(float*)(message.Irtifa_basinc) =  hamYukseklik ; //Metre
+  *(float*)(message.Irtifa_basinc) =  yerdenYukseklik ; //Metre
   *(float*)(message.Irtifa_GPS) =  gps.altitude.meters(); //metre 
   *(float*)(message.pressure) =   curPressure;          //HPA Hekto pascal cinsinden
   //1 rad/s = 57.2957795 deg/s
@@ -273,7 +313,8 @@ void loop(){
   *(float*)(message.Z_Ivme) =  acc.y();                  // g  
   *(float*)(message.Aci) =   event.orientation.z;       //degree
   *(float*)(message.GPSe) =  gps.location.lat() ;  
-  *(float*)(message.GPSb) =  gps.location.lng() ;   
+  *(float*)(message.GPSb) =  gps.location.lng() ;  
+  message.GPSSatcont = (byte)gps.satellites.value() ; 
 
  //************//
 
@@ -286,20 +327,18 @@ void loop(){
 //911.48- 908.13 hpa (Tuz gölü basıncı yaklaşık bu olmalı),
 //581.33 hpa -579.00 hpa (tepede olacak yaklasik basinc)
 //////////////////////////////////Algorithm///////////////////////////////////////
-  if(!kalkti && ( yerdenYukseklik> 0.4) )  { 
+  if(!kalkti && ( yerdenYukseklik > KALKISYUKSEKLIGI) )  { 
     kalkti = true; 
-    Beep(100);
+    Beep(10,4);
   }
   if(kalkti) {
     totalY += ( event.gyro.z- avarageY); 
     avarageY = totalY / VERI_SAYISI ; 
     totalBasinc += (curPressure- avarageBasinc); 
     avarageBasinc = totalBasinc / VERI_SAYISI ; 
-Serial.println(avarageY);
-    if (  patla1 && (avarageY > ilkAci+80 )) {
+    if (  patla1 && (avarageY > ilkAci + 80 )) { // TODO : 80 degisecek buraya bak, basincla alakali kontrol
       patla1 = false;  
-      Beep(200);
-      Beep(200);  
+      Beep(100,2);
       digitalWrite(ROLE1, HIGH); 
       digitalWrite(ROLE1_KONTROL, HIGH); 
       delay(2000);
@@ -309,10 +348,9 @@ Serial.println(avarageY);
     if(!patla1){ 
       if(!patla2){
         //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
-        while(true)
-          Beep(1000); 
+        Beep(1000); 
       }
-      if(patla2 && yerdenYukseklik<=0.1){//TODO : değişcek
+      if(patla2 && yerdenYukseklik<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
         patla2 = false; 
           Beep(300); 
           Beep(300); 

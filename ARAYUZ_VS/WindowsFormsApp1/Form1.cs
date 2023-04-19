@@ -50,13 +50,15 @@ namespace TOBBETUROCKETRY
         Aci_Ana,
         GPSe_Ana,
         GPSb_Ana,
+        GPSSatNum_ana,
         packageNum_Gorev,
         GPSIrtifa_Gorev,
         sicaklik_Gorev,
         nem_Gorev,
         basinc_Gorev,
         GPSe_Gorev,
-        GPSb_Gorev
+        GPSb_Gorev,
+        GPSSatNum_Gorev
     }
 
     //https://www.google.com/maps?q=39.9272,32.8644
@@ -65,17 +67,17 @@ namespace TOBBETUROCKETRY
         public byte paketNumarasıHYI = 0;
         ////////////////////////////////////////  
         public readonly int Takim_ID = 99; 
-        public readonly int mapZoomCount =20; //0-20
+        public readonly int mapZoomCount =20; //10-20
         ////////////////////////////////////////    
-        static readonly int DATA_COUNT = 22;
+        static readonly int DATA_COUNT = 24;
         private readonly string nameOfModel = AppDomain.CurrentDomain.BaseDirectory + "/rocket"; // without ".obj" 
         public readonly string filenameRoket = "RoketValues.csv";
 
         SerialPort serialPort_YerIst = new SerialPort();
         SerialPort SerialPort_HYI = new SerialPort();
 
-        private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,Irtifa_basinc_Ana,GPSIrtifa_Ana,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,Aci_Ana,GPSe_Ana,GPSb_Ana,packageNum_Gorev,GPSIrtifa_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev";
-        private string recivedData = "0,0,0,0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,0,39.9103241,32.8529681";
+        private readonly string dataTitles = "packageNum_Ana,patlama1,patlama2,Irtifa_basinc_Ana,GPSIrtifa_Ana,basinc_Ana,X_jiro,Y_jiro,Z_jiro,X_ivme,Y_ivme,Z_ivme,Aci_Ana,GPSe_Ana,GPSb_Ana,GPSSatNum_ana,packageNum_Gorev,GPSIrtifa_Gorev,sicaklik_Gorev,nem_Gorev,basinc_Gorev,GPSe_Gorev,GPSb_Gorev,GPSSatNum_Gorev";
+        private string recivedData = "0,0,0,0,0,0,0,0,0,0,0,0,0,39.9103241,32.8529681,0,0,0,0,0,0,39.9103241,32.8529681,0";
         private string[] values = new string[DATA_COUNT];
 
         public static string HYI_Port = "";
@@ -186,6 +188,7 @@ namespace TOBBETUROCKETRY
             textBoxIvmeX_AnaBil.Text = GetPinValue(PackageElements.X_ivme);
             textBoxIvmeY_AnaBil.Text = GetPinValue(PackageElements.Y_ivme);
             textBoxIvmeZ_AnaBil.Text = GetPinValue(PackageElements.Z_ivme);
+            textBoxGPSSatNum_AnaBil.Text = GetPinValue(PackageElements.GPSSatNum_ana);
 
             y_angle_3d_model = (float)(GetPinValueFloat(PackageElements.X_jiro) / -100000000);
             z_angle_3d_model = 20 + (float)(GetPinValueFloat(PackageElements.Aci_Ana) / 100000000);
@@ -197,6 +200,7 @@ namespace TOBBETUROCKETRY
             textBoxGPSEnlem_GorevYuku.Text = GetPinValue(PackageElements.GPSe_Gorev);
             textBoxGPSBoylam_GorevYuku.Text = GetPinValue(PackageElements.GPSb_Gorev);  
             textBoxGPSIrtifa_GorevYuku.Text = GetPinValue(PackageElements.GPSIrtifa_Gorev);
+            textBoxGPSSatNum_GorevYuku.Text = GetPinValue(PackageElements.GPSSatNum_Gorev);
 
             UpdateChart(chartIrtifa_Ana, GetPinValueFloat(PackageElements.GPSIrtifa_Ana));
             UpdateChart(chartIrtifa_Gorev, GetPinValueFloat(PackageElements.GPSIrtifa_Gorev));
@@ -496,11 +500,9 @@ namespace TOBBETUROCKETRY
         }
         private void RefreshMapToNewGPS()
         {
-            UpdateMap(gMapAnaBilgisayar, (double)GetPinValueDouble(PackageElements.GPSe_Ana), (double)GetPinValueDouble(PackageElements.GPSb_Ana)); 
-            gMapAnaBilgisayar.Zoom = mapZoomCount;
+            UpdateMap(gMapAnaBilgisayar, (double)GetPinValueDouble(PackageElements.GPSe_Ana), (double)GetPinValueDouble(PackageElements.GPSb_Ana));  
             gMapAnaBilgisayar.ShowCenter = true; 
-            UpdateMap(gMapGorevYuku, (double)GetPinValueDouble(PackageElements.GPSe_Gorev), (double)GetPinValueDouble(PackageElements.GPSb_Gorev));
-            gMapGorevYuku.Zoom = mapZoomCount ;
+            UpdateMap(gMapGorevYuku, (double)GetPinValueDouble(PackageElements.GPSe_Gorev), (double)GetPinValueDouble(PackageElements.GPSb_Gorev)); 
             gMapGorevYuku.ShowCenter = true;
         }
 
@@ -693,7 +695,8 @@ namespace TOBBETUROCKETRY
             GL.UseProgram(0);
 
             glControl1.SwapBuffers();
-        } 
+        }
+         
 
         private void glControl1_Load(object sender, EventArgs e)
         {

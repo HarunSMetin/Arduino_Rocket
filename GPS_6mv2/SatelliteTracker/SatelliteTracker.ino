@@ -14,7 +14,7 @@
    4800-baud serial GPS device hooked up on pins 4(RX) and 3(TX).
 */
 static const int RXPin = 16, TXPin = 17;
-static const uint32_t GPSBaud = 19200;
+static const uint32_t GPSBaud =115200;
 
 // The TinyGPSPlus object
 TinyGPSPlus gps;
@@ -62,7 +62,7 @@ struct
 
 void setup()
 {
-  Serial.begin(19200);
+  Serial.begin(GPSBaud);
   Serial2.begin(GPSBaud);
 
   Serial.println(F("SatelliteTracker.ino"));

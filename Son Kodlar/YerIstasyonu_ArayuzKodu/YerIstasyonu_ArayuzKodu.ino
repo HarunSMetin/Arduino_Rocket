@@ -4,6 +4,7 @@
 
 LoRa_E32 e32ttl(&Serial3,UART_BPS_RATE_19200);  //mega 14 15 
 LoRa_E32 e32ttl_yuk(&Serial2,UART_BPS_RATE_19200);  //mega 16 17 
+
 void setup()
 {
   Serial.begin(19200); 
@@ -14,8 +15,7 @@ void setup()
   delay(200);  
   Serial.print("Begin");
 
-}  
-//static byte VERISAYISI = 22;  
+}   
 
 struct Message {   
       byte packageNum ;
@@ -33,9 +33,8 @@ struct Message {
       byte Aci [4];
       byte GPSe[4]; 
       byte GPSb[4];  
-}message ;   
-
-
+      byte GPSSatcont;
+}message ;    
 struct MessageYuk {  
       byte packageNum; 
       byte Irtifa_GPS[4]; 
@@ -43,20 +42,24 @@ struct MessageYuk {
       byte humadity[4];
       byte pressure[4];
       byte GPSe[4]; 
-      byte GPSb[4];  
+      byte GPSb[4]; 
+      byte GPSSatcont; 
 } message_yuk; 
 
- ResponseStructContainer rsc ;   
+ 
 void loop()
 { 
-  if( e32ttl.available()  > 1 ||e32ttl_yuk.available()  > 1  ){  
+  if( e32ttl.available()  > 1 ||e32ttl_yuk.available()  > 1  )
+  {  
+    ResponseStructContainer rsc ;   
+    ResponseStructContainer rsc2 ;   
      if (e32ttl_yuk.available()  > 1 ){ 
         rsc = e32ttl_yuk.receiveMessage(sizeof(MessageYuk)); 
         message_yuk = *(MessageYuk*) rsc.data;   
-    } 
-    if (e32ttl.available()  > 1 ){ 
-        rsc = e32ttl.receiveMessage(sizeof(Message)); 
-        message = *(Message*) rsc.data;  
+      } 
+      if (e32ttl.available()  > 1 ){ 
+        rsc2 = e32ttl.receiveMessage(sizeof(Message)); 
+        message = *(Message*) rsc2.data;  
       }
       Serial.print((byte)message.packageNum ); 
       Serial.print(",");
@@ -82,26 +85,30 @@ void loop()
       Serial.print(",");
       Serial.print(*(float*)(message.Z_Ivme       ),6);
       Serial.print(",");
-      Serial.print(*(float*)(message.Aci),6); 
+      Serial.print(*(float*)(message.Aci          ),6); 
       Serial.print(",");
-      Serial.print(*(float*)(message.GPSe),6); 
+      Serial.print(*(float*)(message.GPSe         ),6); 
       Serial.print(",");
-      Serial.print(*(float*)(message.GPSb),6); 
+      Serial.print(*(float*)(message.GPSb         ),6); 
+      Serial.print(",");
+      Serial.print(message.GPSSatcont);    
       Serial.print(",");
       Serial.print((byte)(message_yuk.packageNum) ); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.Irtifa_GPS) ); 
+      Serial.print(*(float*)(message_yuk.Irtifa_GPS ) ,6); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.temperature) ); 
+      Serial.print(*(float*)(message_yuk.temperature) ,6); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.humadity) ); 
+      Serial.print(*(float*)(message_yuk.humadity   ) ,6); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.pressure) ); 
+      Serial.print(*(float*)(message_yuk.pressure   ),6 ); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.GPSe) ); 
+      Serial.print(*(float*)(message_yuk.GPSe       ),6 ); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.GPSb) );    
+      Serial.print(*(float*)(message_yuk.GPSb       ),6 );    
+      Serial.print(",");
+      Serial.print(message_yuk.GPSSatcont);    
       Serial.println();
-      }
   }
+}
 
