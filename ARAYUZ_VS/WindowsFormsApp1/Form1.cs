@@ -498,6 +498,14 @@ namespace TOBBETUROCKETRY
             try { return Double.Parse(GetPinValue(pe)); }
             catch { return Double.NaN; }
         }
+        private byte PatlamaToByte()
+        {
+            if (GetPinValueFloat(PackageElements.patlama1) == 0 && GetPinValueFloat(PackageElements.patlama2) == 0) return 1;
+            else if (GetPinValueFloat(PackageElements.patlama1) == 1 && GetPinValueFloat(PackageElements.patlama2) == 0) return 2;
+            else if (GetPinValueFloat(PackageElements.patlama1) == 0 && GetPinValueFloat(PackageElements.patlama2) == 1) return 3;
+            else if (GetPinValueFloat(PackageElements.patlama1) == 1 && GetPinValueFloat(PackageElements.patlama2) == 1) return 4;
+            else return 1;
+        }
         private void RefreshMapToNewGPS()
         {
             UpdateMap(gMapAnaBilgisayar, (double)GetPinValueDouble(PackageElements.GPSe_Ana), (double)GetPinValueDouble(PackageElements.GPSb_Ana));  
@@ -952,7 +960,7 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[72] = byteArray[2];
             olusturalacak_paket[73] = byteArray[3];
 
-            olusturalacak_paket[74] = 1;
+            olusturalacak_paket[74] = PatlamaToByte();
             olusturalacak_paket[75] = CheckSumHesapla(olusturalacak_paket);
             olusturalacak_paket[76] = 0x0D; // Sabit
             olusturalacak_paket[77] = 0x0A; // Sabit
