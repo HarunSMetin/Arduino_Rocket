@@ -190,8 +190,7 @@ namespace TOBBETUROCKETRY
             textBoxIvmeZ_AnaBil.Text = GetPinValue(PackageElements.Z_ivme);
             textBoxGPSSatNum_AnaBil.Text = GetPinValue(PackageElements.GPSSatNum_ana);
 
-            y_angle_3d_model = (float)(GetPinValueFloat(PackageElements.X_jiro) / -100000000);
-            z_angle_3d_model = 20 + (float)(GetPinValueFloat(PackageElements.Aci_Ana) / 100000000);
+            z_angle_3d_model =(float)(GetPinValueFloat(PackageElements.Aci_Ana));
 
             textBoxPaketNum_GorevYuku.Text = GetPinValue(PackageElements.packageNum_Gorev);
             textBoxSicaklik_GorevYuku.Text = GetPinValue(PackageElements.sicaklik_Gorev);
