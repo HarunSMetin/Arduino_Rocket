@@ -122,6 +122,7 @@ float hamYukseklik = 905;
 String SerialString="";
 
 imu::Vector<3> acc;
+imu::Vector<3> gyro;
 
 struct Message {   
       byte packageNum ;
@@ -251,6 +252,9 @@ void setup()
   if(!SD.begin(SD_KART_CS_PIN))
     Serial.println("SD Card Module NOT detected!");
 
+  bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P7); //Kutuphaneyi degisitdim
+  //bno.setAxisRemap(0x09); // bu kullanılabilir
+  bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P2); 
 
   myFile = SD.open("verilera.txt", FILE_WRITE);
   delay(200);
@@ -261,16 +265,19 @@ void setup()
  
   bme.setPressureOversampling(BME680_OS_4X);
 
-  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
+  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER ); 
+  gyro=bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE );
 
   for (int i =0; i < VERI_SAYISI; i++) {  
     bno.getEvent(&event);   
     delay(200); 
     totalBasinc += (float)bme.readPressure()/100 ;   
-    totalY += (float)event.gyro.y;
+    totalY += (float)event.gyro.z;
     baslangicYukseklik+=bme.readAltitude(SEALEVELPRESSURE_HPA); ;
   }  
+
   avarageY = totalY / VERI_SAYISI ; 
+
   avarageBasinc = totalBasinc / VERI_SAYISI;    
   baslangicYukseklik /=VERI_SAYISI;
   ilkAci =avarageY;
@@ -282,7 +289,7 @@ void setup()
      Serial.println(ilkAci);
      Beep(200,2);
   }
-   SearchSatalite();  
+   //SearchSatalite();  
 }   
 void loop(){  
   packageNumber++;  
@@ -291,7 +298,7 @@ void loop(){
   bno.getEvent(&event);
   smartDelay(100);  
   curPressure =bme.readPressure()/100; 
-  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER );
+  
 
   hamYukseklik = bme.readAltitude(SEALEVELPRESSURE_HPA)  ;
   yerdenYukseklik = hamYukseklik - baslangicYukseklik;
@@ -303,14 +310,19 @@ void loop(){
   *(float*)(message.Irtifa_basinc) =  yerdenYukseklik ; //Metre
   *(float*)(message.Irtifa_GPS) =  gps.altitude.meters(); //metre 
   *(float*)(message.pressure) =   curPressure;          //HPA Hekto pascal cinsinden
-  //1 rad/s = 57.2957795 deg/s  
-  *(float*)(message.X_Jiro) =   event.gyro.x; //deg
-  *(float*)(message.Y_Jiro) =   event.gyro.y ; //deg
-  *(float*)(message.Z_Jiro) =   event.gyro.z; //deg
-  *(float*)(message.X_Ivme) =  acc.x();                 // g
-  *(float*)(message.Y_Ivme) =  acc.z ();                 // g
-  *(float*)(message.Z_Ivme) =  acc.y();                  // g  
-  *(float*)(message.Aci) =   90 - event.orientation.y;       //degree
+    
+  gyro=bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE );
+  *(float*)(message.X_Jiro) =  gyro.x();                  // deg/s
+  *(float*)(message.Y_Jiro) =  gyro.y() ;                 // deg/s
+  *(float*)(message.Z_Jiro) =  gyro.z();                  // deg/s
+  
+  acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER ); 
+  *(float*)(message.X_Ivme) =  acc.x();                   // g
+  *(float*)(message.Y_Ivme) =  acc.y();                   // g
+  *(float*)(message.Z_Ivme) =  acc.z();                   // g  
+
+  *(float*)(message.Aci) =   event.gyro.z;    //degree TODO : TAM OLARAK BAK
+
   *(float*)(message.GPSe) =  gps.location.lat() ;  
   *(float*)(message.GPSb) =  gps.location.lng() ;  
   message.GPSSatcont = (byte)gps.satellites.value() ; 
@@ -326,17 +338,17 @@ void loop(){
 //911.48- 908.13 hpa (Tuz gölü basıncı yaklaşık bu olmalı),
 //581.33 hpa -579.00 hpa (tepede olacak yaklasik basinc)
 //////////////////////////////////Algorithm///////////////////////////////////////
-  if(!kalkti && ( ( yerdenYukseklik > KALKISYUKSEKLIGI) || ((*(float*)message.X_Jiro) != 0 && (*(float*)message.X_Jiro)  < (ilkAci - 10)) ) )  
+if(!kalkti && ( ( yerdenYukseklik > KALKISYUKSEKLIGI) || ((event.gyro.z) != 0 && (event.gyro.z)  > (ilkAci + 10)) ) )  
   { 
     kalkti = true; 
     Beep(10,4);
   }
   if(kalkti) {
-    totalY += ( event.gyro.y - avarageY); 
+    totalY += ( event.gyro.z - avarageY); 
     avarageY = totalY / VERI_SAYISI ; 
     totalBasinc += (curPressure- avarageBasinc); 
     avarageBasinc = totalBasinc / VERI_SAYISI ; 
-    if (  patla1 && (avarageY < 0 )) { // TODO : basincla alakali kontrol
+    if (  patla1 && ( event.gyro.z  > 90)) { // TODO : basincla alakali kontrol, Gyro kontrol
       patla1 = false;  
       Beep(100,2);
       digitalWrite(ROLE1, HIGH); 
@@ -366,15 +378,16 @@ void loop(){
 
   
 //////////////////////////////////Serial Visual ///////////////////////////////////////
-  SerialString = SerialString +"PAKET NUMARASI: "+(byte)(message.packageNum)+"\nYerden yukseklik: "+yerdenYukseklik+"\n1. PATLAMA DURUMU: "+ (byte)!patla1 +"\n2. PATLAMA DURUMU: "+ (byte)!patla2+"\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+
-      *(float*)(message.pressure)+"\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+
-      *(float*)(message.Z_Jiro)  +"\n X_Ivme: "+
-      *(float*)(message.X_Ivme) +"\t Y_Ivme: "+
-      *(float*)(message.Y_Ivme) +"\t Z_Ivme: "+
-      *(float*)(message.Z_Ivme) + "\n";   
+ SerialString = SerialString +
+      "PAKET NUMARASI: "+(byte)(message.packageNum)+
+      "\nYerden yukseklik: "+yerdenYukseklik+
+      "\n1. PATLAMA DURUMU: "+ (byte)!patla1 +
+      "\n2. PATLAMA DURUMU: "+ (byte)!patla2+
+      "\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+*(float*)(message.pressure)+
+      "\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+*(float*)(message.Z_Jiro)  +
+      "\nX_Ivme: "+*(float*)(message.X_Ivme) +"\t Y_Ivme: "+*(float*)(message.Y_Ivme) +"\t Z_Ivme: "+ *(float*)(message.Z_Ivme) + "\n";   
     Serial.println(SerialString);
     SerialString="";
-    
 //////////////////////////////////File Write ///////////////////////////////////////
  if (myFile) {
       myFile.print((byte)message.packageNum);  
