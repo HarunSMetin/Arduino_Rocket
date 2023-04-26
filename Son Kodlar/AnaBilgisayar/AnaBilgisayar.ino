@@ -1,6 +1,6 @@
 
 #include "Arduino.h"
-#define VERI_SAYISI 3
+#define VERI_SAYISI 5
 
 //******************************************************
 //Pinler
@@ -99,17 +99,10 @@ struct
 //******************************************************
 
 byte packageNumber = 0;  
-
-float totalY = 0; 
-float avarageY = 0;   
- 
-float totalBasinc = 0; 
-float avarageBasinc = 91 ;   
+  
 float ilkBasincDegeri = 91;    
-float ilkAci = 85;  
-
-float  curPressure =0;  //HPA   
-
+float ilkAci = 85;   
+float  curPressure =0;  //HPA    
 float baslangicYukseklik = 0;
 
 bool patla1 = true;
@@ -121,10 +114,13 @@ float yerdenYukseklik =0;
 float hamYukseklik = 905;
 String SerialString="";
 
+float NormalAci = 85;
+
 imu::Vector<3> acc;
 imu::Vector<3> gyro;
 
-struct Message {   
+struct Message {    
+      char type[5] = "ANA";
       byte packageNum ;
       byte explode1 ; 
       byte explode2 ;
@@ -145,9 +141,9 @@ struct Message {
 void Beep(int ms=400, int count = 1){
   int i =0;
   for (i=0;i<count;i++){ 
-    delay(ms);
+    smartDelay(ms);
     digitalWrite(BUZZER, HIGH);
-    delay(ms);
+    smartDelay(ms);
     digitalWrite(BUZZER, LOW);
   }
 }
@@ -221,6 +217,35 @@ void SearchSatalite(){
   }
   Beep(1000);
 }
+ 
+struct SensorData {
+  int readings[VERI_SAYISI];
+  float average = 0;
+  int numReadings = 0;
+  int index = 0;
+  float sum = 0;
+};
+SensorData BasincData;
+SensorData AciData; 
+SensorData baslangicYukseklikData;
+
+float calculateAverage(struct SensorData* data, float newReading) {
+  if(newReading !=0 ){
+    // Okumayı depolayın ve toplamı güncelleyin
+    if (data->numReadings < VERI_SAYISI) {
+      data->numReadings++;
+    }
+    data->sum = data->sum - data->readings[data->index] + newReading;
+    data->readings[data->index] = newReading;
+
+    // Dizi indeksini güncelle
+    data->index = (data->index + 1) % VERI_SAYISI;
+
+    // Son okunan ölçümlerin sayısına göre ortalama hesaplayın
+    data->average = (float) data->sum / data->numReadings; 
+  } 
+  return data->average;
+} 
 void setup()
 { 
   pinMode(ROLE1, OUTPUT);
@@ -262,7 +287,7 @@ void setup()
   delay(200);  
   e32ttl.begin();     
   delay(200);
- 
+  
   bme.setPressureOversampling(BME680_OS_4X);
 
   acc=bno.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER ); 
@@ -270,19 +295,14 @@ void setup()
 
   for (int i =0; i < VERI_SAYISI; i++) {  
     bno.getEvent(&event);   
-    delay(200); 
-    totalBasinc += (float)bme.readPressure()/100 ;   
-    totalY += (float)event.gyro.z;
-    baslangicYukseklik+=bme.readAltitude(SEALEVELPRESSURE_HPA); ;
-  }  
+    delay(200);  
+    calculateAverage(&BasincData, (float)bme.readPressure()/100 );
+    calculateAverage(&AciData, (float)event.gyro.z);
+    calculateAverage(&baslangicYukseklikData, bme.readAltitude(SEALEVELPRESSURE_HPA)); 
+  }     
+  ilkAci =  AciData.average ;
+  ilkBasincDegeri =  BasincData.average; 
 
-  avarageY = totalY / VERI_SAYISI ; 
-
-  avarageBasinc = totalBasinc / VERI_SAYISI;    
-  baslangicYukseklik /=VERI_SAYISI;
-  ilkAci =avarageY;
-  ilkBasincDegeri = avarageBasinc;
-  
   if (myFile) { 
      myFile.println("PakatNumarasi,1Patlama,2Patlama,Irtifa_basinc,Irtifa_GPS,Basinc,X_Jiro,Y_Jiro,Z_Jiro,X_Ivme,Y_Ivme,Z_Ivme,ACI_Y,GPSEnlem,GPSBoylam;"); 
      myFile.close();
@@ -292,16 +312,18 @@ void setup()
    //SearchSatalite();  
 }   
 void loop(){  
-  packageNumber++;  
- 
+   
+  packageNumber++;   
+
   myFile = SD.open("verilera.txt", FILE_WRITE);
   bno.getEvent(&event);
-  smartDelay(100);  
-  curPressure =bme.readPressure()/100; 
-  
 
+
+  curPressure =bme.readPressure()/100;  
   hamYukseklik = bme.readAltitude(SEALEVELPRESSURE_HPA)  ;
-  yerdenYukseklik = hamYukseklik - baslangicYukseklik;
+  yerdenYukseklik = hamYukseklik - baslangicYukseklikData.average;
+  NormalAci=event.gyro.z;
+ 
 //////////////////////////////////Message Package Declaration ///////////////////////////////////////
 
   message.packageNum =  packageNumber;
@@ -321,16 +343,17 @@ void loop(){
   *(float*)(message.Y_Ivme) =  acc.y();                   // g
   *(float*)(message.Z_Ivme) =  acc.z();                   // g  
 
-  *(float*)(message.Aci) =   event.gyro.z;    //degree TODO : TAM OLARAK BAK
+  *(float*)(message.Aci) =  NormalAci;    //degree TODO : TAM OLARAK BAK
 
   *(float*)(message.GPSe) =  gps.location.lat() ;  
   *(float*)(message.GPSb) =  gps.location.lng() ;  
   message.GPSSatcont = (byte)gps.satellites.value() ; 
 
  //************//
-
-  e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message));
-  packageNumber = (packageNumber==255) ? 0 : packageNumber;
+ 
+  e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message)); 
+  Beep(10);
+  packageNumber = (packageNumber==256) ? 0 : packageNumber;
 //Tuz gölü rakımı yaklaşık 905 m yani 2969,16 feet 
 //14616 feete çıkılacak 
 //https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=0CAQQw7AJahcKEwiw3uys4JH-AhUAAAAAHQAAAAAQBw&url=https%3A%2F%2Fwww.ngdc.noaa.gov%2Fstp%2Fspace-weather%2Fonline-publications%2Fmiscellaneous%2Fus-standard-atmosphere-1976%2Fus-standard-atmosphere_st76-1562_noaa.pdf&psig=AOvVaw34JdSmuRhWO3bbcUJQLBqC&ust=1680750139172882
@@ -338,45 +361,43 @@ void loop(){
 //911.48- 908.13 hpa (Tuz gölü basıncı yaklaşık bu olmalı),
 //581.33 hpa -579.00 hpa (tepede olacak yaklasik basinc)
 //////////////////////////////////Algorithm///////////////////////////////////////
-if(!kalkti && ( ( yerdenYukseklik > KALKISYUKSEKLIGI) || ((event.gyro.z) != 0 && (event.gyro.z)  > (ilkAci + 10)) ) )  
-  { 
-    kalkti = true; 
-    Beep(10,4);
-  }
-  if(kalkti) {
-    totalY += ( event.gyro.z - avarageY); 
-    avarageY = totalY / VERI_SAYISI ; 
-    totalBasinc += (curPressure- avarageBasinc); 
-    avarageBasinc = totalBasinc / VERI_SAYISI ; 
-    if (  patla1 && ( event.gyro.z  > 90)) { // TODO : basincla alakali kontrol, Gyro kontrol
-      patla1 = false;  
-      Beep(100,2);
-      digitalWrite(ROLE1, HIGH); 
-      digitalWrite(ROLE1_KONTROL, HIGH); 
-      delay(2000);
-      digitalWrite(ROLE1, LOW); 
-      digitalWrite(ROLE1_KONTROL, LOW); 
-    }  
-    if(!patla1){ 
-      if(!patla2){
-        //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
-        Beep(200); 
-      }
-      if(patla2 && yerdenYukseklik<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
-        patla2 = false; 
-          Beep(300); 
-          Beep(300); 
-          Beep(300); 
-        digitalWrite(ROLE2, HIGH); 
-        digitalWrite(ROLE2_KONTROL, HIGH); 
-        delay(2000);
-        digitalWrite(ROLE2, LOW); 
-        digitalWrite(ROLE2_KONTROL, LOW); 
-      } 
-    }
-  }
+  if(bno.getEvent(&event))
+    NormalAci=event.gyro.z;
 
-  
+  if(!kalkti && ( ( yerdenYukseklik > KALKISYUKSEKLIGI) || ((NormalAci) != 0 && (NormalAci)  > (ilkAci + 10)) ) )  
+    { 
+      kalkti = true; 
+      Beep(20,4);
+    }
+  if(kalkti) {
+      calculateAverage(&BasincData, curPressure);
+      calculateAverage(&AciData, *(float*)(message.Aci));
+      if (  patla1 && ( NormalAci > 90)) { // TODO : basincla alakali kontrol, Gyro kontrol
+        patla1 = false;  
+        Beep(100,2);
+        digitalWrite(ROLE1, HIGH); 
+        digitalWrite(ROLE1_KONTROL, HIGH); 
+        delay(2000);
+        digitalWrite(ROLE1, LOW); 
+        digitalWrite(ROLE1_KONTROL, LOW); 
+      }  
+      if(!patla1){ 
+        if(!patla2){
+          //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
+          Beep(200); 
+        }
+        if(patla2 && yerdenYukseklik<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
+          patla2 = false; 
+            Beep(300,2);  
+          digitalWrite(ROLE2, HIGH); 
+          digitalWrite(ROLE2_KONTROL, HIGH); 
+          delay(2000);
+          digitalWrite(ROLE2, LOW); 
+          digitalWrite(ROLE2_KONTROL, LOW); 
+        } 
+      }
+    }
+    
 //////////////////////////////////Serial Visual ///////////////////////////////////////
  SerialString = SerialString +
       "PAKET NUMARASI: "+(byte)(message.packageNum)+

@@ -228,6 +228,7 @@ namespace TOBBETUROCKETRY
             }
 
 
+            if(SerialPort_HYI.IsOpen)SerialPort_HYI_dataSend();
             try
             {
                 glControl1.Invalidate();
@@ -320,7 +321,6 @@ namespace TOBBETUROCKETRY
                 Thread.Sleep(1000);
                 if (SerialPort_HYI.IsOpen)
                 {
-                    SerialPort_HYI_dataSend();
                     lblHakemDurum.ForeColor = Color.Green;
                     lblHakemDurum.Text = "Baglandi!";
                 }
@@ -346,7 +346,6 @@ namespace TOBBETUROCKETRY
                         {
                             try
                             {
-                                byte[] paket = new byte[78];
                                 paketstr = PaketOlustur();
                                 SerialPort_HYI.Write(paketstr, 0, paketstr.Length);
                                 Thread.Sleep(100);
@@ -903,18 +902,18 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[32] = byteArray[2];
             olusturalacak_paket[33] = byteArray[3];
 
-            olusturalacak_paket[34] = 0;
-            olusturalacak_paket[35] = 0;
-            olusturalacak_paket[36] = 0;
-            olusturalacak_paket[37] = 0;
-            olusturalacak_paket[38] = 0;
-            olusturalacak_paket[39] = 0;
-            olusturalacak_paket[40] = 0;
-            olusturalacak_paket[41] = 0;
-            olusturalacak_paket[42] = 0;
-            olusturalacak_paket[43] = 0;
-            olusturalacak_paket[44] = 0;
-            olusturalacak_paket[45] = 0;
+            olusturalacak_paket[34] = 0x00;
+            olusturalacak_paket[35] = 0x00;
+            olusturalacak_paket[36] = 0x00;
+            olusturalacak_paket[37] = 0x00;
+            olusturalacak_paket[38] = 0x00;
+            olusturalacak_paket[39] = 0x00;
+            olusturalacak_paket[40] = 0x00;
+            olusturalacak_paket[41] = 0x00;
+            olusturalacak_paket[42] = 0x00;
+            olusturalacak_paket[43] = 0x00;
+            olusturalacak_paket[44] = 0x00;
+            olusturalacak_paket[45] = 0x00;
 
             byteArray = BitConverter.GetBytes(GetPinValueFloat(PackageElements.X_jiro));
             olusturalacak_paket[46] = byteArray[0];
@@ -959,7 +958,7 @@ namespace TOBBETUROCKETRY
             olusturalacak_paket[72] = byteArray[2];
             olusturalacak_paket[73] = byteArray[3];
 
-            olusturalacak_paket[74] = PatlamaToByte();
+            olusturalacak_paket[74] = 0XFF;//PatlamaToByte();
             olusturalacak_paket[75] = CheckSumHesapla(olusturalacak_paket);
             olusturalacak_paket[76] = 0x0D; // Sabit
             olusturalacak_paket[77] = 0x0A; // Sabit
@@ -967,7 +966,7 @@ namespace TOBBETUROCKETRY
             paketNumarasıHYI++;
             for (int i = 0; i < 78; i++)
             {
-                olusturalacak_paket[i] = Convert.ToByte(string.Format("0x{0:X2}", olusturalacak_paket[i]), 16);
+                olusturalacak_paket[i] = Convert.ToByte(string.Format("0x{0:X2}", olusturalacak_paket[i]), 16); 
             }
             return olusturalacak_paket;
         }

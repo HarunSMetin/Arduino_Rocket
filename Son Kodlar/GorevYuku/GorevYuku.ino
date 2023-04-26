@@ -68,7 +68,8 @@ float  curPressure =0;  //HPA
  
 String SerialString=""; 
 
-struct MessageYuk {  
+struct MessageYuk {   
+      char type[5] = "YUK";
       byte packageNum; 
       byte Irtifa_GPS[4]; 
       byte temperature[4]; 
@@ -188,7 +189,7 @@ void setup()
      myFile.println("PakatNumarasi,Irtifa_GPS,Sicaklik,Nem,Basinc,GPSEnlem,GPSBoylam;"); 
      myFile.close();
   }
- SearchSatalite();
+ //SearchSatalite();
 }  
 
  
@@ -199,7 +200,7 @@ void loop()
  
   myFile = SD.open("verilerg.txt",  FILE_WRITE  ); 
   smartDelay(100);  
-  curPressure =bme.readPressure();   
+  curPressure =bme.readPressure()/100;   
   message_yuk.packageNum =  packageNumber; 
   *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.meters() ;  
   *(float*)(message_yuk.temperature) =   (float)bme.temperature;  //Hekto pascal cinsinden

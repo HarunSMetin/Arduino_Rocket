@@ -13,11 +13,10 @@ void setup()
   delay(200); 
   e32ttl_yuk.begin(); 
   delay(200);  
-  Serial.print("Begin");
 
 }   
 
-struct Message {   
+struct Message {    
       byte packageNum ;
       byte explode1 ; 
       byte explode2 ;
@@ -34,7 +33,7 @@ struct Message {
       byte GPSe[4]; 
       byte GPSb[4];  
       byte GPSSatcont;
-}message ;    
+} message;    
 struct MessageYuk {  
       byte packageNum; 
       byte Irtifa_GPS[4]; 
@@ -46,21 +45,34 @@ struct MessageYuk {
       byte GPSSatcont; 
 } message_yuk; 
 
- 
+char type[5];
+int AnaAvailable = 0;
+int YukAvailable = 0;
 void loop()
 { 
-  if( e32ttl.available()  > 1 ||e32ttl_yuk.available()  > 1  )
+
+  ResponseContainer       rs1 ;    
+  ResponseContainer       rs2 ;   
+  AnaAvailable=e32ttl.available() ;
+  YukAvailable=e32ttl_yuk.available();
+  if(AnaAvailable > 1 || YukAvailable > 1  )
   {  
-    ResponseStructContainer rsc ;   
-    ResponseStructContainer rsc2 ;   
-     if (e32ttl_yuk.available()  > 1 ){ 
-        rsc = e32ttl_yuk.receiveMessage(sizeof(MessageYuk)); 
-        message_yuk = *(MessageYuk*) rsc.data;   
+      if (AnaAvailable > 1 ){   
+		    rs2 = e32ttl.receiveInitialMessage(sizeof(type));  
+        if (rs2.data=="ANA"){ 
+          ResponseStructContainer rsc2 = e32ttl.receiveMessage(sizeof(Message)); 
+          message = *(Message*) rsc2.data; 
+		    	rsc2.close(); 
+        }
+      }  
+     if (YukAvailable > 1 ){ 		 
+		    rs1 = e32ttl_yuk.receiveInitialMessage(sizeof(type));  
+        if (rs1.data =="YUK"){
+          ResponseStructContainer rsc = e32ttl_yuk.receiveMessage(sizeof(MessageYuk)); 
+          message_yuk = *(MessageYuk*) rsc.data;   
+			    rsc.close();
+        } 
       } 
-      if (e32ttl.available()  > 1 ){ 
-        rsc2 = e32ttl.receiveMessage(sizeof(Message)); 
-        message = *(Message*) rsc2.data;  
-      }
       Serial.print((byte)message.packageNum ); 
       Serial.print(",");
       Serial.print((byte) message.explode1 );
@@ -101,7 +113,7 @@ void loop()
       Serial.print(",");
       Serial.print(*(float*)(message_yuk.humadity   ) ,6); 
       Serial.print(",");
-      Serial.print(*(float*)(message_yuk.pressure   ),6 ); 
+      Serial.print(*(float*)(message_yuk.pressure   ),6); 
       Serial.print(",");
       Serial.print(*(float*)(message_yuk.GPSe       ),6 ); 
       Serial.print(",");
@@ -109,6 +121,7 @@ void loop()
       Serial.print(",");
       Serial.print(message_yuk.GPSSatcont);    
       Serial.println();
-  }
+  } 
+  delay(50); 
 }
 
