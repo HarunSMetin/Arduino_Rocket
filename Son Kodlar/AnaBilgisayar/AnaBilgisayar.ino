@@ -93,7 +93,7 @@ struct
 //Arduino Mega	10 
 #define BUZZER 10
 //******************PARAMETRELER****************************
-#define SATSEARCHTIME 5 //5dk 
+#define SATSEARCHTIME 0.5 //5dk 
 #define KALKISYUKSEKLIGI 2 // 2 METRE
 #define IKINICIPATLAMAYUKSEKLIGI 500 // 500 METRE
 //******************************************************
@@ -103,14 +103,14 @@ byte packageNumber = 0;
 float ilkBasincDegeri = 91;    
 float ilkAci = 85;   
 float  curPressure =0;  //HPA    
-float baslangicYukseklik = 0;
+float baslangicYukseklik = 1;
 
 bool patla1 = true;
 bool patla2 = true;
 
 bool kalkti = false;
 
-float yerdenYukseklik =0;
+float yerdenYukseklik =1;
 float hamYukseklik = 905;
 String SerialString="";
 
@@ -119,11 +119,14 @@ float NormalAci = 85;
 imu::Vector<3> acc;
 imu::Vector<3> gyro;
 
+bool BME_STATUS = true;
+bool BNO_STATUS = true;
+bool SD_STATUS = true;
+
 struct Message {    
       char type[5] = "ANA";
       byte packageNum ;
-      byte explode1 ; 
-      byte explode2 ;
+      byte status; // exp1, exp2, gpsA , BME, BNO ,SdCard
       byte Irtifa_basinc[4] ;
       byte Irtifa_GPS[4] ;
       byte pressure[4] ;
@@ -210,8 +213,8 @@ void SearchSatalite(){
           for (int i=0; i<MAX_SATELLITES; ++i)
             sats[i].active = false;
           
-          Beep(50);
-        }
+          //Beep(50);
+        }    
       }
     }
   }
@@ -246,6 +249,39 @@ float calculateAverage(struct SensorData* data, float newReading) {
   } 
   return data->average;
 } 
+
+/////////////////////////////////////////KALMAN////////////////////////////////////
+
+// Basınç için Kalman filtresi değişkenleri
+float pressureKalmanEstimate = 911.48;
+float pressureKalmanErrorEstimate = 0.01;
+float pressureKalmanGain = 0.05;
+
+// Yükseklik için Kalman filtresi değişkenleri
+float altitudeKalmanEstimate = 0;
+float altitudeKalmanErrorEstimate = 0.01;
+float altitudeKalmanGain = 0.05; 
+
+// Açı için Kalman filtresi değişkenleri
+float degreeKalmanEstimate = 5;
+float degreeKalmanErrorEstimate = 0.01;
+float degreeKalmanGain = 0.05;
+unsigned long currentTime=0 ;
+unsigned long lastFilterUpdate = 0;
+float dt =0;
+void KalmanFilter(float& estimate, float& errorEstimate, float& gain, float measurement)
+{
+
+  // Basınç için Kalman filtresi 
+  float  KalmanErrorPrediction = errorEstimate + (gain * dt); // Önceki tahmin hata payı
+  float  KalmanInnovation = measurement - estimate; // Yeni ölçüm - önceki tahmin
+  float  KalmanInnovationError =  KalmanErrorPrediction + gain; // Yeni ölçüm hata payı
+  estimate = estimate + gain *  KalmanInnovation / KalmanInnovationError; // Yeni tahmin
+  errorEstimate = (1 - gain) *  KalmanErrorPrediction; // Yeni tahmin hata payı
+
+  
+}
+///////////////////////////////////////////////////////////////////////////////////
 void setup()
 { 
   pinMode(ROLE1, OUTPUT);
@@ -270,12 +306,18 @@ void setup()
   }
   delay(100);
 
-  if(!bno.begin())
-    Serial.println("Sensor BNO055 NOT detected!"); 
-  if (!bme.begin())
+  if(!bno.begin()){ 
+    Serial.println("Sensor BNO055 NOT detected!");
+    BNO_STATUS = false;
+  } 
+  if (!bme.begin()){
     Serial.println("Sensor BME680 NOT detected!"); 
-  if(!SD.begin(SD_KART_CS_PIN))
+    BME_STATUS = false;
+  }
+  if(!SD.begin(SD_KART_CS_PIN)){
     Serial.println("SD Card Module NOT detected!");
+    SD_STATUS = false;
+  }
 
   bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P7); //Kutuphaneyi degisitdim
   //bno.setAxisRemap(0x09); // bu kullanılabilir
@@ -300,7 +342,7 @@ void setup()
     calculateAverage(&AciData, (float)event.gyro.z);
     calculateAverage(&baslangicYukseklikData, bme.readAltitude(SEALEVELPRESSURE_HPA)); 
   }     
-  ilkAci =  AciData.average ;
+  ilkAci =  abs(AciData.average) ;
   ilkBasincDegeri =  BasincData.average; 
 
   if (myFile) { 
@@ -308,11 +350,34 @@ void setup()
      myFile.close();
      Serial.println(ilkAci);
      Beep(200,2);
-  }
-   //SearchSatalite();  
+  }       
+ 
+  bitWrite(message.status,0,(!patla1));
+  bitWrite(message.status,1,(!patla2)); 
+  bitWrite(message.status,2,(Serial2.available()!=0));
+  bitWrite(message.status,3,BME_STATUS);
+  bitWrite(message.status,4,BNO_STATUS);
+  bitWrite(message.status,5,SD_STATUS);
+  bitWrite(message.status,6,(Serial2.available()!=0)); 
+  bitWrite(message.status,7,(Serial2.available()!=0));   
+  message.GPSSatcont = (byte)gps.satellites.value() ;  
+  e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message)); 
+  SearchSatalite();  
+ 
+  bitWrite(message.status,0,(!patla1));
+  bitWrite(message.status,1,(!patla2)); 
+  bitWrite(message.status,2,(Serial2.available()!=0));
+  bitWrite(message.status,3,BME_STATUS);
+  bitWrite(message.status,4,BNO_STATUS);
+  bitWrite(message.status,5,SD_STATUS);
+  bitWrite(message.status,6,(Serial2.available()!=0)); 
+  bitWrite(message.status,7,(Serial2.available()!=0));   
+  message.GPSSatcont = (byte)gps.satellites.value() ;  
+  e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message)); 
 }   
 void loop(){  
-   
+   currentTime =millis();
+   dt = (currentTime - lastFilterUpdate) / 1000.0F; // Zaman farkı
   packageNumber++;   
 
   myFile = SD.open("verilera.txt", FILE_WRITE);
@@ -327,8 +392,14 @@ void loop(){
 //////////////////////////////////Message Package Declaration ///////////////////////////////////////
 
   message.packageNum =  packageNumber;
-  message.explode1  = (byte)(!patla1);
-  message.explode2  = (byte)(!patla2);
+  bitWrite(message.status,0,(!patla1));
+  bitWrite(message.status,1,(!patla2)); 
+  bitWrite(message.status,2,(Serial2.available()!=0));
+  bitWrite(message.status,3,BME_STATUS);
+  bitWrite(message.status,4,BNO_STATUS);
+  bitWrite(message.status,5,SD_STATUS);
+  bitWrite(message.status,6,(Serial2.available()!=0)); 
+  bitWrite(message.status,7,(Serial2.available()!=0));   
   *(float*)(message.Irtifa_basinc) =  yerdenYukseklik ; //Metre
   *(float*)(message.Irtifa_GPS) =  gps.altitude.meters(); //metre 
   *(float*)(message.pressure) =   curPressure;          //HPA Hekto pascal cinsinden
@@ -353,7 +424,27 @@ void loop(){
  
   e32ttl.sendFixedMessage(0,4,6,&message, sizeof(Message)); 
   Beep(10);
-  packageNumber = (packageNumber==256) ? 0 : packageNumber;
+  packageNumber = (packageNumber==255) ? 0 : packageNumber;
+////////KALMAN///////////////// 
+
+  if(bno.getEvent(&event))
+    NormalAci=event.gyro.z;
+    
+  lastFilterUpdate = millis() ;
+  // Basınç için Kalman filtresi
+  KalmanFilter(pressureKalmanEstimate, pressureKalmanErrorEstimate, pressureKalmanGain, curPressure);
+
+  // Yükseklik için Kalman filtresi
+  KalmanFilter(altitudeKalmanEstimate, altitudeKalmanErrorEstimate, altitudeKalmanGain, yerdenYukseklik);
+
+  KalmanFilter(degreeKalmanEstimate,  degreeKalmanErrorEstimate,  degreeKalmanGain, NormalAci);
+
+  Serial.print("pressure:");
+  Serial.print(pressureKalmanEstimate ); 
+  Serial.print("\t\taltitude:");
+  Serial.print(altitudeKalmanEstimate );
+  Serial.print("\t\tdegree:");
+  Serial.println(degreeKalmanEstimate );
 //Tuz gölü rakımı yaklaşık 905 m yani 2969,16 feet 
 //14616 feete çıkılacak 
 //https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=0CAQQw7AJahcKEwiw3uys4JH-AhUAAAAAHQAAAAAQBw&url=https%3A%2F%2Fwww.ngdc.noaa.gov%2Fstp%2Fspace-weather%2Fonline-publications%2Fmiscellaneous%2Fus-standard-atmosphere-1976%2Fus-standard-atmosphere_st76-1562_noaa.pdf&psig=AOvVaw34JdSmuRhWO3bbcUJQLBqC&ust=1680750139172882
@@ -361,23 +452,21 @@ void loop(){
 //911.48- 908.13 hpa (Tuz gölü basıncı yaklaşık bu olmalı),
 //581.33 hpa -579.00 hpa (tepede olacak yaklasik basinc)
 //////////////////////////////////Algorithm///////////////////////////////////////
-  if(bno.getEvent(&event))
-    NormalAci=event.gyro.z;
 
-  if(!kalkti && ( ( yerdenYukseklik > KALKISYUKSEKLIGI) || ((NormalAci) != 0 && (NormalAci)  > (ilkAci + 10)) ) )  
+  if(!kalkti && ( ( altitudeKalmanEstimate > KALKISYUKSEKLIGI) || (abs(NormalAci) != 0 && abs(NormalAci)  > (ilkAci + 10)) ) )  
     { 
       kalkti = true; 
       Beep(20,4);
     }
   if(kalkti) {
       calculateAverage(&BasincData, curPressure);
-      calculateAverage(&AciData, *(float*)(message.Aci));
-      if (  patla1 && ( NormalAci > 90)) { // TODO : basincla alakali kontrol, Gyro kontrol
+      calculateAverage(&AciData, abs(NormalAci));
+      if (  patla1 && ( AciData.average > 90)) { // TODO : basincla alakali kontrol, Gyro kontrol
         patla1 = false;  
         Beep(100,2);
         digitalWrite(ROLE1, HIGH); 
         digitalWrite(ROLE1_KONTROL, HIGH); 
-        delay(2000);
+        delay(1000);
         digitalWrite(ROLE1, LOW); 
         digitalWrite(ROLE1_KONTROL, LOW); 
       }  
@@ -386,12 +475,12 @@ void loop(){
           //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
           Beep(200); 
         }
-        if(patla2 && yerdenYukseklik<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
+        if(patla2 && altitudeKalmanEstimate<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
           patla2 = false; 
             Beep(300,2);  
           digitalWrite(ROLE2, HIGH); 
           digitalWrite(ROLE2_KONTROL, HIGH); 
-          delay(2000);
+          delay(1000);
           digitalWrite(ROLE2, LOW); 
           digitalWrite(ROLE2_KONTROL, LOW); 
         } 
@@ -407,15 +496,15 @@ void loop(){
       "\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+*(float*)(message.pressure)+
       "\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+*(float*)(message.Z_Jiro)  +
       "\nX_Ivme: "+*(float*)(message.X_Ivme) +"\t Y_Ivme: "+*(float*)(message.Y_Ivme) +"\t Z_Ivme: "+ *(float*)(message.Z_Ivme) + "\n";   
-    Serial.println(SerialString);
+    //Serial.println(SerialString);
     SerialString="";
 //////////////////////////////////File Write ///////////////////////////////////////
  if (myFile) {
       myFile.print((byte)message.packageNum);  
       myFile.print(","); 
-      myFile.print((byte)message.explode1);      
+      myFile.print(!patla1);      
       myFile.print(",");  
-      myFile.print((byte)message.explode2); 
+      myFile.print(!patla2); 
       myFile.print(","); 
       myFile.print(*(float*)(message.Irtifa_basinc));
       myFile.print(","); 
@@ -447,10 +536,12 @@ void loop(){
 }
 
 static void smartDelay(unsigned long ms) {
-  unsigned long start = millis();
+  unsigned long start = millis(); 
   do 
   {
     while (Serial2.available())
       gps.encode(Serial2.read());
   } while (millis() - start < ms);
+
+  
 }

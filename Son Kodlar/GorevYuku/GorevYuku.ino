@@ -68,8 +68,12 @@ float  curPressure =0;  //HPA
  
 String SerialString=""; 
 
+bool BME_STATUS = true; 
+bool SD_STATUS = true;
+
 struct MessageYuk {   
       char type[5] = "YUK";
+      byte status; // exp1, exp2, gpsA , BME, BNO ,SdCard
       byte packageNum; 
       byte Irtifa_GPS[4]; 
       byte temperature[4]; 
@@ -83,9 +87,9 @@ struct MessageYuk {
 void Beep(int ms=400, int count = 1){
   int i =0;
   for (i=0;i<count;i++){ 
-    delay(ms);
+    smartDelay(ms);
     digitalWrite(BUZZER, HIGH);
-    delay(ms);
+    smartDelay(ms);
     digitalWrite(BUZZER, LOW);
   }
 }
@@ -151,7 +155,7 @@ void SearchSatalite(){
 
           for (int i=0; i<MAX_SATELLITES; ++i)
             sats[i].active = false;
-        }
+        }  
       }
     }
   }
@@ -171,11 +175,15 @@ void setup()
     snr[i].begin(      gps, "GPGSV", 7 + 4 * i); // offsets 7, 11, 15, 19
   }
   delay(100);
-  
-  if (!bme.begin())
+ 
+  if (!bme.begin()){
     Serial.println("Sensor BME680 NOT detected!"); 
-  if(!SD.begin(SD_KART_CS_PIN))
+    BME_STATUS = false;
+  }
+  if(!SD.begin(SD_KART_CS_PIN)){
     Serial.println("SD Card Module NOT detected!");
+    SD_STATUS = false;
+  }
 
   myFile = SD.open("verilerg.txt", FILE_WRITE); 
   delay(200);
@@ -189,18 +197,45 @@ void setup()
      myFile.println("PakatNumarasi,Irtifa_GPS,Sicaklik,Nem,Basinc,GPSEnlem,GPSBoylam;"); 
      myFile.close();
   }
- //SearchSatalite();
+  bitWrite(message_yuk.status,0,false);
+  bitWrite(message_yuk.status,1,false); 
+  bitWrite(message_yuk.status,2,(Serial2.available()!=0));
+  bitWrite(message_yuk.status,3,BME_STATUS);
+  bitWrite(message_yuk.status,4,false);
+  bitWrite(message_yuk.status,5,SD_STATUS); 
+  bitWrite(message_yuk.status,6,(Serial2.available()!=0)); 
+  bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
+  message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
+  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk ));  
+  SearchSatalite();
+  bitWrite(message_yuk.status,0,false);
+  bitWrite(message_yuk.status,1,false); 
+  bitWrite(message_yuk.status,2,(Serial2.available()!=0));
+  bitWrite(message_yuk.status,3,BME_STATUS);
+  bitWrite(message_yuk.status,4,false);
+  bitWrite(message_yuk.status,5,SD_STATUS); 
+  bitWrite(message_yuk.status,6,(Serial2.available()!=0)); 
+  bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
+  message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
+  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk ));  
 }  
 
  
 void loop()
 {  
     SerialString=""; 
-  packageNumber++;  
- 
+  packageNumber++;   
+  bitWrite(message_yuk.status,0,false);
+  bitWrite(message_yuk.status,1,false); 
+  bitWrite(message_yuk.status,2,(Serial2.available()!=0));
+  bitWrite(message_yuk.status,3,BME_STATUS);
+  bitWrite(message_yuk.status,4,false);
+  bitWrite(message_yuk.status,5,SD_STATUS); 
+  bitWrite(message_yuk.status,6,(Serial2.available()!=0)); 
+  bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
   myFile = SD.open("verilerg.txt",  FILE_WRITE  ); 
-  smartDelay(100);  
-  curPressure =bme.readPressure()/100;   
+  curPressure =bme.readPressure()/100;  
+  smartDelay(100);   
   message_yuk.packageNum =  packageNumber; 
   *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.meters() ;  
   *(float*)(message_yuk.temperature) =   (float)bme.temperature;  //Hekto pascal cinsinden

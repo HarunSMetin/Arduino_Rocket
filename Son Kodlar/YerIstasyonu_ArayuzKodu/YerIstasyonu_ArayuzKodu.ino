@@ -16,10 +16,9 @@ void setup()
 
 }   
 
-struct Message {    
+struct Message {     
       byte packageNum ;
-      byte explode1 ; 
-      byte explode2 ;
+      byte status; // exp1, exp2, gpsA , BME, BNO ,SdCard
       byte Irtifa_basinc[4] ;
       byte Irtifa_GPS[4] ;
       byte pressure[4] ;
@@ -33,17 +32,18 @@ struct Message {
       byte GPSe[4]; 
       byte GPSb[4];  
       byte GPSSatcont;
-} message;    
-struct MessageYuk {  
+} message;     
+struct MessageYuk {    
+      byte status; // exp1, exp2, gpsA , BME, BNO ,SdCard
       byte packageNum; 
       byte Irtifa_GPS[4]; 
       byte temperature[4]; 
       byte humadity[4];
       byte pressure[4];
       byte GPSe[4]; 
-      byte GPSb[4]; 
-      byte GPSSatcont; 
-} message_yuk; 
+      byte GPSb[4];  
+      byte GPSSatcont;  
+} message_yuk;    
 
 char type[5];
 int AnaAvailable = 0;
@@ -75,9 +75,7 @@ void loop()
       } 
       Serial.print((byte)message.packageNum ); 
       Serial.print(",");
-      Serial.print((byte) message.explode1 );
-      Serial.print(",");
-      Serial.print((byte)message.explode2    );  
+      Serial.print(message.status ); 
       Serial.print(",");
       Serial.print(*(float*)(message.Irtifa_basinc),6);
       Serial.print(",");
@@ -103,7 +101,9 @@ void loop()
       Serial.print(",");
       Serial.print(*(float*)(message.GPSb         ),6); 
       Serial.print(",");
-      Serial.print(message.GPSSatcont);    
+      Serial.print(message.GPSSatcont);  
+      Serial.print(",");
+      Serial.print(message_yuk.status );   
       Serial.print(",");
       Serial.print((byte)(message_yuk.packageNum) ); 
       Serial.print(",");
