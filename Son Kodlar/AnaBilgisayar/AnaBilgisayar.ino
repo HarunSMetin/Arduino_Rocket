@@ -29,7 +29,7 @@ File myFile;
 #include  <Adafruit_BNO055.h>
 #include  <utility/imumaths.h> 
 #include  <Wire.h> 
-Adafruit_BNO055 bno = Adafruit_BNO055(55); 
+Adafruit_BNO055 bno = Adafruit_BNO055(55,0x28); 
 sensors_event_t event; 
 
 //******************************************************
@@ -93,7 +93,7 @@ struct
 //Arduino Mega	10 
 #define BUZZER 10
 //******************PARAMETRELER****************************
-#define SATSEARCHTIME 0.5 //5dk 
+#define SATSEARCHTIME 2 // 2dk 
 #define KALKISYUKSEKLIGI 2 // 2 METRE
 #define IKINICIPATLAMAYUKSEKLIGI 500 // 500 METRE
 //******************************************************
@@ -319,10 +319,9 @@ void setup()
     SD_STATUS = false;
   }
 
-  bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P7); //Kutuphaneyi degisitdim
-  //bno.setAxisRemap(0x09); // bu kullanılabilir
-  bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P2); 
-
+  bno.setAxisRemap(0x09);
+  bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P0);  
+ 
   myFile = SD.open("verilera.txt", FILE_WRITE);
   delay(200);
   bno.setExtCrystalUse(true); 
@@ -387,7 +386,7 @@ void loop(){
   curPressure =bme.readPressure()/100;  
   hamYukseklik = bme.readAltitude(SEALEVELPRESSURE_HPA)  ;
   yerdenYukseklik = hamYukseklik - baslangicYukseklikData.average;
-  NormalAci=event.gyro.z;
+  NormalAci=abs(event.orientation.z);
  
 //////////////////////////////////Message Package Declaration ///////////////////////////////////////
 
@@ -426,11 +425,7 @@ void loop(){
   Beep(10);
   packageNumber = (packageNumber==255) ? 0 : packageNumber;
 ////////KALMAN///////////////// 
-
-  if(bno.getEvent(&event))
-    NormalAci=event.gyro.z;
     
-  lastFilterUpdate = millis() ;
   // Basınç için Kalman filtresi
   KalmanFilter(pressureKalmanEstimate, pressureKalmanErrorEstimate, pressureKalmanGain, curPressure);
 
@@ -438,13 +433,15 @@ void loop(){
   KalmanFilter(altitudeKalmanEstimate, altitudeKalmanErrorEstimate, altitudeKalmanGain, yerdenYukseklik);
 
   KalmanFilter(degreeKalmanEstimate,  degreeKalmanErrorEstimate,  degreeKalmanGain, NormalAci);
-
+  lastFilterUpdate = millis() ;
+/*
   Serial.print("pressure:");
   Serial.print(pressureKalmanEstimate ); 
   Serial.print("\t\taltitude:");
   Serial.print(altitudeKalmanEstimate );
   Serial.print("\t\tdegree:");
   Serial.println(degreeKalmanEstimate );
+  */
 //Tuz gölü rakımı yaklaşık 905 m yani 2969,16 feet 
 //14616 feete çıkılacak 
 //https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=0CAQQw7AJahcKEwiw3uys4JH-AhUAAAAAHQAAAAAQBw&url=https%3A%2F%2Fwww.ngdc.noaa.gov%2Fstp%2Fspace-weather%2Fonline-publications%2Fmiscellaneous%2Fus-standard-atmosphere-1976%2Fus-standard-atmosphere_st76-1562_noaa.pdf&psig=AOvVaw34JdSmuRhWO3bbcUJQLBqC&ust=1680750139172882
@@ -472,12 +469,12 @@ void loop(){
       }  
       if(!patla1){ 
         if(!patla2){
-          //HER ŞEY BİTTİ BURDA 2. PATLAMA OLDU VE AŞAĞI SÜZÜLÜYOR
-          Beep(200); 
+          gps.encode(Serial2.read());
+          Beep(20); 
         }
         if(patla2 && altitudeKalmanEstimate<=IKINICIPATLAMAYUKSEKLIGI){ //TODO : değişcek
           patla2 = false; 
-            Beep(300,2);  
+            Beep(200,2);  
           digitalWrite(ROLE2, HIGH); 
           digitalWrite(ROLE2_KONTROL, HIGH); 
           delay(1000);
@@ -492,11 +489,11 @@ void loop(){
       "PAKET NUMARASI: "+(byte)(message.packageNum)+
       "\nYerden yukseklik: "+yerdenYukseklik+
       "\n1. PATLAMA DURUMU: "+ (byte)!patla1 +
-      "\n2. PATLAMA DURUMU: "+ (byte)!patla2+
+      "\n2. PATLAMA DURUMU: "+ (byte)!patla2+ 
       "\nIrtifa(Basinc): "+ *(float*)(message.Irtifa_basinc)+"\tIrtifa(GPS): "+*(float*)(message.Irtifa_GPS)+"\tBasinc: "+*(float*)(message.pressure)+
       "\nX_Jiro: "  + *(float*)(message.X_Jiro)+"\t Y_Jiro: "  + *(float*)(message.Y_Jiro)+"\t Z_Jiro: "+*(float*)(message.Z_Jiro)  +
-      "\nX_Ivme: "+*(float*)(message.X_Ivme) +"\t Y_Ivme: "+*(float*)(message.Y_Ivme) +"\t Z_Ivme: "+ *(float*)(message.Z_Ivme) + "\n";   
-    //Serial.println(SerialString);
+      "\nX_Ivme: "+*(float*)(message.X_Ivme) +"\t Y_Ivme: "+*(float*)(message.Y_Ivme) +"\t Z_Ivme: "+ *(float*)(message.Z_Ivme) + "\n"+"\t Normal Aci: "+ *(float*)message.Aci + "\n";   
+    Serial.println(SerialString);
     SerialString="";
 //////////////////////////////////File Write ///////////////////////////////////////
  if (myFile) {

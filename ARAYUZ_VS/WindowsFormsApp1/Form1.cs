@@ -66,7 +66,7 @@ namespace TOBBETUROCKETRY
     {
         public byte paketNumarasıHYI = 0;
         ////////////////////////////////////////  
-        public readonly int Takim_ID = 99;
+        public readonly int Takim_ID = 913028;
         public readonly int mapZoomCount = 20; //10-20
         ////////////////////////////////////////    
         static readonly int DATA_COUNT = 24;

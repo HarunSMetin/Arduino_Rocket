@@ -1,7 +1,6 @@
 
 #include "Arduino.h"
-#define VERI_SAYISI 10 
-
+#define VERI_SAYISI 10  
 //******************************************************
 //Pinler
 //******************************************************
@@ -59,7 +58,7 @@ struct
 //Arduino Mega	10 
 #define BUZZER 10
 
-#define SATSEARCHTIME 5 //5dk
+#define SATSEARCHTIME 0.1 //5dk
 //******************************************************
 
 byte packageNumber = 0;  
@@ -164,6 +163,7 @@ void SearchSatalite(){
 
 void setup()
 { 
+  pinMode(BUZZER, OUTPUT);
   digitalWrite(BUZZER, LOW);
   Serial.begin(19200);   
   Serial2.begin(GPSBaud);  
@@ -206,7 +206,7 @@ void setup()
   bitWrite(message_yuk.status,6,(Serial2.available()!=0)); 
   bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
   message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
-  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk ));  
+  e32ttl.sendFixedMessage (0,3,6, &message_yuk  , sizeof(MessageYuk ));  
   SearchSatalite();
   bitWrite(message_yuk.status,0,false);
   bitWrite(message_yuk.status,1,false); 
@@ -217,7 +217,7 @@ void setup()
   bitWrite(message_yuk.status,6,(Serial2.available()!=0)); 
   bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
   message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
-  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk ));  
+  e32ttl.sendFixedMessage (0,3,6, &message_yuk  , sizeof(MessageYuk ));  
 }  
 
  
@@ -235,7 +235,7 @@ void loop()
   bitWrite(message_yuk.status,7,(Serial2.available()!=0));   
   myFile = SD.open("verilerg.txt",  FILE_WRITE  ); 
   curPressure =bme.readPressure()/100;  
-  smartDelay(100);   
+  delay(100);   
   message_yuk.packageNum =  packageNumber; 
   *(float*)(message_yuk.Irtifa_GPS) =  gps.altitude.meters() ;  
   *(float*)(message_yuk.temperature) =   (float)bme.temperature;  //Hekto pascal cinsinden
@@ -245,7 +245,7 @@ void loop()
   *(float*)(message_yuk.GPSb) =(float)gps.location.lng() ;   
   message_yuk.GPSSatcont = (byte)gps.satellites.value() ;
        
-  e32ttl.sendFixedMessage (0,3,7, &message_yuk  , sizeof(MessageYuk )); 
+  e32ttl.sendFixedMessage (0,3,6, &message_yuk  , sizeof(MessageYuk )); 
   packageNumber = (packageNumber==255) ? 0 : packageNumber; 
     if (myFile){
           myFile.print((byte)message_yuk.packageNum);  

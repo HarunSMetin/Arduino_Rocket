@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "COM7",
+    "programmer": "arduinoisp",
+    "sketch": "YerIstasyonu_Arayuz_Ser.ino"
+}
