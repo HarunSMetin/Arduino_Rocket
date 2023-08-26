@@ -7,8 +7,7 @@ Welcome to the Arduino Rocket repository! This project aims to provide a hands-o
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Contributing](#contributing) 
 - [Contact](#contact)
 
 ## Introduction
@@ -41,9 +40,6 @@ The Arduino Rocket project demonstrates how to integrate Arduino boards into roc
 
 Contributions are welcome! If you'd like to contribute to the project, please follow the [contribution guidelines](CONTRIBUTING.md).
 
-## License
-
-This project is licensed under the [Specify Your License] License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
