@@ -34,15 +34,11 @@ The Arduino Rocket project demonstrates how to integrate Arduino boards into roc
 
 - Detailed usage instructions can be found in the `/docs` directory.
 - Example sketches and modules are available in the `/examples` directory.
-- Use the provided data visualization tools to analyze rocket performance.
-
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to the project, please follow the [contribution guidelines](CONTRIBUTING.md).
+- Use the provided data visualization tools to analyze rocket performance. 
 
 
 ## Contact
 
-If you have any questions or suggestions, feel free to [open an issue](https://github.com/HarunSMetin/Arduino_Rocket/issues) or contact us at [email@example.com](mailto:email@example.com).
+If you have any questions or suggestions, feel free to [open an issue](https://github.com/HarunSMetin/Arduino_Rocket/issues) or contact us at [harunmetin19@gmail.com](mailto:harunmetin19@gmail.com).
 
 Happy rocketing! 🚀
